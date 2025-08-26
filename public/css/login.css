@@ -3,6 +3,9 @@ body{
   background-color: #f5f5f5;
   margin: auto;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  
 }
 
 /* Login form */
@@ -73,6 +76,110 @@ body{
 .btn-register:focus{
   box-shadow:0 0 0 3px #10B981;
 }
+
+/* Estilos button container*/
+
+.boton-container {
+  display: flex;
+  gap: 20px;
+}
+
+.boton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 100px;
+  background-color: #5d5f61;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.boton:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Botones centrados*/
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+/*Contenedores con titulo*/
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Ocupa toda la pantalla */
+}
+
+.titulo {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #252729;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  color: white;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar-logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+  color: #d4eaff;
+}
+
+.logout-btn {
+  background-color: #dc3545;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
+  color: white;
+}
+
+/* Ajuste para que el contenido no quede oculto debajo del navbar */
+.contenedor {
+  margin-top: 80px;
+}
+
+
 
 
 

@@ -4,13 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index Mestro</title>
+    <link rel="stylesheet" href="resources/css/login.css">
 </head>
-<body class="center">
-    <div class="contenedor">
-    <h1> Bienvenido</h1>    
+<body class="body centered">
     
-    </div>
+    <%- include('partials/navbar') %>
+
+
+
+   <div class="contenedor">
+    <h2 class="titulo">¿Quieres empezar?</h2>
+     <div class="boton-container">
+      <a class="boton"  href="/levels"> Lectura y escritura</a> 
+      <a class="boton"> Matematica</a>
+     </div>
+
+
+
+   </div>
  
-    
+    <%- include('partials/footer') %>
 </body>
 </html>
