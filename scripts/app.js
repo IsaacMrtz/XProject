@@ -1,4 +1,6 @@
 // 1 - Invocamos a Express
+const path = require('path');
+
 const express = require('express');
 const app = express();
 
@@ -17,7 +19,7 @@ app.use('/resources', express.static(__dirname + '/public'));
 
 //5 - Establecemos el motor de plantillas
 app.set('view engine','ejs');
-app.set('views', path.join(__dirname, 'views'));/////
+app.set('views', path.join(__dirname, '../views'));/////
 
 
 
@@ -41,37 +43,18 @@ const connection = require('../config/db');
 
 
 
-const pagesRoutes = require('./pages');
-app.use('/', pagesRoutes);
+
 
 
 // Ruta para mostrar el login (AÑADIDA)
-app.get('/login', (req, res) => {
-    res.render('login', { alert: false });
-});
+
 
 // Ruta para mostrar el registro (AÑADIDA)
-app.get('/register', (req, res) => {
-    res.render('register', { alert: false });
-});
+
 
 
 //9 - establecemos las rutas
-app.get('/index', (req, res)=> {
-	if (req.session.loggedin && req.session.id_rol == 2) {
-		res.render('index', { name: req.session.name });
-	} else {
-		res.redirect('/login');
-	}
-});
 
-app.get('/index2', (req, res)=> {
-	if (req.session.loggedin && req.session.id_rol == 1) {
-		res.render('index2', { name: req.session.name });
-	} else {
-		res.redirect('/login');
-	}
-});
 
 //10 - Método para la REGISTRACIÓN
 app.post('/register', async (req, res)=>{
@@ -185,6 +168,16 @@ app.get('/', (req, res)=> {
 		res.redirect('/login');
 	}
 });
+// para mandar el nombre del usuario a las vistas
+app.use((req, res, next) => {
+  res.locals.nombre = req.session.name || 'Usuario';
+  next();
+});
+
+
+const pagesRoutes = require('./pages');
+app.use('/', pagesRoutes);
+
 
 //función para limpiar la caché luego del logout
 app.use(function(req, res, next) {

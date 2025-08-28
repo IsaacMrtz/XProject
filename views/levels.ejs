@@ -5,18 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Niveles</title>
     <link rel="stylesheet" href="resources/css/login.css">
+     <link rel="stylesheet" href="resources/css/styles.css">
 </head>
-<body class="body centered">
-    <div class="contenedor">
-        <select name="" id="" class="select-css">
-            <option value="">Primer Grado</option>
-            <option value="">Segundo grado</option>
-            <option value="">Tercer Grado</option>
-         
+<body>
+       <%- include('partials/navbar') %>
+    <div class="grado-container">
+        <h2 class="titulo-grado">Selecciona tu nivel educativo</h2>
+        <form action="nivel" method="get">
+        <select  class="select-grado" name="grado"">
+            <option value="primer">Primer Grado</option>
+            <option value="segundo">Segundo grado</option>
+            <option value="tercero">Tercer Grado</option>
         </select>
-        
-    
-    </div>
-    
+
+         <div class="botones">
+    <button class="boton-entrar">→</button>
+    <a href="javascript:history.back()" class="boton-regresar">« Regresar</a>
+  </div>
+  </div>
+   
+</div>
 </body>
 </html>

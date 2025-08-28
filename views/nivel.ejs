@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      <link rel="stylesheet" href="resources/css/styles.css">
+</head>
+<body>
+ <%- include('partials/navbar') %>
+
+<div class="inicio-container">
+  <h1>Bienvenido, <%= nombre %></h1>
+
+  <h1 class="titulo-principal"><%= data.titulo %> </h1>
+  <p class="descripcion"><%= data.descripcion %></p>
+
+  <ul class="temas-lista">
+    <% data.temas.forEach(t => { %>
+      <li><%= t %></li>
+    <% }) %>
+  </ul>
+
+  <div class="botones">
+    <a href="" class="boton-entrar">→ Entrar</a>
+    <a href="javascript:history.back()" class="boton-regresar">← Regresar</a>
+  </div>
+</div>
+
+</body>
+</html>
+

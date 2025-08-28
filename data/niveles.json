@@ -1,0 +1,17 @@
+{
+  "primer": {
+    "titulo": "Bienvenido a Primer Grado",
+    "descripcion": "Este nivel está diseñado para introducir los fundamentos básicos.",
+    "temas": ["Lectura inicial", "Matemáticas básicas", "Exploración de la naturaleza"]
+  },
+  "segundo": {
+    "titulo": "Bienvenido a Segundo Grado",
+    "descripcion": "Aquí reforzarás lo aprendido y verás nuevos conceptos.",
+    "temas": ["Comprensión lectora", "Suma y resta avanzadas", "Ciencias básicas"]
+  },
+  "tercero": {
+    "titulo": "Bienvenido a Tercer Grado",
+    "descripcion": "Un paso más hacia la consolidación de tus conocimientos.",
+    "temas": ["Multiplicación", "Problemas de lógica", "Experimentos de ciencias"]
+  }
+}
