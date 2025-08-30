@@ -19,6 +19,10 @@ exports.matematica = (req, res) => {
     res.render('matematica', { title: "Matemáticas" });
 };
 
+exports.emotions = (req, res) => {
+    res.render('emotions', { title: "emociones jaja" });
+};
+
 exports.nivel = (req, res) => {
     const grado = req.query.grado; // "primer", "segundo", "tercero"
     const data = niveles[grado];

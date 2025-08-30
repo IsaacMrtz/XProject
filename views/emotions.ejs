@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detección de emociones</title>
+  <script defer src="/jsFace-Api/face-api.min.js"></script>
+  <script defer src="/jsFace-Api/emociones.js"></script>
+  <style>
+    canvas { position: absolute; top: 0; left: 0; }
+    #info { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; padding: 10px; }
+  </style>
+</head>
+<body>
+  <video id="video" width="720" height="560" autoplay muted></video>
+  <div id="info">Cargando modelos...</div>
+</body>
+</html>

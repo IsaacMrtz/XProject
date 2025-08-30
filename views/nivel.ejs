@@ -9,20 +9,46 @@
 <body>
  <%- include('partials/navbar') %>
 
-<div class="inicio-container">
-  <h1>Bienvenido, <%= nombre %></h1>
+<div class="section-container">
 
-  <h1 class="titulo-principal"><%= data.titulo %> </h1>
+
+  <h1 class="titulo-principal"><%= data.titulo %> <%= nombre %>  </h1>
   <p class="descripcion"><%= data.descripcion %></p>
 
   <ul class="temas-lista">
     <% data.temas.forEach(t => { %>
       <li><%= t %></li>
-    <% }) %>
+    <% }) %>  
   </ul>
 
+
+ <a href="emotions" class="section-link">
+    <section class="section-box">
+      <h3>📖 Aprendiendo a Leer</h3>
+      <p>Desarrolla habilidades de lectura inicial con cuentos y ejercicios divertidos.</p>
+      <img src="img/lectura.png" alt="Lectura inicial" class="section-img">
+    </section>
+  </a>
+
+  <a href="matematicas.html" class="section-link">
+    <section class="section-box">
+      <h3>➗ Matemáticas Básicas</h3>
+      <p>Aprende sumas, restas y juegos matemáticos interactivos.</p>
+      <img src="img/matematicas.png" alt="Matemáticas básicas" class="section-img">
+    </section>
+  </a>
+
+  <a href="naturaleza.html" class="section-link">
+    <section class="section-box">
+      <h3>🌱 Exploración de la Naturaleza</h3>
+      <p>Descubre el mundo natural a través de imágenes y experimentos simples.</p>
+      <img src="img/naturaleza.png" alt="Naturaleza" class="section-img">
+    </section>
+  </a>
+
+<br>
+
   <div class="botones">
-    <a href="" class="boton-entrar">→ Entrar</a>
     <a href="javascript:history.back()" class="boton-regresar">← Regresar</a>
   </div>
 </div>
