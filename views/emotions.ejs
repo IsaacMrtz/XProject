@@ -3,15 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <title>Detección de emociones</title>
-  <script defer src="/jsFace-Api/face-api.min.js"></script>
-  <script defer src="/jsFace-Api/emociones.js"></script>
   <style>
-    canvas { position: absolute; top: 0; left: 0; }
-    #info { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; padding: 10px; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    #container {
+      position: relative;
+      display: inline-block;
+    }
+    canvas { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      border: 2px solid red; /* Para ver si el canvas se crea */
+    }
+    #info { 
+      position: absolute; 
+      top: 10px; 
+      left: 10px; 
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 10;
+      max-width: 300px;
+      word-wrap: break-word;
+    }
+    #debug {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+    video {
+      border: 2px solid #333;
+    }
   </style>
 </head>
 <body>
-  <video id="video" width="720" height="560" autoplay muted></video>
-  <div id="info">Cargando modelos...</div>
+  <h1>Detección de Emociones - Debug</h1>
+  <BR>
+    
+  <div id="container">
+    <video id="video" width="720" height="560" autoplay muted></video>
+    <div id="info">Iniciando...</div>
+  </div>
+  
+  <div id="debug">Logs aparecerán aquí...</div>
+  
+  <!-- Cargar face-api primero -->
+  <script src="/resources/jsFace-Api/face-api.min.js"></script>
+  
+  <!-- Verificar que se cargó correctamente -->
+  <script>
+    const debugDiv = document.getElementById('debug');
+    
+    function debugLog(message) {
+      console.log(message);
+      debugDiv.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+      debugDiv.scrollTop = debugDiv.scrollHeight;
+    }
+    
+    debugLog('Página cargada');
+    debugLog('Face-API disponible: ' + (typeof faceapi !== 'undefined'));
+    
+    if (typeof faceapi === 'undefined') {
+      debugLog('ERROR: Face-API no se cargó. Verificar ruta /jsFace-Api/face-api.min.js');
+      document.getElementById('info').innerText = 'Error: Face-API no se cargó';
+    } else {
+      debugLog('Face-API cargado correctamente');
+      
+      // Verificar que los elementos existen
+      const video = document.getElementById('video');
+      const info = document.getElementById('info');
+      
+      debugLog('Video element: ' + (video ? 'OK' : 'NO ENCONTRADO'));
+      debugLog('Info element: ' + (info ? 'OK' : 'NO ENCONTRADO'));
+      
+      if (video && info) {
+        debugLog('Elementos encontrados, cargando script principal...');
+      }
+    }
+    
+    // Verificar acceso a modelos
+    fetch('/resources/jsFace-Api/models/tiny_face_detector/tiny_face_detector_model-weights_manifest.json')
+      .then(response => {
+        debugLog('Test acceso a modelos: ' + (response.ok ? 'OK' : 'FALLÓ - ' + response.status));
+        if (!response.ok) {
+          debugLog('Verificar que la carpeta /jsFace-Api/models/ existe y contiene los archivos');
+        }
+      })
+      .catch(error => {
+        debugLog('Error accediendo a modelos: ' + error.message);
+      });
+  </script>
+  
+  <!-- Cargar script principal después -->
+  <script src="/resources/jsFace-Api/emociones.js"></script>
 </body>
 </html>

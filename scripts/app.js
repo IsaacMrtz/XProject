@@ -16,6 +16,8 @@ dotenv.config({ path: './config/.env'});
 app.use('/resources',express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
 
+// Esto es lo que permite servir archivos como JS, CSS, imágenes, etc.
+
 
 //5 - Establecemos el motor de plantillas
 app.set('view engine','ejs');
