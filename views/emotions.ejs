@@ -45,6 +45,14 @@
       border: 2px solid #333;
     }
   </style>
+  <!-- CDN de MediaPipe Pose y utilidades -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" defer></script>
+
+<!-- Tu script de postura -->
+<script src="/scripts/postura.js" defer></script>
+
 </head>
 <body>
   <h1>Detección de Emociones - Debug</h1>
@@ -103,8 +111,40 @@
         debugLog('Error accediendo a modelos: ' + error.message);
       });
   </script>
+
+  <script>
+  function enviarTexto(texto) {
+    fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: texto })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Resultado del análisis:', data);
+      document.getElementById('sentimiento').innerText =
+        `Sentimiento: ${data.score > 0 ? 'Positivo' : data.score < 0 ? 'Negativo' : 'Neutral'} (${data.score})`;
+    });
+  }
+</script>
+
   
   <!-- Cargar script principal después -->
   <script src="/resources/jsFace-Api/emociones.js"></script>
+
+  <button id="btnVoz">🎙️ Iniciar reconocimiento</button>
+<script src="/resources/sentiment/speechAnalysis.js" defer></script>
+<div id="transcripcion">Transcripción aparecerá aquí...</div>
+<div id="sentimiento">Sentimiento aparecerá aquí...</div>
+
+<!-- Antes de </body> -->
+<div>
+<script src="/resources/postura/postura.js" defer></script>
+
+<button id="btnPostura">🕺 Iniciar detección de postura</button>
+<div id="postura">Postura: …</div>
+</div>
+
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 
 // controller/pageController.js
 const niveles = require('../data/niveles.json');
-
+const fs = require('fs');
 
 exports.login = (req, res) => {
     res.render('login', { alert: false });
@@ -23,6 +23,10 @@ exports.emotions = (req, res) => {
     res.render('emotions', { title: "emociones jaja" });
 };
 
+exports.htmlD = (req, res) => {
+    res.render('htmlD', { title: "emociones jaja" });
+};
+
 exports.nivel = (req, res) => {
     const grado = req.query.grado; // "primer", "segundo", "tercero"
     const data = niveles[grado];
@@ -33,6 +37,9 @@ exports.nivel = (req, res) => {
 
     res.render('nivel', { data });
 };
+
+
+
 
 
 

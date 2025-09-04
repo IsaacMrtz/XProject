@@ -17,6 +17,22 @@ app.use('/resources',express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
 
 // Esto es lo que permite servir archivos como JS, CSS, imágenes, etc.
+app.use(express.static(path.join(__dirname, 'scripts')));
+
+// PERMITE SERVIR EL ARCHIVO 
+const Sentiment = require('sentiment');
+const sentiment = new Sentiment();
+const fs = require('fs');
+
+app.use(express.json()); // Asegúrate de tener esto para leer req.body
+
+app.post('/api/analyze', (req, res) => {
+  const result = sentiment.analyze(req.body.text);
+  fs.writeFileSync('data/resultado.json', JSON.stringify(result, null, 2));
+  res.json(result);
+});
+
+
 
 
 //5 - Establecemos el motor de plantillas
