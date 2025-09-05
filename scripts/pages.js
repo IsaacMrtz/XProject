@@ -13,6 +13,7 @@ router.get('/matematica', pageController.matematica);
 router.get('/nivel', pageController.nivel);
 router.get('/emotions', pageController.emotions);
 router.get('/htmlD', pageController.htmlD);
+router.get('/layout', pageController.layout);
 
 // Rutas protegidas (ejemplo con roles)
 router.get('/index', pageController.index);

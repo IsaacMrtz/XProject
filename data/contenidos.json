@@ -1,0 +1,25 @@
+{
+  "primer_grado": {
+    "lecturas": [
+      {
+        "id": "lectura1",
+        "titulo": "La rana saltarina",
+        "texto": "Había una vez una rana...",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura2",
+        "titulo": "El gato curioso",
+        "texto": "Un gato se perdió en el bosque...",
+        "tipo": "lectura"
+      }
+    ],
+    "juegos": [
+      {
+        "id": "juego1",
+        "titulo": "Atrapa la palabra",
+        "tipo": "minijuego"
+      }
+    ]
+  }
+}

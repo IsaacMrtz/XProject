@@ -27,6 +27,46 @@ exports.htmlD = (req, res) => {
     res.render('htmlD', { title: "emociones jaja" });
 };
 
+exports.layout = (req, res) => {
+    res.render('layout', { title: "emociones jaja" });
+};
+
+// Para json & layout
+async function cargarContenido(grado, tipo, id) {
+  const res = await fetch('/data/contenidos.json');
+  const data = await res.json();
+
+  const item = data[grado][tipo].find(e => e.id === id);
+  if (!item) return;
+
+  const contentDiv = document.getElementById("content");
+  if (item.tipo === "lectura") {
+    contentDiv.innerHTML = `
+      <h2>${item.titulo}</h2>
+      <p>${item.texto}</p>
+    `;
+  } else if (item.tipo === "minijuego") {
+    contentDiv.innerHTML = `<h2>${item.titulo}</h2><canvas id="gameCanvas"></canvas>`;
+    iniciarJuego(item.id);
+  }
+}
+
+
+
+//Para transcripcion
+const Sentiment = require('sentiment');
+const sentiment = new Sentiment();
+const fs = require('fs');
+
+app.use(express.json()); // Asegúrate de tener esto para leer req.body
+
+app.post('/api/analyze', (req, res) => {
+  const result = sentiment.analyze(req.body.text);
+  fs.writeFileSync('data/resultado.json', JSON.stringify(result, null, 2));
+  res.json(result);
+});
+
+
 exports.nivel = (req, res) => {
     const grado = req.query.grado; // "primer", "segundo", "tercero"
     const data = niveles[grado];

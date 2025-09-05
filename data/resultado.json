@@ -1,69 +1,14 @@
 {
-  "score": -2,
-  "comparative": -0.043478260869565216,
-  "calculation": [
-    {
-      "stop": -1
-    },
-    {
-      "no": -1
-    }
-  ],
+  "score": 0,
+  "comparative": 0,
+  "calculation": [],
   "tokens": [
-    "voy",
-    "a",
-    "participar",
-    "en",
-    "el",
-    "torneo",
-    "pienso",
-    "irme",
-    "cuanto",
-    "antes",
-    "ya",
-    "no",
-    "siguió",
-    "reconociendo",
-    "o",
-    "qué",
-    "pasa",
-    "se",
-    "ponen",
-    "stop",
-    "durante",
-    "algún",
-    "tiempo",
-    "o",
-    "qué",
-    "pasa",
-    "es",
-    "mi",
-    "deber",
-    "como",
-    "caballero",
-    "lo",
-    "tengo",
-    "que",
-    "hacer",
-    "vamos",
-    "vamos",
-    "lo",
-    "lograremos",
-    "nosotros",
-    "podemos",
-    "elevar",
-    "sus",
-    "cosmos",
-    "al",
-    "infinito"
+    "reading",
+    "all",
+    "the",
+    "day"
   ],
-  "words": [
-    "stop",
-    "no"
-  ],
+  "words": [],
   "positive": [],
-  "negative": [
-    "stop",
-    "no"
-  ]
+  "negative": []
 }
