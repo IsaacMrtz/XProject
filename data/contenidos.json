@@ -4,13 +4,19 @@
       {
         "id": "lectura1",
         "titulo": "La rana saltarina",
-        "texto": "Había una vez una rana...",
+        "texto": "Había una vez una rana que saltaba feliz por el jardín.",
         "tipo": "lectura"
       },
       {
         "id": "lectura2",
         "titulo": "El gato curioso",
-        "texto": "Un gato se perdió en el bosque...",
+        "texto": "Un gato se perdió en el bosque y encontró una mariposa.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura3",
+        "titulo": "Mi casa",
+        "texto": "Mi casa es grande. Tiene una puerta roja y un perro en el jardín.",
         "tipo": "lectura"
       }
     ],
@@ -18,6 +24,11 @@
       {
         "id": "juego1",
         "titulo": "Atrapa la palabra",
+        "tipo": "minijuego"
+      },
+      {
+        "id": "juego2",
+        "titulo": "Completa la frase",
         "tipo": "minijuego"
       }
     ]

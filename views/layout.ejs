@@ -2,87 +2,72 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Detección de emociones</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-    }
-    #container {
-      position: relative;
-      display: inline-block;
-    }
-    canvas { 
-      position: absolute; 
-      top: 0; 
-      left: 0; 
-      border: 2px solid red; /* Para ver si el canvas se crea */
-    }
-    #info { 
-      position: absolute; 
-      top: 10px; 
-      left: 10px; 
-      background: rgba(0,0,0,0.8); 
-      color: white; 
-      padding: 10px;
-      border-radius: 5px;
-      z-index: 10;
-      max-width: 300px;
-      word-wrap: break-word;
-    }
-    #debug {
-      margin-top: 20px;
-      padding: 10px;
-      background: #f0f0f0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-family: monospace;
-      font-size: 12px;
-      white-space: pre-wrap;
-    }
-    video {
-      border: 2px solid #333;
-    }
-  </style>
-  <!-- CDN de MediaPipe Pose y utilidades -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" defer></script>
-
-<!-- Tu script de postura -->
-
-
+  <title><%= title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="resources/css/layouts.css">
+ 
 </head>
 <body>
-  <header>Asistente Multimodal</header>
-  <main id="content"></main>
-   <div id="videoFrame" style="display:none;">
-    <video id="video" autoplay muted playsinline></video>
-  </div>
-<button id="toggleVideo">Abrir Video</button>
-  <!-- Librerías -->
+  <header>
+    <button id="btnBack">← Volver</button>
+    
+  </header>
+<!-- Oculto al inicio pero presente en el DOM -->
+<div id="videoFrame" style="display:none;">
+  <video id="video" autoplay muted playsinline></video>
+</div>
+  <main>
+    <div id="content">
+      <div id="completed">¡Completado!</div>
+      <!-- Aquí inyecta tu título y texto dinámico -->
+      <!-- Por ejemplo: -->
+      <h2 id="itemTitle"></h2>
+      <p id="itemText"></p>
+
+
+      <div id="controls">
+        <button id="btnSpeak" class="control-btn">Hablar</button>
+        <button id="btnNext" class="control-btn" style="display:none;">
+          Siguiente →
+        </button>
+      </div>
+      <div id="transcription" class="transcription-box">
+      <em>Tu transcripción aparecerá aquí…</em>
+    </div>
+    </div>
+  </main>
+
+  <!-- Librerías y módulos -->
   <script src="/resources/jsFace-Api/face-api.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-  <script src="/resources/sentiment/analysis.js"></script>
-
-  <!-- Módulos -->
   <script type="module" src="/scripts/orquestador.js"></script>
-  <script>
-    const btn = document.getElementById("toggleVideo");
-    const videoFrame = document.getElementById("videoFrame");
 
-    btn.addEventListener("click", () => {
-      if (videoFrame.style.display === "none") {
-        videoFrame.style.display = "block";
-        btn.textContent = "Cerrar Video";
-      } else {
-        videoFrame.style.display = "none";
-        btn.textContent = "Abrir Video";
-      }
+  <script>
+    // Volver a la ruta anterior
+    document.getElementById('btnBack').addEventListener('click', () => {
+      window.history.back();
+    });
+
+    // Escucha evento de “completado” desde orquestador.js
+    window.addEventListener('readingComplete', () => {
+      document.getElementById('completed').style.display = 'block';
+      document.getElementById('btnNext').style.display = 'inline-block';
+    });
+
+    // Botón Hablar → activa Web Speech
+    document.getElementById('btnSpeak').addEventListener('click', () => {
+      window.dispatchEvent(new Event('startSpeech')); 
+      // Orquestador debe escuchar startSpeech y arrancar reconocimiento
+    });
+
+    // Botón Siguiente → recarga contenido según orquestador
+    document.getElementById('btnNext').addEventListener('click', () => {
+      window.dispatchEvent(new Event('nextItem'));
+      // Orquestador escucha nextItem y carga siguiente ítem
+      document.getElementById('completed').style.display = 'none';
+      document.getElementById('btnNext').style.display = 'none';
     });
   </script>
 </body>
-
 </html>
