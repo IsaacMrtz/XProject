@@ -1,15 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+  <meta charset="UTF-8" />
+  <title>Detección de emociones</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    #container {
+      position: relative;
+      display: inline-block;
+    }
+    canvas { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      border: 2px solid red; /* Para ver si el canvas se crea */
+    }
+    #info { 
+      position: absolute; 
+      top: 10px; 
+      left: 10px; 
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 10;
+      max-width: 300px;
+      word-wrap: break-word;
+    }
+    #debug {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+    video {
+      border: 2px solid #333;
+    }
+  </style>
+  <!-- CDN de MediaPipe Pose y utilidades -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" defer></script>
+
+<!-- Tu script de postura -->
+
+
 </head>
 <body>
+  <header>Asistente Multimodal</header>
+  <main id="content"></main>
+   <div id="videoFrame" style="display:none;">
+    <video id="video" autoplay muted playsinline></video>
+  </div>
+<button id="toggleVideo">Abrir Video</button>
+  <!-- Librerías -->
+  <script src="/resources/jsFace-Api/face-api.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  <script src="/resources/sentiment/analysis.js"></script>
 
+  <!-- Módulos -->
+  <script type="module" src="/scripts/orquestador.js"></script>
+  <script>
+    const btn = document.getElementById("toggleVideo");
+    const videoFrame = document.getElementById("videoFrame");
 
-    ajaja
-    
+    btn.addEventListener("click", () => {
+      if (videoFrame.style.display === "none") {
+        videoFrame.style.display = "block";
+        btn.textContent = "Cerrar Video";
+      } else {
+        videoFrame.style.display = "none";
+        btn.textContent = "Abrir Video";
+      }
+    });
+  </script>
 </body>
+
 </html>
