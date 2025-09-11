@@ -7,16 +7,32 @@
       <link rel="stylesheet" href="resources/css/styles.css">
 </head>
 <body>
- <%- include('partials/navbar') %>
+<%- include('partials/navbar') %>
 
-<div class="section-container">
+<h1><%= data.titulo %></h1>
+<p><%= data.descripcion %></p>
 
+<h2>Lecturas disponibles</h2>
+<div class="botones-lecturas">
 
-  
-  <div class="botones">
-    <a href="javascript:history.back()" class="boton-regresar">← Regresar</a>
-  </div>
+  <% if (!lecturas || lecturas.length === 0) { %>
+    <p>No hay lecturas disponibles.</p>
+  <% } else { %>
+    <% lecturas.forEach(lec => { %>
+      <a
+        href="/layout?grado=<%= grado %>&id=<%= lec.id %>"
+        class="btn-lectura"
+      >
+        <%= lec.titulo %>
+      </a>
+    <% }) %>
+  <% } %>
+  <a href="/layout?grado=<%= grado %>">Leer todas las lecturas</a>
+
 </div>
+
+<a href="javascript:history.back()" class="boton-regresar">← Regresar</a>
+
 
 </body>
 </html>

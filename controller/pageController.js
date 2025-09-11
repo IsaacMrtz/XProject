@@ -37,8 +37,38 @@ export function htmlD(req, res) {
 }
 
 // Layout principal
-export function layout(req, res) {
-  res.render('layout', { title: "Mi Layout Multimodal" });
+
+export async function layout(req, res) {
+  const { grado, id } = req.query;
+  try {
+    // 1) Leer el JSON de contenidos
+    const raw = await fs.readFile(
+      path.join(__dirname, '../data/contenidos.json'),
+      'utf-8'
+    );
+    const contenidos = JSON.parse(raw)[grado]?.lecturas;
+    if (!contenidos) return res.send("Grado no encontrado");
+
+    // 2) Filtrar si viene un id concreto
+    const lecturas = id
+      ? contenidos.filter(l => l.id === id)
+      : contenidos;
+
+    if (id && lecturas.length === 0) {
+      return res.send("Lectura no encontrada");
+    }
+
+    // 3) Renderizar pasando title + resto de datos
+    res.render('layout', {
+      title: `Lecturas – ${grado.charAt(0).toUpperCase() + grado.slice(1)}`,
+      grado,
+      id,
+      lecturas
+    });
+  } catch (err) {
+    console.error('Error leyendo contenidos.json:', err);
+    res.status(500).send("Error interno");
+  }
 }
 
 // Carga un nivel desde niveles.json
@@ -59,16 +89,34 @@ export async function nivel(req, res) {
 export async function nivelC(req, res) {
   const grado = req.query.grado; // "primer", "segundo", "tercero"
   try {
-    const raw = await fs.readFile(path.join(__dirname, '../data/niveles.json'), 'utf-8');
-    const niveles = JSON.parse(raw);
-    const data = niveles[grado];
+    // 1) Cargo niveles.json
+    const rawNiv     = await fs.readFile(
+      path.join(__dirname, '../data/niveles.json'),
+      'utf-8'
+    );
+    const niveles    = JSON.parse(rawNiv);
+    const data       = niveles[grado];
     if (!data) return res.send("Nivel no encontrado");
-    res.render('nivelC', { data });
+
+    // 2) Cargo contenidos.json
+    const rawCon     = await fs.readFile(
+      path.join(__dirname, '../data/contenidos.json'),
+      'utf-8'
+    );
+    const contenidos = JSON.parse(rawCon);
+    const lecturas   = contenidos[grado]?.lecturas || [];
+
+    // -- OPCIONAL: ver en consola para debug --
+    console.log({ grado, lecturas });
+
+    // 3) Renderizo pasando data, grado y lecturas
+    res.render('nivelC', { data, grado, lecturas });
   } catch (err) {
-    console.error('Error leyendo niveles.json:', err);
+    console.error('Error leyendo JSON:', err);
     res.status(500).send("Error interno");
   }
 }
+
 
 // Rutas protegidas
 export function index(req, res) {
