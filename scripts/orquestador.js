@@ -4,16 +4,17 @@ import { initAttention } from '/resources/mediapipe/postt.js';
 import { iniciarReconocimiento } from '/resources/sentiment/analysis.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
-  // 1) Referencias DOM
-  const videoEl      = document.getElementById('video');
-  const titleEl      = document.getElementById('itemTitle');
-  const textEl       = document.getElementById('itemText');
-  const completedEl  = document.getElementById('completed');
-  const btnSpeak     = document.getElementById('btnSpeak');
-  const btnNext      = document.getElementById('btnNext');
-  const transcriptionEl = document.getElementById('transcription');
+  // 1) Referencias al DOM
+  const videoEl        = document.getElementById('video');
+  const titleEl        = document.getElementById('itemTitle');
+  const textEl         = document.getElementById('itemText');
+  const transcriptionEl= document.getElementById('transcription');
+  const completedEl    = document.getElementById('completed');
+  const btnSpeak       = document.getElementById('btnSpeak');
+  const btnNext        = document.getElementById('btnNext');
+
   // 2) Carga de JSON
-  const data = await fetch('/data/contenidos.json').then(r => r.json());
+  const data     = await fetch('/data/contenidos.json').then(r => r.json());
   const lecturas = data.primer.lecturas;
   const juegos   = data.primer.juegos;
 
@@ -22,22 +23,42 @@ window.addEventListener('DOMContentLoaded', async () => {
   let gameIndex    = 0;
   let currentMode  = 'lectura'; // 'lectura' o 'juego'
 
-  // 4) Funciones de renderizado
+  // 4) Variables para comparación
+  let originalWords   = [];
+  let matchedWordsSet = new Set();
+
+  function prepareOriginalWords(text) {
+    return text
+      .toLowerCase()
+      .replace(/[.,;!?¿¡]/g, '')
+      .split(/\s+/)
+      .filter(Boolean);
+  }
+
+  // 5) Funciones de renderizado
   function showLecture(i) {
-    const item = lecturas[i];
-    titleEl.innerText = item.titulo;
-    textEl.innerText  = item.texto;
+    const { titulo, texto } = lecturas[i];
+    titleEl.innerText = titulo;
+    textEl.innerText  = texto;
+
+    // Preparamos palabras originales y reseteamos transcripción
+    originalWords = prepareOriginalWords(texto);
+    matchedWordsSet.clear();
+    transcriptionEl.innerText = '';
     completedEl.style.display = 'none';
-    btnNext.style.display    = 'none';
+    btnNext.style.display     = 'none';
   }
 
   function showGame(i) {
-    const item = juegos[i];
-    titleEl.innerText = item.titulo;
-    textEl.innerText  = ''; // en tu juego pintarás canvas
+    const { titulo } = juegos[i];
+    titleEl.innerText = titulo;
+    textEl.innerText  = '';
+    originalWords = [];
+    matchedWordsSet.clear();
+    transcriptionEl.innerText = '';
     completedEl.style.display = 'none';
-    btnNext.style.display    = 'none';
-    // aquí podrías inicializar tu mini-juego
+    btnNext.style.display     = 'none';
+    // Aquí podrías inicializar tu mini-juego
   }
 
   function adaptTo(mode) {
@@ -46,7 +67,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     else                 showLecture(lectureIndex);
   }
 
-  // 5) Historial y histeresis (sensor-driven)
+  // 6) Sensores y histeresis (igual que antes)
   const history = { emotion: [], attention: [] };
   function pushReading(type, value) {
     const now = Date.now();
@@ -57,54 +78,60 @@ window.addEventListener('DOMContentLoaded', async () => {
     return history[type].filter(r => r.value === val).length;
   }
   function evaluateMode() {
-    const totalEmo = history.emotion.length || 1;
-    const sadPct   = countRecent('emotion', 'sad') / totalEmo;
-    const totalAtt = history.attention.length || 1;
-    const disPct   = countRecent('attention', 'distraído') / totalAtt;
-    const worstPct = Math.max(sadPct, disPct);
+    const sadPct = countRecent('emotion','sad') / (history.emotion.length||1);
+    const disPct = countRecent('attention','distraído') / (history.attention.length||1);
+    const worst = Math.max(sadPct, disPct);
 
-    if (currentMode === 'lectura' && worstPct >= 0.6) {
-      adaptTo('juego');
-    } else if (currentMode === 'juego' && worstPct <= 0.4) {
-      adaptTo('lectura');
-    }
+    if (currentMode==='lectura' && worst>=0.6) adaptTo('juego');
+    else if (currentMode==='juego' && worst<=0.4) adaptTo('lectura');
   }
 
-  // 6) Sensores emitiendo lectura
   window.addEventListener('emotionDetected',   e => { pushReading('emotion', e.detail);   evaluateMode(); });
   window.addEventListener('attentionDetected', e => { pushReading('attention', e.detail); evaluateMode(); });
 
-  window.addEventListener('speechResult', e => {
-  transcriptionEl.innerText = e.detail;
-  });
-  window.addEventListener('readingComplete', () => {
-  completedEl.style.display = 'block';
-  btnNext.style.display     = 'inline-block';
-  });
+  // 7) Inicializa Face-API y MediaPipe
   await initEmotions(videoEl);
   initAttention(videoEl);
 
-  // 7) Control de lectura por voz
+  // 8) Web Speech → iniciar reconocimiento
   btnSpeak.addEventListener('click', () => {
-    // dispara el reconocimiento
     window.dispatchEvent(new Event('startSpeech'));
   });
+  window.addEventListener('startSpeech', () => iniciarReconocimiento());
 
-  window.addEventListener('startSpeech', () => {
-    iniciarReconocimiento();
-  });
+  // 9) Filtrar la transcripción para mostrar solo palabras coincidentes
+  window.addEventListener('speechResult', e => {
+   // 1) Normalize y separa lo transcrito
+   const words = e.detail
+     .toLowerCase()
+     .replace(/[.,;!?¿¡]/g, '')
+     .split(/\s+/)
+     .filter(Boolean);
 
-  // 8) Cuando termine la comparación: muestra “Completado”
+   // 2) Filtra solo las palabras que estén en el texto original
+   const filtered = words.filter(w => originalWords.includes(w));
+
+   // 3) Muestra TODO lo filtrado, incluidas repeticiones
+   transcriptionEl.innerText = filtered.join(' ');
+
+   // 4) Para el cálculo de precisión, sigue usando el Set de únicas
+   for (const w of filtered) {
+     matchedWordsSet.add(w);
+   }
+ });
+  // 10) Al completar la lectura, calculamos precisión
   window.addEventListener('readingComplete', () => {
-    completedEl.style.display = 'block';
-    btnNext.style.display     = 'inline-block';
+    const matchesCount = matchedWordsSet.size;
+    const totalCount   = originalWords.length || 1;
+    const percent      = Math.round((matchesCount / totalCount) * 100);
+
+    completedEl.innerText = `¡Completado! Precisión de lectura: ${percent}%`;
+    completedEl.style.display  = 'block';
+    btnNext.style.display      = 'inline-block';
   });
 
-  // 9) Siguiente ítem
+  // 11) Siguiente ítem
   btnNext.addEventListener('click', () => {
-    completedEl.style.display = 'none';
-    btnNext.style.display     = 'none';
-
     if (currentMode === 'lectura') {
       lectureIndex = (lectureIndex + 1) % lecturas.length;
     } else {
@@ -113,6 +140,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     adaptTo(currentMode);
   });
 
-  // 10) Carga inicial
+  // 12) Primera carga
   adaptTo(currentMode);
 });

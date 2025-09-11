@@ -10,6 +10,7 @@ router.get('/register',  pageController.register);
 router.get('/levels',    pageController.levels);
 router.get('/matematica',pageController.matematica);
 router.get('/nivel',     pageController.nivel);
+router.get('/nivelC',     pageController.nivelC);
 router.get('/emotions',  pageController.emotions);
 router.get('/htmlD',     pageController.htmlD);
 router.get('/layout',    pageController.layout);

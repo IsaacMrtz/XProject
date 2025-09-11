@@ -49,7 +49,21 @@ export async function nivel(req, res) {
     const niveles = JSON.parse(raw);
     const data = niveles[grado];
     if (!data) return res.send("Nivel no encontrado");
-    res.render('nivel', { data });
+    res.render('nivel', { data,grado });
+  } catch (err) {
+    console.error('Error leyendo niveles.json:', err);
+    res.status(500).send("Error interno");
+  }
+}
+
+export async function nivelC(req, res) {
+  const grado = req.query.grado; // "primer", "segundo", "tercero"
+  try {
+    const raw = await fs.readFile(path.join(__dirname, '../data/niveles.json'), 'utf-8');
+    const niveles = JSON.parse(raw);
+    const data = niveles[grado];
+    if (!data) return res.send("Nivel no encontrado");
+    res.render('nivelC', { data });
   } catch (err) {
     console.error('Error leyendo niveles.json:', err);
     res.status(500).send("Error interno");
