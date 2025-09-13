@@ -1,0 +1,98 @@
+/* contenedor principal */
+/* Contenedor principal: empujado a la derecha */
+.page-content {
+  margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
+}
+
+.levels-main {
+  padding: 2rem 1rem;
+  background: var(--bg-page);
+}
+
+/* grid responsivo Vertical pero en fila en pantallas grandes  */
+.levels-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 1.5rem;
+  padding: 2rem 1rem;
+}
+
+/* 2) A partir de 768px → 2 columnas */
+@media (min-width: 768px) {
+  .levels-grid {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1.5rem;
+  }
+}
+
+/* 3) A partir de 1200px → 3 columnas */
+@media (min-width: 1200px) {
+  .levels-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* cada form.section-link ocupa todo el espacio del grid-cell */
+.section-link {
+  display: block;
+}
+
+/* tarjetas blancas con sombra y animación hover */
+.section-box {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.section-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* imágenes de iconos */
+.section-img {
+  width: 60px;
+  margin-top: 1rem;
+}
+
+/* botón de regresar */
+.btn-back {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.6rem 1.2rem;
+  background: var(--color-secondary);
+  color: var(--text-main);
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+
+.btn-back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 50px;
+  background-color: #5d5f61;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  border-radius: 10px;
+  box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s, background-color 0.3s;
+  
+
+
+
+}
+
+.btn-back:hover {
+  background: var(--color-accent);
+}

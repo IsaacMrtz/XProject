@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .lesson-button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Botón circular */
+.lesson-button button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: #58cc02; /* Verde Duolingo */
+  box-shadow: 0 4px 0 #3e8e00, 0 6px 12px rgba(0,0,0,0.3);
+  color: white;
+  font-size: 2rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Icono central */
+.lesson-button .icon {
+  display: inline-block;
+  font-size: 2rem;
+}
+
+/* Hover efecto “pop” */
+.lesson-button button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 0 #3e8e00, 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Tooltip (EMPEZAR) */
+.lesson-button .tooltip {
+  position: absolute;
+  top: -35px;
+  background: #1a1d23;
+  color: #58cc02;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Mostrar tooltip al hover */
+.lesson-button:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+  </style>
+</head>
+<body>
+  <br>
+  <br>
+  <br>
+
+  <div class="lesson-button">
+  <button>
+    <span class="icon">★</span>
+  </button>
+  <div class="tooltip">EMPEZAR</div>
+</div>
+
+  
+</body>
+</html>

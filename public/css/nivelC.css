@@ -1,0 +1,265 @@
+/* 1) Variables y tipografía */
+:root {
+  --color-primary:       #406FF3;
+  --color-secondary:     #FFB703;
+  --color-neutral-light: #F9FAFB;
+  --color-neutral-dark:  #2C3E50;
+  --color-accent:        #4CAF50;
+
+  --font-main:    'Nunito', sans-serif;
+  --font-alt:     'Quicksand', sans-serif;
+
+  --transition:   0.3s ease;
+  --spacer:       1rem;
+  --gap:          1.5rem;
+  --card-radius:  12px;
+}
+
+/* 2) Grid principal: contenido + sidebar */
+.nivelC-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacer);
+  margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
+  padding: var(--spacer) 2rem;
+  background: var(--color-neutral-light);
+}
+
+
+@media (max-width: 768px) {
+  .nivelC-container {
+    grid-template-columns: 1fr;
+    margin-left: 0;
+    margin-top: var(--spacer);
+  }
+}
+
+/* 3) Contenido principal */
+.nivelC-main {
+  background: #fff;
+  border-radius: var(--card-radius);
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.titulo-principal {
+  font-family: var(--font-alt);
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: var(--spacer);
+}
+
+.descripcion {
+  font-size: 1rem;
+  color: var(--color-neutral-dark);
+  margin-bottom: var(--gap);
+  line-height: 1.5;
+}
+
+.subtitulo {
+  font-family: var(--font-alt);
+  font-size: 1.2rem;
+  color: var(--color-neutral-dark);
+  margin-bottom: var(--spacer);
+}
+
+/* 4) Botones de lectura */
+.botones-lecturas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacer);
+  margin-bottom: var(--gap);
+}
+
+.btn-lectura {
+  flex: 1 1 calc(50% - var(--spacer));
+  max-width: calc(50% - var(--spacer));
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-alt);
+  font-weight: 600;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: var(--card-radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform var(--transition), box-shadow var(--transition);
+  text-decoration: none;
+}
+
+.btn-lectura:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.btn-lectura-outline {
+  flex: 1 1 100%;
+  text-align: center;
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--card-radius);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-alt);
+  font-weight: 600;
+  transition: background var(--transition), color var(--transition);
+}
+
+.btn-lectura-outline:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* 3) Curva SVG de fondo */
+.path-container {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  margin-bottom: var(--spacer);
+}
+
+.progress-curve {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  fill: none;
+  stroke: rgba(0,0,0,0.1);
+  stroke-width: 4;
+}
+
+/* 4) Botones circulares “Duolingo-Style” */
+.lesson-button {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Botón base */
+.btn-lesson {
+  position: relative;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(145deg, #58cc02, #4ea502);
+  box-shadow:
+    inset 0 4px 8px rgba(0,0,0,0.2),
+    0 6px 0 #3e8e00,
+    0 8px 16px rgba(0,0,0,0.3);
+  color: #fff;
+  font-size: 1.5rem;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+/* Anillo exterior */
+.btn-lesson::after {
+  content: '';
+  position: absolute;
+  top: -6px; left: -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+
+/* Hover “pop” */
+.btn-lesson:hover {
+  transform: scale(1.1);
+  box-shadow:
+    inset 0 6px 12px rgba(0,0,0,0.25),
+    0 4px 0 #3e8e00,
+    0 12px 24px rgba(0,0,0,0.4);
+}
+
+/* Keyframes flotante */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-6px); }
+}
+
+/* 5) Tooltips animados */
+.tooltip {
+  position: absolute;
+  top: -40px;
+  background: rgba(0,0,0,0.85);
+  color: var(--color-accent);
+  font-family: var(--font-alt);
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.lesson-button:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 6) Estados de botón */
+.lesson-button.locked .btn-lesson {
+  background: #cccccc;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.1), 0 4px 0 #999;
+  cursor: default;
+}
+
+.lesson-button.completed .btn-lesson {
+  background: var(--color-secondary);
+  box-shadow:
+    inset 0 4px 8px rgba(0,0,0,0.2),
+    0 6px 0 #b17f02,
+    0 8px 16px rgba(0,0,0,0.3);
+}
+
+
+
+/* 7) Sidebar de estadísticas */
+.nivelC-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer);
+}
+
+.stat-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: var(--card-radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-family: var(--font-main);
+  color: var(--color-neutral-dark);
+  text-align: center;
+}
+
+/* 8) Botón regresar */
+.botones-regreso {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacer);
+}
+
+.btn-back {
+  background: var(--color-secondary);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-family: var(--font-alt);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.btn-back:hover {
+  background: #e6a500;
+  transform: translateY(-2px);
+}
+/* 7) Ajustes responsivos */
+@media (max-width: 1024px) {
+  .btn-lectura {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}

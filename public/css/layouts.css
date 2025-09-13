@@ -118,3 +118,120 @@
   text-decoration: none;
   border-radius: 4px;
 }
+
+/* Navbar principal */
+.navbar {
+  position: sticky;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+/* Logo */
+.navbar-logo {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Enlaces de escritorio */
+.navbar-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  transition: max-height 0.3s ease-out;
+}
+
+/* Link genérico */
+.nav-link {
+  color: rgb(15, 14, 14);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.nav-link:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Botón Cerrar Sesión */
+.logout-btn {
+  background: var(--color-secondary);
+  color: var(--text-main);
+}
+
+.logout-btn:hover {
+  background: var(--color-accent);
+  color: white;
+}
+
+/* Hamburgesa (solo móvil) */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* Responsive: móvil hasta 768px */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar-links {
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--color-primary);
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 0;
+  }
+
+  .navbar-links.open {
+    max-height: 200px; /* ajusta según ítems */
+  }
+
+  .nav-link {
+    padding: 1rem;
+  }
+}
+/* estilos para el select dentro de la navbar */
+.nav-form {
+  margin: 0 1rem;
+}
+
+.nav-select {
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background: white;
+  color: var(--text-main);
+  transition: box-shadow 0.2s;
+}
+
+.nav-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-secondary);
+}
+

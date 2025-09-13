@@ -1,29 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Niveles</title>
-    <link rel="stylesheet" href="resources/css/login.css">
-     <link rel="stylesheet" href="resources/css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Selecciona tu Grado</title>
+  <link rel="stylesheet" href="/resources/css/eduTheme.css">
+  <link rel="stylesheet" href="/resources/css/levels.css">
 </head>
 <body>
-       <%- include('partials/navbar') %>
-    <div class="grado-container">
-        <h2 class="titulo-grado">Selecciona tu nivel educativo</h2>
-        <form action="nivel" method="get">
-        <select  class="select-grado" name="grado"">
-            <option value="primer">Primer Grado</option>
-            <option value="segundo">Segundo grado</option>
-            <option value="tercero">Tercer Grado</option>
-        </select>
+  <%- include('partials/navbar') %>
+<br>
+<br>
+<br>
+<br>
+  <main class="levels-main">
+    <div class="levels-grid">
+      <form action="/nivel" method="get" class="section-link">
+        <input type="hidden" name="grado" value="primer">
+        <button type="submit" class="section-box">
+          <h3>📖 Primer Grado</h3>
+          <p>Lectura inicial con cuentos y ejercicios</p>
+          <img src="/img/lectura.png" alt="Lectura" class="section-img">
+        </button>
+      </form>
 
-         <div class="botones">
-    <button class="boton-entrar">→</button>
-    <a href="javascript:history.back()" class="boton-regresar">« Regresar</a>
-  </div>
-  </div>
-   
-</div>
+      <form action="/nivel" method="get" class="section-link">
+        <input type="hidden" name="grado" value="segundo">
+        <button type="submit" class="section-box">
+          <h3>➗ Segundo Grado</h3>
+          <p>Sumas, restas y juegos interactivos</p>
+          <img src="/img/matematicas.png" alt="Matemáticas" class="section-img">
+        </button>
+      </form>
+
+      <form action="/nivel" method="get" class="section-link">
+        <input type="hidden" name="grado" value="tercero">
+        <button type="submit" class="section-box">
+          <h3>🌱 Tercer Grado</h3>
+          <p>Exploración de la naturaleza y experimentos</p>
+          <img src="/img/naturaleza.png" alt="Naturaleza" class="section-img">
+        </button>
+      </form>
+    </div>
+
+    <div class="botones">
+      <a href="javascript:history.back()" class="btn-back">← Regresar</a>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
 </body>
 </html>

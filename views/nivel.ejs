@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+      
+      
       <link rel="stylesheet" href="resources/css/styles.css">
 </head>
-<body>
- <%- include('partials/navbar') %>
+<body >
+ <%- include('partials/nav2') %>
 
-<div class="section-container">
+<div class="section-container inicio-container levels-main">
 
 
   <h1 class="titulo-principal"><%= data.titulo %> <%= nombre %>  </h1>
+  <br>
   <p class="descripcion"><%= data.descripcion %></p>
 
   <ul class="temas-lista">
@@ -22,37 +25,28 @@
   </ul>
 
 
- <a href="emotions" class="section-link">
-    <section class="section-box">
-      <h3>📖 Aprendiendo a Leer</h3>
-      <p>Desarrolla habilidades de lectura inicial con cuentos y ejercicios divertidos.</p>
-      <img src="img/lectura.png" alt="Lectura inicial" class="section-img">
-    </section>
-  </a>
-
-  <a href="layout" class="section-link">
-    <section class="section-box">
-      <h3>➗ Matemáticas Básicas</h3>
-      <p>Aprende sumas, restas y juegos matemáticos interactivos.</p>
-      <img src="img/matematicas.png" alt="Matemáticas básicas" class="section-img">
-    </section>
-  </a>
-
-  <a href="/nivelC?grado=<%= grado %>" class="section-link">
+<div class="page-content levels-main">
+  <div class="levels-grid">
+    <!-- aquí van tus form.section-link / .section-box -->
+     <a href="/nivelC?grado=<%= grado %>" class="section-link">
 
     <section class="section-box">
-      <h3>🌱 Exploración de la Naturaleza</h3>
+      <h3>Vamos alla!</h3>
       <p>Descubre el mundo natural a través de imágenes y experimentos simples.</p>
       <img src="img/naturaleza.png" alt="Naturaleza" class="section-img">
     </section>
   </a>
-
-<br>
-
-  <div class="botones">
-    <a href="javascript:history.back()" class="boton-regresar">← Regresar</a>
   </div>
+
+     <center><a href="javascript:history.back()" class="btn-back">← Regresar</a></center>
 </div>
+
+</div>
+  
+
+  
+
+
 
 </body>
 </html>

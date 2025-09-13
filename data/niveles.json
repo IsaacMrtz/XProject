@@ -1,8 +1,8 @@
 {
   "primer": {
-    "titulo": "Bienvenido a Primer Grado",
-    "descripcion": "Este nivel está diseñado para introducir los fundamentos básicos.",
-    "temas": ["Lectura inicial", "Matemáticas básicas", "Exploración de la naturaleza"]
+    "titulo": "Bienvenido a Primer Grado,",
+    "descripcion": "En este nuevo camino descubrirás un mundo lleno de aventuras y aprendizajes.Aquí aprenderás a leer tus primeras palabras, jugar con los números y explorar la naturaleza de una forma divertida y mágica.",
+    "temas": ["Aprenderas a:","Reconocer y leer palabras sencillas.", "Observar y comprender el mundo que te rodea.", "Desarrollar tu curiosidad y creatividad."]
   },
   "segundo": {
     "titulo": "Bienvenido a Segundo Grado",

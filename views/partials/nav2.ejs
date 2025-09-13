@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Mestro</title>
+    
+    
+    <link rel="stylesheet" href="resources/css/partials.css">
+</head>
+<body class="body centered">
+    
+<nav class="navbar">
+  <ul class="navbar__menu">
+    <li class="navbar__item">
+      <a href="/index2" class="navbar__link">
+        <i data-feather="home"></i>
+        <span>Inicio</span>
+      </a>
+    </li>
+    <li class="navbar__item">
+      <form action="/nivel" method="get" class="navbar__form">
+        <select name="grado" id="gradoSelect" class="navbar__select">
+          <option value="" disabled selected>Grado</option>
+          <option value="primer">Primer Grado</option>
+          <option value="segundo">Segundo Grado</option>
+          <option value="tercero">Tercer Grado</option>
+        </select>
+      </form>
+    </li>
+    <li class="navbar__item">
+      <a href="/logout" class="navbar__link logout">
+        <i data-feather="log-out"></i>
+        <span>Salir</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+  // Render Feather icons
+  feather.replace();
+
+  // Envío automático al cambiar el grado
+  document.getElementById('gradoSelect')
+    .addEventListener('change', function() {
+      this.form.submit();
+    });
+</script>
+
+
+ 
+    
+</body>
+</html>
