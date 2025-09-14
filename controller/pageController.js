@@ -86,36 +86,52 @@ export async function nivel(req, res) {
   }
 }
 
+// controller/pageController.js
 export async function nivelC(req, res) {
   const grado = req.query.grado; // "primer", "segundo", "tercero"
   try {
     // 1) Cargo niveles.json
-    const rawNiv     = await fs.readFile(
-      path.join(__dirname, '../data/niveles.json'),
-      'utf-8'
+    const rawNiv  = await fs.readFile(
+      path.join(__dirname, '../data/niveles.json'), 'utf-8'
     );
-    const niveles    = JSON.parse(rawNiv);
-    const data       = niveles[grado];
+    const niveles = JSON.parse(rawNiv);
+    const data    = niveles[grado];
     if (!data) return res.send("Nivel no encontrado");
 
-    // 2) Cargo contenidos.json
+    // 2) Cargo contenidos.json (lecturas + juegos)
     const rawCon     = await fs.readFile(
       path.join(__dirname, '../data/contenidos.json'),
       'utf-8'
     );
-    const contenidos = JSON.parse(rawCon);
-    const lecturas   = contenidos[grado]?.lecturas || [];
+    const contenidos = JSON.parse(rawCon)[grado] || {};
+    const lecturas   = contenidos.lecturas || [];
+    const juegos     = contenidos.juegos   || [];
 
-    // -- OPCIONAL: ver en consola para debug --
-    console.log({ grado, lecturas });
+    // 3) Calculo estadísticas
+    const stats = {
+      lecturasLeidas: lecturas.filter(l => l.completada).length,
+      totalLecturas:  lecturas.length,
+      juegosJugados:  juegos.filter(j => j.completado).length,
+      nivelActual:    data.nivel || 
+                      { primer: 1, segundo: 2, tercero: 3 }[grado] || 1,
+      desafiosActivos: Array.isArray(data.desafios)
+                        ? data.desafios.length
+                        : 0
+    };
 
-    // 3) Renderizo pasando data, grado y lecturas
-    res.render('nivelC', { data, grado, lecturas });
+    // 4) Renderizo incluyendo stats
+    res.render('nivelC', {
+      data,
+      grado,
+      lecturas,
+      stats
+    });
   } catch (err) {
     console.error('Error leyendo JSON:', err);
     res.status(500).send("Error interno");
   }
 }
+
 
 
 // Rutas protegidas

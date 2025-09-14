@@ -11,7 +11,7 @@
   --color-accent:        #4CAF50;  /* verde positivo */
 
   /* Dimensiones y espaciado */
-  --spacer:              1rem;
+  --spacer:              1.5rem;
   --sidebar-width:       6rem;                       /* ancho de la barra */
   --sidebar-padding:     calc(var(--spacer) * 0.75); /* padding vertical */
   --link-size:           calc(var(--spacer) * 3.5);  /* altura y anchura de ítem */
