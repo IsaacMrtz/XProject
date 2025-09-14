@@ -1,6 +1,7 @@
 // controller/pageController.js
 import fs from 'fs/promises';
 import path from 'path';
+import Stats from '../scripts/Stats.js';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,37 +40,56 @@ export function htmlD(req, res) {
 // Layout principal
 
 export async function layout(req, res) {
-  const { grado, id } = req.query;
+  const { grado = '', id = '' } = req.query;
+  const userId = req.session.userId;
+  console.log(`→ layout(): grado=${grado}, id=${id}, userId=${userId}`);
+
   try {
-    // 1) Leer el JSON de contenidos
-    const raw = await fs.readFile(
-      path.join(__dirname, '../data/contenidos.json'),
-      'utf-8'
-    );
-    const contenidos = JSON.parse(raw)[grado]?.lecturas;
-    if (!contenidos) return res.send("Grado no encontrado");
+    // 1) Cargar contenidos.json y filtrar lecturas
+    const raw       = await fs.readFile(path.join(__dirname, '../data/contenidos.json'), 'utf-8');
+    const allItems  = JSON.parse(raw)[grado]?.lecturas;
+    if (!allItems) return res.status(404).send("Grado no encontrado");
 
-    // 2) Filtrar si viene un id concreto
-    const lecturas = id
-      ? contenidos.filter(l => l.id === id)
-      : contenidos;
-
+    const lecturas = id 
+      ? allItems.filter(l => l.id === id) 
+      : allItems;
     if (id && lecturas.length === 0) {
-      return res.send("Lectura no encontrada");
+      return res.status(404).send("Lectura no encontrada");
     }
 
-    // 3) Renderizar pasando title + resto de datos
-    res.render('layout', {
-      title: `Lecturas – ${grado.charAt(0).toUpperCase() + grado.slice(1)}`,
+    // 2) Leer o inicializar stats en la BD
+    let dbStats = await Stats.findOne({ where: { id_usuario: userId } });
+    if (!dbStats) {
+      dbStats = await Stats.create({
+        id_usuario:     userId,
+        total_lecturas: allItems.length
+      });
+    }
+
+    // 3) Mapear a propiedades “cliente-friendly”
+    const stats = {
+      lecturasLeidas:  dbStats.lecturas_leidas,
+      totalLecturas:   dbStats.total_lecturas,
+      juegosJugados:   dbStats.juegos_jugados,
+      nivelActual:     dbStats.nivel_actual,
+      desafiosActivos: dbStats.desafios_activos
+    };
+
+    // 4) Renderizar PASANDO stats
+    return res.render('layout', {
+      title:    `Lecturas – ${grado[0].toUpperCase() + grado.slice(1)}`,
       grado,
       id,
-      lecturas
+      lecturas,
+      stats
     });
   } catch (err) {
-    console.error('Error leyendo contenidos.json:', err);
-    res.status(500).send("Error interno");
+    console.error('🔥 Error en layout():', err.stack || err);
+   return res.status(500).send(`Error interno: ${err.message}`);
   }
 }
+
+
 
 // Carga un nivel desde niveles.json
 export async function nivel(req, res) {
@@ -87,48 +107,70 @@ export async function nivel(req, res) {
 }
 
 // controller/pageController.js
+// controller/pageController.js
 export async function nivelC(req, res) {
-  const grado = req.query.grado; // "primer", "segundo", "tercero"
+  const grado = req.query.grado || '';
+  // ⭐ LÍNEA CORREGIDA: Obtén el ID de la sesión, no de la query
+  const userId = req.session.userId;
+
+  // Validación si el usuario no está logueado
+  if (!userId) {
+    // Redirige al inicio de sesión o muestra un error, según tu lógica de autenticación
+    return res.status(401).send("No se encontró una sesión de usuario. Por favor, inicia sesión.");
+  }
+
   try {
-    // 1) Cargo niveles.json
-    const rawNiv  = await fs.readFile(
+    // 1) Carga los datos de los niveles desde JSON
+    const rawNiv = await fs.readFile(
       path.join(__dirname, '../data/niveles.json'), 'utf-8'
     );
     const niveles = JSON.parse(rawNiv);
-    const data    = niveles[grado];
+    const data = niveles[grado];
     if (!data) return res.send("Nivel no encontrado");
 
-    // 2) Cargo contenidos.json (lecturas + juegos)
-    const rawCon     = await fs.readFile(
-      path.join(__dirname, '../data/contenidos.json'),
-      'utf-8'
+    // 2) Carga el total de lecturas desde JSON para el total
+    const rawCon = await fs.readFile(
+      path.join(__dirname, '../data/contenidos.json'), 'utf-8'
     );
     const contenidos = JSON.parse(rawCon)[grado] || {};
-    const lecturas   = contenidos.lecturas || [];
-    const juegos     = contenidos.juegos   || [];
+    const totalLecturas = (contenidos.lecturas || []).length;
 
-    // 3) Calculo estadísticas
-    const stats = {
-      lecturasLeidas: lecturas.filter(l => l.completada).length,
-      totalLecturas:  lecturas.length,
-      juegosJugados:  juegos.filter(j => j.completado).length,
-      nivelActual:    data.nivel || 
-                      { primer: 1, segundo: 2, tercero: 3 }[grado] || 1,
-      desafiosActivos: Array.isArray(data.desafios)
-                        ? data.desafios.length
-                        : 0
+    // 3) Consulta las estadísticas del usuario desde la base de datos
+    // Usa el ID obtenido de la sesión
+    const statsDB = await Stats.findOne({
+      where: { id_usuario: userId },
+      raw: true
+    });
+
+    // 4) Si el usuario no tiene estadísticas, crea un objeto por defecto
+    const stats = statsDB || {
+      lecturas_leidas: 0,
+      juegos_jugados: 0,
+      nivel_actual: 1,
+      desafios_activos: 0,
+      total_lecturas: totalLecturas
+    };
+    
+    // 5) Mapea los nombres de los campos de la base de datos para la vista
+    const statsParaVista = {
+      lecturasLeidas: stats.lecturas_leidas,
+      totalLecturas: totalLecturas,
+      juegosJugados: stats.juegos_jugados,
+      nivelActual: stats.nivel_actual,
+      desafiosActivos: stats.desafios_activos
     };
 
-    // 4) Renderizo incluyendo stats
+    // 6) Renderiza la vista con las estadísticas actualizadas
     res.render('nivelC', {
       data,
       grado,
-      lecturas,
-      stats
+      lecturas: contenidos.lecturas || [],
+      stats: statsParaVista,
+      id: userId // Pasa el userId a la vista si es necesario
     });
   } catch (err) {
-    console.error('Error leyendo JSON:', err);
-    res.status(500).send("Error interno");
+    console.error('Error al cargar la vista del nivel:', err);
+    res.status(500).send("Error interno del servidor");
   }
 }
 

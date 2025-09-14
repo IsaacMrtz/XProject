@@ -32,23 +32,55 @@
             
           </section>
 
-          <aside class="nivelC-sidebar">
-            <div class="stat-card">📚 Lecturas: <%= stats.lecturasLeidas %> / <%= stats.totalLecturas %></div>
-            <br>
-            <div class="stat-card">🎮 Juegos: <%= stats.juegosJugados %></div>
-            <br>
-            <div class="stat-card">🏅 Nivel: <%= stats.nivelActual %></div>
-            <br>
-            <div class="stat-card">🚀 Desafíos: <%= stats.desafiosActivos %></div>
-            <br>
-            <div class="botones-regreso">
-              <a href="javascript:history.back()" class="btn-back">← Regresar</a>
-            </div>
-          </aside>
+           <aside class="nivelC-sidebar">
+  <div class="stat-card">
+    📚 Lecturas: 
+    <span id="lecturas-leidas"><%= stats.lecturasLeidas %></span> /
+    <span id="total-lecturas"><%= stats.totalLecturas %></span>
+    <div class="progress-bar">
+      <div id="lecturas-bar"
+           style="width: <%= (stats.lecturasLeidas / stats.totalLecturas) * 100 %>%">
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="stat-card">
+    🎮 Juegos:
+    <span id="juegos-jugados"><%= stats.juegosJugados %></span>
+  </div>
+  <br>
+  <div class="stat-card">
+    🏅 Nivel:
+    <span id="nivel-actual"><%= stats.nivelActual %></span>
+  </div>
+  <br>
+  <div class="stat-card">
+    🚀 Desafíos activos:
+    <span id="desafios-activos"><%= stats.desafiosActivos %></span>
+  </div>
+  <div class="botones-regreso">
+                <a href="javascript:history.back()" class="btn-back">← Regresar</a>
+              </div>
+</aside>
+            
         </div>
     </div>
-    
+    <script>
+    window.appParams = {
+      grado: "<%= grado %>",
+      id:    "<%= id %>"
+    };
+    window.appStats = {
+      lecturasLeidas:  <%= stats.lecturasLeidas %>,
+      totalLecturas:   <%= stats.totalLecturas %>,
+      juegosJugados:   <%= stats.juegosJugados %>,
+      nivelActual:     <%= stats.nivelActual %>,
+      desafiosActivos: <%= stats.desafiosActivos %>
+    };
+  </script>
   </main>
-
+ 
+  
+  
   </body>
 </html>

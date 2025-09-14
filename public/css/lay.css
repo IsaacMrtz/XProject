@@ -1,0 +1,119 @@
+/* Contenido lectura */
+.reading-container {
+  position: relative;
+  padding: var(--space-4);
+  overflow-y: auto;
+}
+
+/* Avatar y burbuja */
+.avatar-container {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+.avatar-img {
+  width: 50px;
+  height: 50px;
+}
+.speech-bubble {
+  max-width: 200px;
+  background: var(--color-primary);
+  color: white;
+  padding: var(--space-2);
+  border-radius: var(--radius);
+  position: relative;
+}
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 100%;
+  width: 0; height: 0;
+  border: 8px solid transparent;
+  border-top-color: var(--color-primary);
+}
+
+/* Imagen/GIF de lectura */
+.reading-media img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: var(--space-3);
+}
+
+/* Título y texto */
+.reading-container h2 {
+  font-family: var(--font-heading);
+  margin-bottom: var(--space-2);
+}
+.reading-container p {
+  margin-bottom: var(--space-4);
+}
+
+/* Controles */
+.controls {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.control-btn {
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  background: var(--color-primary);
+  color: white;
+  cursor: pointer;
+}
+.control-btn:hover {
+  opacity: 0.9;
+}
+
+/* Transcripción */
+.transcription-box {
+  background: var(--color-card);
+  border: 1px solid var(--color-secondary);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  min-height: 60px;
+}
+
+/* Sidebar stats */
+.stats-aside {
+  background: var(--color-card);
+  padding: var(--space-3);
+  overflow-y: auto;
+}
+.stats-aside h3 {
+  margin-top: 0;
+  font-family: var(--font-heading);
+}
+.stat-card {
+  background: #f7f7f7;
+  padding: var(--space-2);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-2);
+}
+.progress-bar {
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  height: var(--space-2);
+  overflow: hidden;
+}
+.progress-bar > div {
+  background: var(--color-primary);
+  height: 100%;
+}
+
+/* Botón regresar */
+.btn-back {
+  display: inline-block;
+  margin-top: var(--space-2);
+  text-decoration: none;
+  color: var(--color-primary);
+}

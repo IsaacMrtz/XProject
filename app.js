@@ -6,7 +6,7 @@ import session from 'express-session';
 import bcrypt from 'bcryptjs';
 import Sentiment from 'sentiment';
 import dotenv from 'dotenv';
-import connection from './config/db.js';        // asegúrate que tu db exporte ESM
+import sequelize from './config/db.js';        // asegúrate que tu db exporte ESM
 import pagesRoutes from './scripts/pages.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -50,92 +50,105 @@ app.use(session({
 // (Aquí pones tu lógica de bcrypt y connection.query tal cual estaba)
 //10 - Método para la REGISTRACIÓN
 app.post('/register', async (req, res)=>{
-	const user = req.body.user;
-	const name = req.body.name;
-	const lastname = req.body.lastname;
-	const email= req.body.email;
+    const user = req.body.user;
+    const name = req.body.name;
+    const lastname = req.body.lastname;
+    const email= req.body.email;
     const rol = parseInt(req.body.id_rol);
-	const pass = req.body.contrasena;
-	let passwordHash = await bcrypt.hash(pass, 8);
-    connection.query('INSERT INTO usuarios SET ?',{usuario:user, nombre:name, apellido:lastname, correo:email, id_rol:rol, contrasena:passwordHash}, async (error, results)=>{
-        if(error){
-            console.log(error);
-        }else{            
-			res.render('register', {
-				alert: true,
-				alertTitle: "Registration",
-				alertMessage: "¡Successful Registration!",
-				alertIcon:'success',
-				showConfirmButton: false,
-				timer: 1500,
-				ruta: ''
-			});
-        }
-	});
-})
+    const pass = req.body.contrasena;
+    let passwordHash = await bcrypt.hash(pass, 8);
+
+    try {
+        await sequelize.query('INSERT INTO usuarios (usuario, nombre, apellido, correo, id_rol, contrasena) VALUES (?, ?, ?, ?, ?, ?)', {
+            replacements: [user, name, lastname, email, rol, passwordHash],
+            type: sequelize.QueryTypes.INSERT
+        });
+        
+        res.render('register', {
+            alert: true,
+            alertTitle: "Registration",
+            alertMessage: "¡Successful Registration!",
+            alertIcon:'success',
+            showConfirmButton: false,
+            timer: 1500,
+            ruta: ''
+        });
+    } catch (error) {
+        console.error('Error en el registro:', error);
+        res.render('register', {
+            alert: true,
+            alertTitle: "Error",
+            alertMessage: "Error en el registro de usuario",
+            alertIcon:'error',
+            showConfirmButton: true,
+            timer: false,
+            ruta: 'register'
+        });
+    }
+});
 
 //11 - Metodo para la autenticacion (CORREGIDO)
 app.post('/auth', async (req, res)=> {
-	const user = req.body.user;
-	const pass = req.body.pass;    
-	
-	if (user && pass) {
-		connection.query('SELECT * FROM usuarios WHERE usuario = ?', [user], async (error, results, fields)=> {
-			if(error) {
-				console.log(error);
-				return res.render('login', {
-					alert: true,
-					alertTitle: "Error",
-					alertMessage: "Error en la base de datos",
-					alertIcon:'error',
-					showConfirmButton: true,
-					timer: false,
-					ruta: 'login'    
-				});
-			}
+    const user = req.body.user;
+    const pass = req.body.pass; 
 
-			if( results.length == 0 || !(await bcrypt.compare(pass, results[0].contrasena)) ) {    
-				res.render('login', {
+    if (user && pass) {
+        try {
+            const [results] = await sequelize.query('SELECT * FROM usuarios WHERE usuario = ?', {
+                replacements: [user],
+                type: sequelize.QueryTypes.SELECT
+            });
+
+            // Si se encontró un usuario y la contraseña coincide
+            if (results && (await bcrypt.compare(pass, results.contrasena))) {
+                req.session.loggedin = true;
+                req.session.name = results.nombre;
+                req.session.id_rol = results.id_rol;
+				req.session.userId   = results.id_usuario;
+
+                console.log('Usuario logueado:', user, 'Rol:', results.id_rol);
+
+                if (req.session.id_rol === 1) {
+                    res.redirect('/index2');
+                } else if (req.session.id_rol === 2) {
+                    res.redirect('/index');
+                } else {
+                    res.redirect('/login');
+                }
+            } else {
+                res.render('login', {
                     alert: true,
                     alertTitle: "Error",
                     alertMessage: "USUARIO y/o PASSWORD incorrectas",
                     alertIcon:'error',
                     showConfirmButton: true,
                     timer: false,
-                    ruta: 'login'    
+                    ruta: 'login'
                 });
-			} else {         
-				// Creamos las variables de sesión
-				req.session.loggedin = true;                
-				req.session.name = results[0].nombre;
-				req.session.id_rol = results[0].id_rol;
-
-				console.log('Usuario logueado:', user, 'Rol:', results[0].id_rol);
-
-				// SOLUCIÓN: Redirigir directamente según el rol
-				if (req.session.id_rol == 1){
-					console.log('Redirigiendo a index2 (rol 1 - alumno)');
-					res.redirect('/index2');
-				} else if (req.session.id_rol == 2){
-					console.log('Redirigiendo a index (rol 2 - maestro)');
-					res.redirect('/index');
-				} else {
-					console.log('Rol no reconocido:', req.session.id_rol);
-					res.redirect('/login');
-				}
-			}
-		});
-	} else {	
-		res.render('login', {
-			alert: true,
-			alertTitle: "Error",
-			alertMessage: "Por favor ingrese usuario y contraseña",
-			alertIcon:'error',
-			showConfirmButton: true,
-			timer: false,
-			ruta: 'login'    
-		});
-	}
+            }
+        } catch (error) {
+            console.error('Error en la autenticación:', error);
+            res.render('login', {
+                alert: true,
+                alertTitle: "Error",
+                alertMessage: "Error en la base de datos",
+                alertIcon:'error',
+                showConfirmButton: true,
+                timer: false,
+                ruta: 'login'
+            });
+        }
+    } else {
+        res.render('login', {
+            alert: true,
+            alertTitle: "Error",
+            alertMessage: "Por favor ingrese usuario y contraseña",
+            alertIcon:'error',
+            showConfirmButton: true,
+            timer: false,
+            ruta: 'login'
+        });
+    }
 });
 
 //12 - Método para controlar que está auth en todas las páginas
