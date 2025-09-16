@@ -3,7 +3,7 @@ import { initEmotions }          from '/resources/jsFace-Api/emocioness.js';
 import { initAttention }         from '/resources/mediapipe/postt.js';
 import { iniciarReconocimiento } from '/resources/sentiment/analysis.js';
 import { updateStat }            from '/scripts/statsApi.js';
-import { renderStats }           from '/scripts/uiRenderer.js';
+import { renderStats }           from '/scripts/uiRender.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
   // 0) Stats iniciales
@@ -17,10 +17,12 @@ window.addEventListener('DOMContentLoaded', async () => {
   const videoEl         = document.getElementById('video');
   const titleEl         = document.getElementById('itemTitle');
   const textEl          = document.getElementById('itemText');
+  
   const transcriptionEl = document.getElementById('transcription');
   const completedEl     = document.getElementById('completed');
   const btnSpeak        = document.getElementById('btnSpeak');
   const btnNext         = document.getElementById('btnNext');
+  const btnBack = document.querySelector('.btn-back');
 
   // Avatar y burbuja
   const avatarContainer = document.getElementById('avatar-container');
@@ -44,6 +46,15 @@ window.addEventListener('DOMContentLoaded', async () => {
       return;
     }
   }
+  
+  let avatarState = {
+        hasWelcomed: false, // Controla si ya dio el mensaje de bienvenida
+        lastMessageTime: 0, // Último momento en que se mostró un mensaje
+        distractedStartTime: null // Momento en que se detectó distracción
+    };
+  
+    const MESSAGE_COOLDOWN = 10000; // 10 segundos de espera entre mensajes
+    const DISTRACTED_THRESHOLD = 5000; // 5 segundos de distracción para mostrar mensaje 
 
   // 4) Estado de navegación
   let lectureIndex = 0;
@@ -61,16 +72,41 @@ window.addEventListener('DOMContentLoaded', async () => {
       .filter(Boolean);
 
   // 6) Mostrar lectura / juego
-  function showLecture(i) {
-    const { titulo, texto } = lecturas[i];
-    titleEl.innerText  = titulo;
-    textEl.innerText   = texto;
-    originalWords      = prepareOriginalWords(texto);
-    matchedWordsSet.clear();
-    transcriptionEl.innerText = '';
-    completedEl.hidden        = true;
-    btnNext.hidden            = true;
+function showLecture(i) {
+  // 1) Extraemos todos los campos
+  const { titulo, texto, imagen, dificultad } = lecturas[i];
+
+  // 2) Imagen dinámica (asegúrate de que exista un <img id="reading-img"> en tu HTML)
+  const imgEl = document.getElementById('reading-img');
+  if (imgEl) {
+    if (imagen) {
+      // Ajusta la ruta si guardas en /resources/images/…
+      imgEl.src = `/resources/images/${imagen}`;
+      imgEl.style.display = '';
+    } else {
+      imgEl.removeAttribute('src');
+      imgEl.style.display = 'none';
+    }
   }
+
+  // 3) Título y texto de la lectura
+  titleEl.innerText = titulo;
+  textEl.innerText  = texto;
+
+  // 4) Preparar matching de palabras, limpiar UI de transcripción y botones
+  originalWords      = prepareOriginalWords(texto);
+  matchedWordsSet.clear();
+  transcriptionEl.innerText = '';
+  completedEl.style.display = 'none';
+  btnNext.style.display     = 'none';
+
+  // 5) Actualizar dificultad en el último stat-card
+  const diffCard = document.querySelector('.stats-aside .stat-card:last-child');
+  if (diffCard) {
+    diffCard.innerHTML = `⭐ Dificultad: ${dificultad || 'Media'}`;
+  }
+}
+
 
   function showGame(i) {
     const { titulo } = juegos[i];
@@ -92,22 +128,34 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   // 7) Mensajes del avatar
-  const avatarMsgs = {
-    happy:      ['¡Lo haces genial!', '¡Sigue así!'],
-    neutral:    ['Bien, continúa leyendo.', 'Estás avanzando.'],
-    distracted: ['¿Te aburres? Toca aquí para jugar.', 'Un jueguito te anima.']
-  };
+ const avatarMsgs = {
+        welcome: ['¡Vamos a leer!', '¡Hola!', '¡Comencemos!'],
+        happy: ['¡Lo haces genial!', '¡Sigue así!', '¡Me encanta tu entusiasmo!'],
+        neutral: ['Bien, continúa leyendo.', 'Estás avanzando.', 'Muy bien, sigue concentrado.'],
+        distracted: ['¿Te aburres? Toca aquí para jugar.', 'Un jueguito te anima.', '¿Necesitas un descanso?']
+    };
 
-  function showAvatar(list) {
-    if (!avatarContainer) return;
-    const msg = list[Math.floor(Math.random() * list.length)];
-    avatarBubble.innerText    = msg;
-    avatarContainer.hidden     = false;
-    clearTimeout(avatarContainer._hideTimer);
-    avatarContainer._hideTimer = setTimeout(() => {
-      avatarContainer.hidden = true;
-    }, 5000);
-  }
+function showAvatar(messageList) {
+        if (!avatarContainer) return;
+        
+        // No mostrar si está en cooldown
+        const now = Date.now();
+        if (now - avatarState.lastMessageTime < MESSAGE_COOLDOWN) {
+            return;
+        }
+
+        const msg = messageList[Math.floor(Math.random() * messageList.length)];
+        avatarBubble.innerText = msg;
+        avatarContainer.hidden = false;
+        
+        // Ocultar la burbuja y el contenedor
+        clearTimeout(avatarContainer._hideTimer);
+        avatarContainer._hideTimer = setTimeout(() => {
+            avatarContainer.hidden = true;
+        }, 5000); // 5 segundos de visibilidad
+        
+        avatarState.lastMessageTime = now; // Actualizar el tiempo del último mensaje
+    }
 
   // 8) Emociones y atención
   const history = { emotion: [], attention: [] };
@@ -116,19 +164,35 @@ window.addEventListener('DOMContentLoaded', async () => {
     history[type].push({ value, ts: now });
     history[type] = history[type].filter(r => now - r.ts <= 5000);
   }
-  window.addEventListener('emotionDetected', e => {
-    pushReading('emotion', e.detail);
-    const list = avatarMsgs[e.detail] || avatarMsgs.neutral;
-    showAvatar(list);
-    evaluateMode();
-  });
-  window.addEventListener('attentionDetected', e => {
-    pushReading('attention', e.detail);
-    if (e.detail === 'distraído') {
-      showAvatar(avatarMsgs.distracted);
-    }
-    evaluateMode();
-  });
+    window.addEventListener('emotionDetected', e => {
+        // Ignorar si no estamos en una lectura activa
+        if (currentMode !== 'lectura') return;
+        
+        const emotion = e.detail;
+        if (emotion === 'happy' || emotion === 'neutral') {
+            showAvatar(avatarMsgs[emotion]);
+        }
+    });
+    window.addEventListener('attentionDetected', e => {
+        // Ignorar si no estamos en una lectura activa
+        if (currentMode !== 'lectura') return;
+
+        const attentionState = e.detail;
+        const now = Date.now();
+
+        if (attentionState === 'distraído') {
+            if (!avatarState.distractedStartTime) {
+                // Iniciar el temporizador si es la primera vez que se detecta distracción
+                avatarState.distractedStartTime = now;
+            } else if (now - avatarState.distractedStartTime >= DISTRACTED_THRESHOLD) {
+                // Si la distracción dura más del umbral, mostrar el mensaje
+                showAvatar(avatarMsgs.distracted);
+            }
+        } else {
+            // Reiniciar el temporizador si el usuario vuelve a prestar atención
+            avatarState.distractedStartTime = null;
+        }
+    });
 
   function countRecent(type, val) {
     return history[type].filter(r => r.value === val).length;
@@ -148,6 +212,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   // 10) Reconocimiento de voz
   btnSpeak.addEventListener('click', () => window.dispatchEvent(new Event('startSpeech')));
   window.addEventListener('startSpeech', () => iniciarReconocimiento());
+
+if (btnBack) {
+    btnBack.addEventListener('click', () => {
+      window.history.back();
+    });
+  }
+
 
   window.addEventListener('speechResult', e => {
     const words = e.detail
@@ -172,11 +243,21 @@ window.addEventListener('DOMContentLoaded', async () => {
     completedEl.hidden        = false;
     btnNext.hidden            = false;
 
+  if (completedEl) completedEl.style.display = 'block';
+  if (btnNext) btnNext.style.display = 'inline-block';
+
     // Actualizar métricas específicas (si existen)
-    document.getElementById('word-matched')?.innerText = matchesCount;
-    document.getElementById('word-total')?.innerText   = totalCount;
-    document.getElementById('error-count')?.innerText  = errorsCount;
-    document.getElementById('points-count')?.innerText = points;
+    const elmWordMatched = document.getElementById('word-matched');
+  if (elmWordMatched) elmWordMatched.innerText = matchesCount;
+
+  const elmWordTotal = document.getElementById('word-total');
+  if (elmWordTotal) elmWordTotal.innerText = totalCount;
+
+  const elmErrorCount = document.getElementById('error-count');
+  if (elmErrorCount) elmErrorCount.innerText = errorsCount;
+
+  const elmPointsCount = document.getElementById('points-count');
+  if (elmPointsCount) elmPointsCount.innerText = points;
 
     // Stats globales
     try {
@@ -208,6 +289,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     else                           gameIndex    = (gameIndex    + 1) % juegos.length;
     adaptTo(currentMode);
   });
+
+  if (btnNext) {
+    btnNext.addEventListener('click', () => {
+      window.dispatchEvent(new Event('nextItem'));
+      if (completedEl) completedEl.style.display = 'none';
+      if (btnNext) btnNext.style.display = 'none';
+    });
+  }
 
   // 15) Inicio
   adaptTo('lectura');

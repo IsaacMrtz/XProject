@@ -1,61 +1,121 @@
-/* Contenido lectura */
-.reading-container {
-  position: relative;
-  padding: var(--space-4);
-  overflow-y: auto;
+
+:root {
+  --font-primary: 'Nunito', sans-serif;   /* para párrafos */
+  --font-heading: 'Nunito', sans-serif;   /* para títulos */
+
+  /* Colores contrastantes */
+  --color-primary:    #FF6F61;
+  --color-secondary:  #345995;
+  --color-bg:         #FAFAFA;
+  --color-card:       #FFFFFF;
+  --color-text:       #212121;
+  --color-success:    #48C774;
+  --color-warning:    #F4A261;
+  --color-error:      #E76F51;
+  --transition:   0.3s ease;
+  /* Espaciados */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --radius:  8px;
 }
 
-/* Avatar y burbuja */
-.avatar-container {
-  position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
-  display: flex;
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  background: var(--color-bg);
+  color: var(--color-text);
   align-items: center;
-  gap: var(--space-2);
-  cursor: pointer;
 }
-.avatar-img {
-  width: 50px;
-  height: 50px;
+
+/* --- 2.1) Centrar la página y limitar ancho --- */
+.page-wrapper {
+  max-width: 1500px;
+  
+  margin-left: auto;  /* Estas dos reglas centran el contenedor */
+  margin-right: auto;
+  padding: 0 2rem;    /* Espacio a los lados para que no se pegue al borde en pantallas medianas */
 }
-.speech-bubble {
-  max-width: 200px;
-  background: var(--color-primary);
+
+/* --- 2.2) Grid de 3 columnas --- */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
+  padding: var(--spacer) 2rem;
+  background: var(--color-neutral-light);        /* centra el grid dentro del wrapper */
+}
+
+.nivelC-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
+  padding: var(--spacer) 2rem;
+  background: var(--color-neutral-light);
+  
+}
+.page-wrapper {
+  max-width: 1100px; /* Ancho máximo similar al de Duolingo. ¡Puedes ajustarlo! */
+  margin-left: auto;  /* Estas dos reglas centran el contenedor */
+  margin-right: auto;
+  padding: 0 2rem;    /* Espacio a los lados para que no se pegue al borde en pantallas medianas */
+}
+
+
+/* --- 3) Sidebar vertical --- */
+.sidebar-nav {
+  background: var(--color-secondary);
   color: white;
-  padding: var(--space-2);
-  border-radius: var(--radius);
-  position: relative;
+  padding: var(--space-3);
 }
-.speech-bubble::after {
-  content: '';
-  position: absolute;
-  left: 10px;
-  top: 100%;
-  width: 0; height: 0;
-  border: 8px solid transparent;
-  border-top-color: var(--color-primary);
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar-nav li + li {
+  margin-top: var(--space-2);
+}
+.sidebar-nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
 }
 
-/* Imagen/GIF de lectura */
-.reading-media img {
+/* --- 4) Contenido lectura --- */
+.reading-container {
+  background: var(--color-card);
+  max-width: 700px;     /* más ancho para que se note centrado */
   width: 100%;
-  max-height: 200px;
-  object-fit: cover;
+  padding: 2rem;
   border-radius: var(--radius);
-  margin-bottom: var(--space-3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  justify-self: center; /* centra dentro de la columna */
 }
 
-/* Título y texto */
+/* Ajustes para título y párrafo */
 .reading-container h2 {
   font-family: var(--font-heading);
-  margin-bottom: var(--space-2);
-}
-.reading-container p {
-  margin-bottom: var(--space-4);
+  font-size: 2.5rem;       /* mucho más grande */
+  font-weight: 800;        /* bold fuerte estilo Nunito */
+  margin-bottom: 1rem;
+  color: var(--color-primary); /* ahora usas tu color primario (#FF6F61) */
+  letter-spacing: 1px;     /* opcional: separa un poco las letras */
 }
 
-/* Controles */
+.reading-container p {
+  font-family: var(--font-primary);
+  font-size: 1.25rem;   /* más grande que antes (20px aprox.) */
+  line-height: 1.8;     /* mejora legibilidad */
+  color: var(--color-text);
+}
 .controls {
   display: flex;
   gap: var(--space-2);
@@ -65,7 +125,6 @@
   padding: var(--space-2) var(--space-3);
   border: none;
   border-radius: var(--radius);
-  font-size: 1rem;
   background: var(--color-primary);
   color: white;
   cursor: pointer;
@@ -73,8 +132,6 @@
 .control-btn:hover {
   opacity: 0.9;
 }
-
-/* Transcripción */
 .transcription-box {
   background: var(--color-card);
   border: 1px solid var(--color-secondary);
@@ -83,15 +140,62 @@
   min-height: 60px;
 }
 
-/* Sidebar stats */
+.avatar-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+
+.avatar-container img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.avatar-bubble {
+  background: #fff;
+  color: var(--color-text);
+  padding: 10px 15px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-top: 10px;
+  position: relative;
+  font-size: 1rem;
+  max-width: 200px;
+  text-align: center;
+}
+
+.avatar-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -10px;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid #fff;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+}
+
+/* --- 5) Stats Aside --- */
 .stats-aside {
   background: var(--color-card);
   padding: var(--space-3);
   overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius);
+ 
 }
 .stats-aside h3 {
   margin-top: 0;
   font-family: var(--font-heading);
+  
 }
 .stat-card {
   background: #f7f7f7;
@@ -110,10 +214,44 @@
   height: 100%;
 }
 
-/* Botón regresar */
+
+/* --- 6) Botón regresar --- */
 .btn-back {
-  display: inline-block;
-  margin-top: var(--space-2);
+  background: var(--color-secondary);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-family: var(--font-primary);
+  font-weight: 600;
   text-decoration: none;
-  color: var(--color-primary);
+  transition: background var(--transition), transform var(--transition);
+
+  border: none;        /* 👈 elimina el borde */
+  outline: none;       /* 👈 elimina el borde de enfoque (cuando haces clic) */
+}
+.btn-back:hover {
+  background: #e6a500;
+  transform: translateY(-2px);
+}
+
+/* --- 7) Responsive (tablet / móvil) --- */
+@media (max-width: 992px) {
+  .layout-grid {
+    grid-template-columns: 1fr;       /* una sola columna */
+    grid-template-rows: auto auto;    /* dos filas: primero contenido, luego aside */
+  }
+
+  .main-content {
+    order: 1; /* el contenido principal primero */
+  }
+
+  .stats-aside {
+    order: 2; /* aside después del contenido */
+    display: block; /* aseguramos que aparezca */
+    margin-top: 1.5rem;
+  }
+
+  .sidebar-nav {
+    display: none; /* este sí lo ocultas si quieres */
+  }
 }

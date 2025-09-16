@@ -14,7 +14,8 @@
 
         
           <section class="nivelC-main">
-            
+            <br>
+            <br>
 
             <div class="path-wrapper zigzag-wrapper">
               <% lecturas.forEach((lec, idx) => { %>
@@ -24,13 +25,20 @@
                   <button class="btn-lesson">
                     <span class="icon"><%= lec.icono || '📖' %></span>
                   </button>
-                  <div class="bubble"><%= lec.titulo %></div>
+                  
+                    <div class="bubble"><%= lec.titulo %></div>
+
+                  
+                  
                 </a>
+                
               <% }) %>
             </div>
+            
 
             
           </section>
+          
 
            <aside class="nivelC-sidebar">
   <div class="stat-card">
@@ -60,7 +68,14 @@
   </div>
   <div class="botones-regreso">
                 <a href="javascript:history.back()" class="btn-back">← Regresar</a>
+                <br>
+                <a href="/layout?grado=<%= grado %>" class="btn-back"> ingresa</a>
               </div>
+            
+
+            
+              
+              
 </aside>
             
         </div>

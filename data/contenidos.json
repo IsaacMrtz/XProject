@@ -1,80 +1,43 @@
 {
-  "primer": {
+"primer": {
     "lecturas": [
       {
         "id": "lectura1",
-        "titulo": "La rana saltarina",
-        "texto": "Había una vez una rana que saltaba feliz por el jardín.",
+        "titulo": "Elmer, el elefante de colores",
+        "texto": "Había una vez un elefante distinto que pintaba el mundo de alegría.",
+        "imagen": "descarga.jpg",
         "tipo": "lectura"
       },
       {
         "id": "lectura2",
-        "titulo": "El gato curioso",
-        "texto": "Un gato se perdió en el bosque y encontró una mariposa.",
+        "titulo": "¿A qué sabe la luna?",
+        "texto": "Había una vez unos animales curiosos que soñaban con probar un pedacito de luna.",
         "tipo": "lectura"
       },
       {
         "id": "lectura3",
-        "titulo": "Mi casa",
-        "texto": "Mi casa es grande. Tiene una puerta roja y un perro en el jardín.",
+        "titulo": "Sapo y Sepo, inseparables",
+        "texto": "Había una vez dos amigos que compartían todo, incluso los momentos más simples.",
         "tipo": "lectura"
       },
       {
         "id": "lectura4",
-        "titulo": "La rana saltarina",
-        "texto": "Había una vez una rana que saltaba feliz por el jardín.",
+        "titulo": "Niña bonita",
+        "texto": "Había una vez una niña con piel brillante como la noche que descubrió su belleza única.",
         "tipo": "lectura"
       },
       {
         "id": "lectura5",
-        "titulo": "El gato curioso",
-        "texto": "Un gato se perdió en el bosque y encontró una mariposa.",
+        "titulo": "La vaca que decía oink",
+        "texto": "Había una vez una vaca que quería aprender a hablar como los cerditos.",
         "tipo": "lectura"
       },
       {
         "id": "lectura6",
-        "titulo": "Mi casa",
-        "texto": "Mi casa es grande. Tiene una puerta roja y un perro en el jardín.",
-        "tipo": "lectura"
-      },
-      {
-        "id": "lectura1",
-        "titulo": "La rana saltarina",
-        "texto": "Había una vez una rana que saltaba feliz por el jardín.",
-        "tipo": "lectura"
-      },
-      {
-        "id": "lectura2",
-        "titulo": "El gato curioso",
-        "texto": "Un gato se perdió en el bosque y encontró una mariposa.",
-        "tipo": "lectura"
-      },
-      {
-        "id": "lectura3",
-        "titulo": "Mi casa",
-        "texto": "Mi casa es grande. Tiene una puerta roja y un perro en el jardín.",
-        "tipo": "lectura"
-      },
-      {
-        "id": "lectura4",
-        "titulo": "La rana saltarina",
-        "texto": "Había una vez una rana que saltaba feliz por el jardín.",
-        "tipo": "lectura"
-      },
-      {
-        "id": "lectura5",
-        "titulo": "El gato curioso",
-        "texto": "Un gato se perdió en el bosque y encontró una mariposa.",
-        "tipo": "lectura"
-      },
-      {
-        "id": "lectura6",
-        "titulo": "Mi casa",
-        "texto": "Mi casa es grande. Tiene una puerta roja y un perro en el jardín.",
+        "titulo": "La ovejita que vino a cenar",
+        "texto": "Había una vez un lobo hambriento que recibió una visita inesperada en su casa.",
         "tipo": "lectura"
       }
-      
-      
     ],
     "juegos": [
       {
@@ -88,5 +51,98 @@
         "tipo": "minijuego"
       }
     ]
+  },
+  "segundo": {
+    "lecturas": [
+      {
+        "id": "lectura1",
+        "titulo": "La nube azul",
+        "texto": "Había una vez una nube pequeñita que viajaba por el cielo buscando su lugar.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura2",
+        "titulo": "La peor señora del mundo",
+        "texto": "Había una vez una mujer tan terrible que nadie se atrevía a contradecirla.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura3",
+        "titulo": "Un amigo para Dragón",
+        "texto": "Había una vez un dragón azul que buscaba un buen amigo para compartir su vida.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura4",
+        "titulo": "Don Caballito de Mar",
+        "texto": "Había una vez un caballito de mar que cuidaba a sus pequeños con mucho amor.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura5",
+        "titulo": "Cuentos de cipotes",
+        "texto": "Había una vez unos niños salvadoreños que jugaban y soñaban en el campo.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura6",
+        "titulo": "La pequeña bruja y otros cuentos",
+        "texto": "Había una vez una pequeña bruja que descubría la magia en cosas muy sencillas.",
+        "tipo": "lectura"
+      }
+    ]
+  },
+  "tercero": {
+    "lecturas": [
+      {
+        "id": "lectura1",
+        "titulo": "Juul",
+        "texto": "Había una vez un niño con una bufanda muy larga que escondía una gran tristeza.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura2",
+        "titulo": "El increíble niño comelibros",
+        "texto": "Había una vez un niño que descubrió que los libros también podían comerse.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura3",
+        "titulo": "El pirata Garrapata",
+        "texto": "Había una vez un pirata torpe y simpático que vivía grandes aventuras.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura4",
+        "titulo": "La bicicleta de Selva",
+        "texto": "Había una vez una niña que descubrió la libertad pedaleando por su barrio.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura5",
+        "titulo": "Uga la tortuga",
+        "texto": "Había una vez una tortuga muy lenta que quería aprender a disfrutar su camino.",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura6",
+        "titulo": "La peor princesa del mundo",
+        "texto": "Había una vez una princesa que no quería esperar a un príncipe para ser feliz.",
+        "tipo": "lectura"
+      }
+    ]
+  },
+    "juegos": [
+      {
+        "id": "juego1",
+        "titulo": "Atrapa la palabra",
+        "tipo": "minijuego"
+      },
+      {
+        "id": "juego2",
+        "titulo": "Completa la frase",
+        "tipo": "minijuego"
+      }
+    ]
   }
-}
+

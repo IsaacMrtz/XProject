@@ -42,31 +42,39 @@ export function htmlD(req, res) {
 export async function layout(req, res) {
   const { grado = '', id = '' } = req.query;
   const userId = req.session.userId;
-  console.log(`→ layout(): grado=${grado}, id=${id}, userId=${userId}`);
 
   try {
-    // 1) Cargar contenidos.json y filtrar lecturas
-    const raw       = await fs.readFile(path.join(__dirname, '../data/contenidos.json'), 'utf-8');
-    const allItems  = JSON.parse(raw)[grado]?.lecturas;
-    if (!allItems) return res.status(404).send("Grado no encontrado");
+    // 1) Carga y parsea tu JSON
+    const raw      = await fs.readFile(path.join(__dirname, '../data/contenidos.json'), 'utf-8');
+    const contenido = JSON.parse(raw)[grado];
+    if (!contenido) return res.status(404).send("Grado no encontrado");
 
-    const lecturas = id 
-      ? allItems.filter(l => l.id === id) 
+    const allItems = contenido.lecturas; // array completo
+
+    // 2) Filtra según query.id (si llega)
+    const lecturas = id
+      ? allItems.filter(item => item.id === id)
       : allItems;
+
     if (id && lecturas.length === 0) {
       return res.status(404).send("Lectura no encontrada");
     }
 
-    // 2) Leer o inicializar stats en la BD
-    let dbStats = await Stats.findOne({ where: { id_usuario: userId } });
-    if (!dbStats) {
-      dbStats = await Stats.create({
-        id_usuario:     userId,
-        total_lecturas: allItems.length
-      });
-    }
+    // 3) Determina el currentItem
+    //    Si llegan varias (sin id), toma la primera; si llega un id, busca ese objeto
+    const currentItem = id
+      ? allItems.find(item => item.id === id)
+      : allItems[0];
 
-    // 3) Mapear a propiedades “cliente-friendly”
+    // 4) Stats desde la base de datos (igual que ya tenías)
+        const [dbStats] = await Stats.findOrCreate({
+      where: { id_usuario: userId },
+      defaults: {
+        id_usuario: userId,
+        total_lecturas: allItems.length,
+      },
+    })
+
     const stats = {
       lecturasLeidas:  dbStats.lecturas_leidas,
       totalLecturas:   dbStats.total_lecturas,
@@ -75,17 +83,18 @@ export async function layout(req, res) {
       desafiosActivos: dbStats.desafios_activos
     };
 
-    // 4) Renderizar PASANDO stats
+    // 5) Renderiza, incluyendo ahora `currentItem`
     return res.render('layout', {
-      title:    `Lecturas – ${grado[0].toUpperCase() + grado.slice(1)}`,
+      title:       `Lectura – ${grado[0].toUpperCase() + grado.slice(1)}`,
       grado,
       id,
       lecturas,
+      currentItem,      // <-- aquí tienes tu objeto con `imagen`
       stats
     });
   } catch (err) {
-    console.error('🔥 Error en layout():', err.stack || err);
-   return res.status(500).send(`Error interno: ${err.message}`);
+    console.error('🔥 Error en layout():', err);
+    return res.status(500).send(`Error interno: ${err.message}`);
   }
 }
 
@@ -112,6 +121,7 @@ export async function nivelC(req, res) {
   const grado = req.query.grado || '';
   // ⭐ LÍNEA CORREGIDA: Obtén el ID de la sesión, no de la query
   const userId = req.session.userId;
+  console.log('<<< userId:', userId, 'grado:', grado);
 
   // Validación si el usuario no está logueado
   if (!userId) {
@@ -138,8 +148,11 @@ export async function nivelC(req, res) {
     // 3) Consulta las estadísticas del usuario desde la base de datos
     // Usa el ID obtenido de la sesión
     const statsDB = await Stats.findOne({
-      where: { id_usuario: userId },
-      raw: true
+      where: {
+      id_usuario: userId,
+      grado:      grado
+     },
+     raw: true
     });
 
     // 4) Si el usuario no tiene estadísticas, crea un objeto por defecto
