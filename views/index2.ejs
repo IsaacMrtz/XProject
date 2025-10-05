@@ -1,32 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Mestro</title>
+    <title>Bienvenida - Sistema Educativo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="resources/css/eduTheme.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+      <link href="/resources/css/eduTheme.css" rel="stylesheet">
 
 </head>
 <body class="index-body">
-  <%- include('partials/navbar') %>
+    <!-- Navbar incluido -->
+     <%- include('partials/nav2') %> 
 
-  <main class="index-main">
-    <h2 class="index-title">¿Quieres empezar?</h2>
-    <p class="index-subtitle">Selecciona una opción para comenzar tu aventura educativa</p>
-
-    <div class="index-buttons">
-      <a href="/levels" class="btn-start pulse">Lectura y escritura</a>
-      <a href="/matematica" class="btn-start pulse">Matemática</a>
-    </div>
-  </main>
-
-
-
-
-  <%- include('partials/footer') %>
+    <main class="index-main">
+        <h2 class="index-title">¿Quieres empezar?</h2>
+        <p class="index-subtitle">Selecciona una opción para comenzar tu aventura educativa</p>
+        
+        <div class="index-buttons">
+            <a href="/levels" class="btn-start pulse">Lectura y escritura</a>
+            <a href="/matematica" class="btn-start pulse">Matemática</a>
+        </div>
+    </main>
 </body>
-
 </html>

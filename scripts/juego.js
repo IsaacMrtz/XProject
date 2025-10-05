@@ -86,23 +86,25 @@ function cargarPalabra() {
 }
 
 function siguiente() {
-  const totalPalabras = nivelesData.niveles[indiceNivel].palabras.length;
-  if (indicePalabra < totalPalabras - 1) {
-    indicePalabra++;
-    cargarPalabra();
-  } else if (indiceNivel < nivelesData.niveles.length - 1) {
-    indiceNivel++;
-    indicePalabra = 0;
-    cargarPalabra();
-  } else {
-     document.querySelector(".titulo-caja h1").textContent = "¡Juego Terminado! 🎊";
+  const totalPalabras = nivelesData.niveles[indiceNivel].palabras.length;
+
+  if (indicePalabra < totalPalabras - 1) {
+    indicePalabra++;
+    cargarPalabra();
+  } else if (indiceNivel < nivelesData.niveles.length - 1) {
+    indiceNivel++;
+    indicePalabra = 0;
+    cargarPalabra();
+  } else {
+    // Mostrar mensaje final
+    document.querySelector(".titulo-caja h1").textContent = "¡Juego Terminado! 🎊";
     document.querySelector(".descripcion").textContent =
       `Has completado todos los niveles con ${puntaje} puntos.`;
     document.getElementById("slots").innerHTML = "";
     document.getElementById("letras").innerHTML = "";
     document.getElementById("btnSiguiente").classList.add("oculto");
-    
-    // Mostrar mensaje de felicitación
+
+    // Mensaje visual de felicitación
     document.getElementById("imagen").innerHTML = `
       <div style="padding: 20px; background: linear-gradient(45deg, #10b981, #4b6cb7); 
                   border-radius: 15px; color: white; text-align: center;">
@@ -111,8 +113,14 @@ function siguiente() {
         <p><strong>Puntaje Final: ${puntaje} puntos</strong></p>
       </div>
     `;
-  }
+
+    // 🕒 Espera unos segundos y regresa automáticamente
+    setTimeout(() => {
+      window.history.back(); // ← Regresa a la página anterior
+    }, 4000); // 4 segundos de espera antes de regresar
+  }
 }
+
 
 function reiniciarJuego() {
   indicePalabra = 0;

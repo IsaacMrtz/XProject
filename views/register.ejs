@@ -1,43 +1,452 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="resources/css/login.css">
-    <title>Register</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registro - Sistema Educativo</title>
+	<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+	
+	<style>
+		/* ============================================
+		   VARIABLES Y CONFIGURACIÓN
+		   ============================================ */
+		:root {
+			--font-primary: 'Nunito', sans-serif;
+			
+			/* Colores neutros y elegantes */
+			--color-primary: #4A5568;
+			--color-secondary: #718096;
+			--color-accent: #5B6DCD;
+			--color-success: #48BB78;
+			--color-bg-light: #F7FAFC;
+			--color-bg-dark: #EDF2F7;
+			--color-text: #2D3748;
+			--color-text-light: #718096;
+			--color-border: #E2E8F0;
+			--color-danger: #F56565;
+			
+			--transition: 0.3s ease;
+			--shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+			--shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+			--shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		/* ============================================
+		   BODY Y FONDO
+		   ============================================ */
+		body {
+			font-family: var(--font-primary);
+			background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 2rem 1rem;
+			position: relative;
+			overflow-x: hidden;
+		}
+
+		/* Decoración de fondo sutil */
+		body::before {
+			content: '';
+			position: absolute;
+			top: -10%;
+			right: -5%;
+			width: 500px;
+			height: 500px;
+			background: radial-gradient(circle, rgba(91, 109, 205, 0.05) 0%, transparent 70%);
+			border-radius: 50%;
+		}
+
+		body::after {
+			content: '';
+			position: absolute;
+			bottom: -10%;
+			left: -5%;
+			width: 400px;
+			height: 400px;
+			background: radial-gradient(circle, rgba(72, 187, 120, 0.05) 0%, transparent 70%);
+			border-radius: 50%;
+		}
+
+		/* ============================================
+		   CONTENEDOR DEL FORMULARIO
+		   ============================================ */
+		.register-form {
+			width: 100%;
+			max-width: 540px;
+			background: white;
+			border-radius: 24px;
+			padding: 3rem 2.5rem;
+			box-shadow: var(--shadow-lg);
+			position: relative;
+			z-index: 1;
+			animation: fadeInUp 0.6s ease;
+		}
+
+		/* Barra decorativa superior */
+		.register-form::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 5px;
+			background: linear-gradient(90deg, var(--color-success), var(--color-accent));
+			border-radius: 24px 24px 0 0;
+		}
+
+		/* ============================================
+		   TÍTULO
+		   ============================================ */
+		.register-form h1 {
+			font-size: 2rem;
+			font-weight: 800;
+			color: var(--color-text);
+			text-align: center;
+			margin-bottom: 0.5rem;
+			letter-spacing: -0.5px;
+		}
+
+		.register-subtitle {
+			text-align: center;
+			color: var(--color-text-light);
+			font-size: 1rem;
+			font-weight: 500;
+			margin-bottom: 2.5rem;
+		}
+
+		/* ============================================
+		   FORMULARIO
+		   ============================================ */
+		form {
+			display: flex;
+			flex-direction: column;
+			gap: 1.25rem;
+		}
+
+		/* Contenedor de input con label */
+		.input-group {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
+		.input-group label {
+			font-size: 0.9rem;
+			font-weight: 600;
+			color: var(--color-text);
+			margin-left: 0.25rem;
+		}
+
+		/* Inputs */
+		input[type="text"],
+		input[type="password"],
+		select {
+			width: 100%;
+			padding: 1rem 1.25rem;
+			border: 2px solid var(--color-border);
+			border-radius: 12px;
+			font-size: 1rem;
+			font-family: var(--font-primary);
+			color: var(--color-text);
+			background: var(--color-bg-light);
+			transition: all var(--transition);
+		}
+
+		input[type="text"]:focus,
+		input[type="password"]:focus,
+		select:focus {
+			outline: none;
+			border-color: var(--color-accent);
+			background: white;
+			box-shadow: 0 0 0 3px rgba(91, 109, 205, 0.1);
+		}
+
+		input[type="text"]::placeholder,
+		input[type="password"]::placeholder {
+			color: var(--color-text-light);
+		}
+
+		/* Select personalizado */
+		select {
+			cursor: pointer;
+			appearance: none;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: right 1rem center;
+			background-size: 20px;
+			padding-right: 3rem;
+		}
+
+		/* Grid de dos columnas para nombre y apellido */
+		.row-2cols {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 1rem;
+		}
+
+		/* ============================================
+		   BOTONES
+		   ============================================ */
+		.button-group {
+			display: flex;
+			gap: 1rem;
+			margin-top: 0.5rem;
+		}
+
+		.btn-save {
+			flex: 1;
+			padding: 1rem;
+			background: linear-gradient(135deg, var(--color-success), #38a169);
+			border: none;
+			border-radius: 12px;
+			color: white;
+			font-size: 1.1rem;
+			font-weight: 700;
+			font-family: var(--font-primary);
+			cursor: pointer;
+			transition: all var(--transition);
+			box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+		}
+
+		.btn-save:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+		}
+
+		.btn-save:active {
+			transform: translateY(0);
+		}
+
+		.btn-cancel {
+			flex: 1;
+			padding: 1rem;
+			background: white;
+			border: 2px solid var(--color-danger);
+			border-radius: 12px;
+			color: var(--color-danger);
+			font-size: 1.1rem;
+			font-weight: 700;
+			font-family: var(--font-primary);
+			text-align: center;
+			text-decoration: none;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			transition: all var(--transition);
+		}
+
+		.btn-cancel:hover {
+			background: var(--color-danger);
+			color: white;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+		}
+
+		.btn-cancel:active {
+			transform: translateY(0);
+		}
+
+		/* ============================================
+		   FOOTER DEL FORMULARIO
+		   ============================================ */
+		.form-footer {
+			text-align: center;
+			margin-top: 2rem;
+			padding-top: 1.5rem;
+			border-top: 1px solid var(--color-border);
+		}
+
+		.form-footer p {
+			color: var(--color-text-light);
+			font-size: 0.9rem;
+		}
+
+		.form-footer a {
+			color: var(--color-accent);
+			text-decoration: none;
+			font-weight: 600;
+			transition: color var(--transition);
+		}
+
+		.form-footer a:hover {
+			color: var(--color-primary);
+		}
+
+		/* ============================================
+		   ANIMACIONES
+		   ============================================ */
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* ============================================
+		   RESPONSIVE DESIGN
+		   ============================================ */
+
+		/* Tablet (768px - 1024px) */
+		@media (max-width: 1024px) {
+			.register-form {
+				max-width: 480px;
+				padding: 2.5rem 2rem;
+			}
+
+			.register-form h1 {
+				font-size: 1.8rem;
+			}
+		}
+
+		/* Móvil (< 768px) */
+		@media (max-width: 768px) {
+			body {
+				padding: 1.5rem 1rem;
+			}
+
+			.register-form {
+				padding: 2rem 1.5rem;
+			}
+
+			.register-form h1 {
+				font-size: 1.7rem;
+			}
+
+			.register-subtitle {
+				font-size: 0.95rem;
+				margin-bottom: 2rem;
+			}
+
+			.row-2cols {
+				grid-template-columns: 1fr;
+				gap: 1.25rem;
+			}
+
+			input[type="text"],
+			input[type="password"],
+			select {
+				padding: 0.9rem 1rem;
+				font-size: 0.95rem;
+			}
+
+			.btn-save,
+			.btn-cancel {
+				padding: 0.9rem;
+				font-size: 1rem;
+			}
+
+			.button-group {
+				flex-direction: column-reverse;
+			}
+		}
+
+		/* Móvil pequeño (< 480px) */
+		@media (max-width: 480px) {
+			body {
+				padding: 1rem 0.75rem;
+			}
+
+			.register-form {
+				padding: 1.75rem 1.25rem;
+				border-radius: 20px;
+			}
+
+			.register-form h1 {
+				font-size: 1.5rem;
+			}
+
+			.register-subtitle {
+				font-size: 0.9rem;
+			}
+
+			input[type="text"],
+			input[type="password"],
+			select {
+				padding: 0.85rem;
+				font-size: 0.9rem;
+			}
+
+			.btn-save,
+			.btn-cancel {
+				padding: 0.85rem;
+				font-size: 0.95rem;
+			}
+
+			body::before,
+			body::after {
+				width: 300px;
+				height: 300px;
+			}
+		}
+	</style>
 </head>
 <body>
-    <div class="register-form">
-		<h1>Form Registration</h1>
+	<div class="register-form">
+		<h1>Crear Cuenta</h1>
+		<p class="register-subtitle">Completa los datos para registrarte</p>
+		
 		<form action="/register" method="POST">
-            <label for="user">User</label>
-                <input type="text" name="user" required tabindex="1" autofocus>            
-            <label for="user">Name</label>
-                <input type="text" name="name" required tabindex="2">
-             <label for="user">Last Name</label>
-                <input type="text" name="lastname" required tabindex="3">
-            <label for="user">E-mail</label>
-                <input type="text" name="email" required tabindex="3">
+			<div class="input-group">
+				<label for="user">Usuario</label>
+				<input type="text" id="user" name="user" placeholder="Ingresa tu usuario" autofocus required tabindex="1">
+			</div>
 
-            <label for="rol">Rol</label>                          
-            <select id="rol" name="id_rol" class="select-css" tabindex="4">
-                <option value="1">Student</option>
-                <option value="2">Professor</option>                    
-            </select>
+			<div class="row-2cols">
+				<div class="input-group">
+					<label for="name">Nombre</label>
+					<input type="text" id="name" name="name" placeholder="Tu nombre" required tabindex="2">
+				</div>
+				
+				<div class="input-group">
+					<label for="lastname">Apellido</label>
+					<input type="text" id="lastname" name="lastname" placeholder="Tu apellido" required tabindex="3">
+				</div>
+			</div>
+			
+			<div class="input-group">
+				<label for="email">Correo Electrónico</label>
+				<input type="text" id="email" name="email" placeholder="ejemplo@correo.com" required tabindex="4">
+			</div>
+			
+			<div class="input-group">
+				<label for="rol">Rol</label>
+				<select id="rol" name="id_rol" required tabindex="5">
+					<option value="" disabled selected>Selecciona tu rol</option>
+					<option value="1">Estudiante</option>
+					<option value="2">Profesor</option>
+				</select>
+			</div>
+			
+			<div class="input-group">
+				<label for="pass">Contraseña</label>
+				<input type="password" id="pass" name="contrasena" placeholder="Ingresa tu contraseña" required tabindex="6">
+			</div>
+			
+			<div class="button-group">
+				<a href="/" class="btn-cancel">Cancelar</a>
+				<input type="submit" class="btn-save" value="Guardar">
+			</div>
+		</form>
 
-             <br> 
-            <label for="pass">Password</label>
-			    <input type="password" name="contrasena" required tabindex="5">
-            <div style="display: inline;">             
-            <a href="/" class="btn-cancel">Cancel</a><input type="submit" class="btn-save" value="Save">           
-            </div>
-		</form>		
+		<div class="form-footer">
+			<p>¿Ya tienes una cuenta? <a href="/">Inicia sesión aquí</a></p>
+		</div>
 	</div>
 
-    		
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
- </div>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 </html>

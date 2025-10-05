@@ -1,22 +1,451 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <link rel="stylesheet" href="resources/css/lay.css">
-        <link rel="stylesheet" href="resources/css/variablesL.css">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Vertical Mejorado</title>
+    
+    <style>
+        /* ============================================
+           IMPORTAR TIPOGRAFÍA Y VARIABLES
+           ============================================ */
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
-    </head>
-    <body>
-        <!-- 1) Navbar vertical -->
-    <nav class="sidebar-nav">
-      <ul>
-        <li><a href="/levels">🏠 Inicio</a></li>
-        <li><a href="/levels?grado=primer">1er Grado</a></li>
-        <li><a href="/levels?grado=segundo">2º Grado</a></li>
-        <li><a href="/levels?grado=tercero">3er Grado</a></li>
-      </ul>
-    </nav>
-    </body>
-    </html>
+        :root {
+            /* Colores vibrantes */
+            --color-primary: #5B6DCD;
+            --color-secondary: #4ECDC4;
+            --color-accent: #FFB703;
+            --color-success: #10B981;
+            --color-danger: #FF6B9D;
+            --color-purple: #7C3AED;
+            --color-neutral-light: #F9FAFB;
+            --color-neutral-dark: #2C3E50;
+            
+            /* Dimensiones */
+            --spacer: 1.5rem;
+            --sidebar-width: 6rem;
+            --sidebar-padding: 1rem;
+            --link-size: 3.5rem;
+            --border-radius: 12px;
+            --transition: 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            color: var(--color-neutral-dark);
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           NAVBAR VERTICAL (DESKTOP)
+           ============================================ */
+        .navbar {
+            position: fixed;
+            top: var(--spacer);
+            left: var(--spacer);
+            width: var(--sidebar-width);
+            height: calc(100vh - (var(--spacer) * 2));
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            padding: var(--sidebar-padding) 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000;
+            overflow: visible;
+        }
+
+        .navbar__menu {
+            list-style: none;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 0;
+        }
+
+        /* ============================================
+           ITEMS DEL NAVBAR
+           ============================================ */
+        .navbar__item {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Efecto de fondo al hover - cada ítem con su color */
+        .navbar__item:nth-child(1) {
+            --item-color: var(--color-primary);
+        }
+
+        .navbar__item:nth-child(2) {
+            --item-color: var(--color-secondary);
+        }
+
+        .navbar__item:nth-child(3) {
+            --item-color: var(--color-danger);
+        }
+
+        .navbar__item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: var(--link-size);
+            height: var(--link-size);
+            background: linear-gradient(135deg, var(--item-color), color-mix(in srgb, var(--item-color) 80%, black));
+            border-radius: var(--border-radius);
+            opacity: 0;
+            transition: all var(--transition);
+            z-index: -1;
+        }
+
+        .navbar__item:hover::before {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* ============================================
+           ENLACES
+           ============================================ */
+        .navbar__link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--link-size);
+            height: var(--link-size);
+            color: var(--item-color);
+            text-decoration: none;
+            transition: all var(--transition);
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+
+        .navbar__link i,
+        .navbar__link svg {
+            width: 1.6rem;
+            height: 1.6rem;
+            stroke: currentColor;
+            transition: all var(--transition);
+        }
+
+        .navbar__item:hover .navbar__link {
+            color: rgb(19, 18, 18);
+        }
+
+        .navbar__item:hover .navbar__link i,
+        .navbar__item:hover .navbar__link svg {
+            transform: scale(1.1);
+        }
+
+        /* ============================================
+           TOOLTIP
+           ============================================ */
+        .navbar__link span {
+            position: absolute;
+            left: calc(100% + 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.6rem 1rem;
+            background: rgb(70, 68, 68);
+            color: var(--item-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            transition: all var(--transition);
+            z-index: 10;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .navbar__link span::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent white transparent transparent;
+        }
+
+        .navbar__item:hover .navbar__link span {
+            opacity: 1;
+            left: calc(100% + 1rem);
+        }
+
+        /* ============================================
+           FORMULARIO DEL SELECT
+           ============================================ */
+        .navbar__form {
+            position: relative;
+            width: 100%;
+            padding: 0 var(--sidebar-padding);
+            margin: 0;
+        }
+
+        .navbar__select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: var(--link-size);
+            padding: 0 0.5rem;
+            font-size: 0.8rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            color: var(--color-secondary);
+            background: white;
+            border: 2px solid var(--color-secondary);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all var(--transition);
+            text-align: center;
+        }
+
+        .navbar__select:focus {
+            outline: none;
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+        }
+
+        .navbar__select:hover {
+            background: linear-gradient(135deg, var(--color-secondary), #06B6D4);
+            color: white;
+            border-color: var(--color-secondary);
+        }
+
+        .navbar__form::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: calc(var(--sidebar-padding) + 0.8rem);
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid currentColor;
+            color: var(--color-secondary);
+            pointer-events: none;
+            transition: color var(--transition);
+        }
+
+        .navbar__select:hover ~ .navbar__form::after,
+        .navbar__form:hover::after {
+            color: white;
+        }
+
+        /* ============================================
+           LOGOUT AL FINAL
+           ============================================ */
+        .logout-wrapper {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* ============================================
+           RESPONSIVE - MÓVIL
+           ============================================ */
+        @media (max-width: 768px) {
+            .navbar {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+                min-height: 5rem;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar__menu {
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                gap: 0;
+                width: 100%;
+                /* QUITAR SCROLL */
+                overflow: visible;
+            }
+
+            .navbar__item {
+                margin: 0;
+                flex-shrink: 0;
+            }
+
+            .navbar__item::before {
+                width: 3.5rem;
+                height: 3.5rem;
+            }
+
+            .navbar__link {
+                width: 3.5rem;
+                height: 3.5rem;
+            }
+
+            .navbar__link i,
+            .navbar__link svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            /* Ocultar tooltips en móvil */
+            .navbar__link span {
+                display: none;
+            }
+
+            /* Select en móvil */
+            .navbar__form {
+                padding: 0;
+                width: auto;
+                min-width: 110px;
+                max-width: 120px;
+            }
+
+            .navbar__select {
+                height: 3.5rem;
+                font-size: 0.75rem;
+                padding: 0 0.5rem;
+                border-width: 2px;
+            }
+
+            .navbar__form::after {
+                right: 0.8rem;
+            }
+
+            /* Logout no necesita margin-top en móvil */
+            .logout-wrapper {
+                margin-top: 0;
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE - MÓVIL PEQUEÑO
+           ============================================ */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.6rem 0.5rem;
+                min-height: 4.5rem;
+            }
+
+            .navbar__item::before {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .navbar__link {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .navbar__link i,
+            .navbar__link svg {
+                width: 1.3rem;
+                height: 1.3rem;
+            }
+
+            .navbar__select {
+                height: 3rem;
+                font-size: 0.7rem;
+                min-width: 90px;
+            }
+
+            .navbar__form::after {
+                right: 0.6rem;
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-top: 5px solid currentColor;
+            }
+        }
+
+        /* ============================================
+           CONTENIDO DE EJEMPLO
+           ============================================ */
+        .content {
+            margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+                margin-top: 6rem;
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        .demo-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+        }
+
+        .demo-card h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    
+<nav class="navbar">
+  <ul class="navbar__menu">
+    <li class="navbar__item">
+      <a href="/index" class="navbar__link">
+        <i data-feather="home"></i>
+        <span>Inicio</span>
+      </a>
+    </li>
+    
+
+    
+    <li class="navbar__item logout-wrapper">
+      <a href="/logout" class="navbar__link logout">
+        <i data-feather="log-out"></i>
+        <span>Salir</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Contenido de ejemplo -->
+
+
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+  // Renderizar iconos Feather
+  feather.replace();
+
+  // Envío automático al cambiar el grado
+  document.getElementById('gradoSelect')
+    .addEventListener('change', function() {
+      this.form.submit();
+    });
+</script>
+
+</body>
+</html>

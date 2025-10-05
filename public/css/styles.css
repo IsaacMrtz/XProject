@@ -1,182 +1,431 @@
-.inicio-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
-  font-family: 'Segoe UI', sans-serif;
-}
+/* Variables de colores llamativos y elegantes */
+        :root {
+            --color-primary: #5B6DCD;
+            --color-secondary: #7C3AED;
+            --color-accent-1: #FF6B9D;
+            --color-accent-2: #4ECDC4;
+            --color-accent-3: #FFB703;
+            --color-neutral-dark: #2C3E50;
+            --color-neutral-light: #F8F9FA;
+            --color-success: #10B981;
+            --sidebar-width: 6rem;
+            --spacer: 1.5rem;
+        }
 
-.titulo-principal {
-  font-size: 2.5em;
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.descripcion {
-  font-size: 1.2em;
-  color: #555;
-  margin-bottom: 20px;
-}
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: white;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
 
-.temas-lista {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 30px;
-}
+        /* Contenedor principal */
+        .section-container {
+            margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
+            padding: 2rem;
+            min-height: 100vh;
+        }
 
-.temas-lista li {
-  font-size: 1.1em;
-  margin: 10px 0;
-}
+        .inicio-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 3rem 2.5rem;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.6s ease;
+        }
 
-.botones {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
+        /* Decoración de fondo */
+        .inicio-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(91, 109, 205, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
 
-.boton-entrar,
-.boton-regresar {
-  padding: 10px 20px;
-  border: none;
-  background-color: #3498db;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: background 0.3s ease;
-}
+        .inicio-container::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
 
-.boton-regresar {
-  background-color: #95a5a6;
-}
+        .inicio-container > * {
+            position: relative;
+            z-index: 1;
+        }
 
-.boton-entrar:hover {
-  background-color: #2980b9;
-}
+        /* Título principal con gradiente */
+        .titulo-principal {
+            font-size: 2.8em;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            animation: slideDown 0.6s ease;
+        }
 
-.boton-regresar:hover {
-  background-color: #7f8c8d;
-}
+        .descripcion {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            animation: slideDown 0.6s ease 0.1s backwards;
+        }
 
+        /* Lista de temas con badges coloridos */
+        .temas-lista {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            animation: slideDown 0.6s ease 0.2s backwards;
+        }
 
+        .temas-lista li {
+            font-size: 1em;
+            padding: 0.6rem 1.5rem;
+            background: white;
+            color: var(--color-primary);
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(91, 109, 205, 0.15);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
 
-/* stilos de select grade study*/
-.grado-container {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #fefefe;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
-}
+        .temas-lista li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(91, 109, 205, 0.25);
+            border-color: var(--color-primary);
+        }
 
-.titulo-grado {
-  font-size: 2em;
-  color: #34495e;
-  margin-bottom: 20px;
-}
+        /* Contenedor de niveles */
+        .page-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-.select-grado {
-  width: 80%;
-  padding: 10px;
-  font-size: 1.1em;
-  border: 2px solid #3498db;
-  border-radius: 8px;
-  background-color: #ecf0f1;
-  color: #2c3e50;
-  margin-bottom: 30px;
-  transition: border-color 0.3s ease;
-}
+        .levels-grid {
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease;
+        }
 
-.select-grado:focus {
-  border-color: #2980b9;
-  outline: none;
-}
+        .levels-grid:nth-child(2) {
+            animation-delay: 0.1s;
+        }
 
-.boton-entrar {
-  padding: 10px 20px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+        .levels-grid:nth-child(3) {
+            animation-delay: 0.2s;
+        }
 
-.boton-entrar:hover {
-  background-color: #2980b9;
-}
+        .levels-grid:nth-child(4) {
+            animation-delay: 0.3s;
+        }
 
-/* stilos WELCOME TO LEVEL X*/
-.section-link {
-  text-decoration: none;  /* quita el subrayado */
-  color: inherit;         /* mantiene el color del texto */
-}
+        /* Enlaces sin decoración */
+        .section-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
 
-.section-box {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-}
+        /* Tarjetas de sección con colores vibrantes */
+        .section-box {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
 
-.section-box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
+        /* Barra de color superior */
+        .section-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--box-color-1), var(--box-color-2));
+        }
 
+        /* Colores para "Vamos allá" */
+        .levels-grid:nth-child(1) .section-box {
+            --box-color-1: #10B981;
+            --box-color-2: #059669;
+        }
 
-.btn-lectura {
-  display: inline-block;
-  margin: 5px;
-  padding: 10px;
-  background: #4caf50;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-}
+        .levels-grid:nth-child(1) .section-box:hover {
+            border-color: #10B981;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+        }
 
-.btn-back {
-  display: inline-block;
-  margin-top: 2rem;
-  padding: 0.6rem 1.2rem;
-  background: var(--color-secondary);
-  color: var(--text-main);
-  border-radius: 4px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
+        /* Colores para Nivel 1 */
+        .levels-grid:nth-child(2) .section-box {
+            --box-color-1: #FF6B9D;
+            --box-color-2: #F43F5E;
+        }
 
+        .levels-grid:nth-child(2) .section-box:hover {
+            border-color: #FF6B9D;
+            box-shadow: 0 8px 30px rgba(255, 107, 157, 0.3);
+        }
 
-.btn-back {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 120px;
-  height: 50px;
-  background-color: #5d5f61;
-  color: white;
-  text-decoration: none;
-  font-size: 15px;
-  border-radius: 10px;
-  box-shadow: 0 8px 12px rgba(0,0,0,0.1);
-  transition: transform 0.2s, background-color 0.3s;
-  
+        /* Colores para Nivel 2 */
+        .levels-grid:nth-child(3) .section-box {
+            --box-color-1: #4ECDC4;
+            --box-color-2: #06B6D4;
+        }
 
+        .levels-grid:nth-child(3) .section-box:hover {
+            border-color: #4ECDC4;
+            box-shadow: 0 8px 30px rgba(78, 205, 196, 0.3);
+        }
 
+        .section-box:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
 
-}
+        .section-box:active {
+            transform: translateY(-4px) scale(1.01);
+        }
 
-.btn-back:hover {
-  background: var(--color-accent);
-}
+        .section-box h3 {
+            font-size: 1.8em;
+            color: var(--color-neutral-dark);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+
+        .section-box p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Badge decorativo */
+        .section-box h3::after {
+            content: '→';
+            margin-left: 0.5rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .section-box:hover h3::after {
+            opacity: 1;
+            margin-left: 1rem;
+        }
+
+        /* Botón de regresar mejorado */
+        .btn-back {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 140px;
+            height: 55px;
+            padding: 0 2rem;
+            background: linear-gradient(135deg, #6B7280, #4B5563);
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .btn-back:hover {
+            background: linear-gradient(135deg, var(--color-success), #059669);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE BREAKPOINTS
+           ============================================ */
+
+        /* TABLET Y DESKTOP MEDIO (768px - 1199px) */
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .section-container {
+                margin-left: calc(var(--sidebar-width) + var(--spacer));
+                padding: 1.5rem;
+            }
+
+            .inicio-container {
+                padding: 2.5rem 2rem;
+            }
+
+            .titulo-principal {
+                font-size: 2.4em;
+            }
+
+            .descripcion {
+                font-size: 1.2em;
+            }
+        }
+
+        /* MÓVIL Y TABLET PEQUEÑA (<= 767px) */
+        @media (max-width: 767px) {
+            .section-container {
+                margin-left: 0;
+                margin-top: 5rem;
+                padding: 1rem;
+            }
+
+            .inicio-container {
+                padding: 2rem 1.5rem;
+                margin: 20px auto;
+            }
+
+            .titulo-principal {
+                font-size: 2em;
+            }
+
+            .descripcion {
+                font-size: 1.1em;
+            }
+
+            .temas-lista {
+                gap: 0.75rem;
+            }
+
+            .temas-lista li {
+                font-size: 0.9em;
+                padding: 0.5rem 1.2rem;
+            }
+
+            .section-box {
+                padding: 1.5rem 1.2rem;
+            }
+
+            .section-box h3 {
+                font-size: 1.5em;
+            }
+
+            .section-box p {
+                font-size: 1em;
+            }
+
+            .btn-back {
+                min-width: 120px;
+                height: 50px;
+                font-size: 15px;
+            }
+        }
+
+        /* MÓVIL PEQUEÑO (<= 480px) */
+        @media (max-width: 480px) {
+            .section-container {
+                margin-top: 4.5rem;
+                padding: 0.75rem;
+            }
+
+            .inicio-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .titulo-principal {
+                font-size: 1.7em;
+            }
+
+            .descripcion {
+                font-size: 1em;
+                margin-bottom: 1.5rem;
+            }
+
+            .temas-lista {
+                gap: 0.5rem;
+            }
+
+            .temas-lista li {
+                font-size: 0.85em;
+                padding: 0.4rem 1rem;
+            }
+
+            .section-box {
+                padding: 1.25rem 1rem;
+            }
+
+            .section-box h3 {
+                font-size: 1.3em;
+            }
+
+            .section-box p {
+                font-size: 0.95em;
+            }
+
+            .btn-back {
+                min-width: 110px;
+                height: 45px;
+                font-size: 14px;
+                padding: 0 1.5rem;
+            }
+        }

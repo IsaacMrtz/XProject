@@ -1,462 +1,621 @@
-/* Importar Nunito */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+    /* ============================================
+       VARIABLES Y CONFIGURACIÓN BASE
+       ============================================ */
+    :root {
+      --font-primary: 'Nunito', sans-serif;
+      
+      /* Colores vibrantes y alegres */
+      --color-primary: #5B6DCD;
+      --color-secondary: #4ECDC4;
+      --color-accent: #FFB703;
+      --color-success: #10B981;
+      --color-warning: #FF9800;
+      --color-danger: #FF6B9D;
+      --color-purple: #7C3AED;
+      --color-bg: #778da9;
+      --color-card: #FFFFFF;
+      --color-text: #2C3E50;
+      
+      --sidebar-width: 280px;
+      --sidebar-collapsed: 70px;
+      --transition: 0.3s ease;
+    }
 
-/* Estilo general */
-body {
-  font-family: 'Nunito', sans-serif;
-  background: #669bbc; /* Fondo principal */
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* Menú lateral */
-.menu-lateral {
-  position: fixed; /* Posición fija */
-  top: 60px;
-  left: 0;
-  width: 220px;
-  height: calc(100% - 60px);
-  background-color: #415a77;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border-radius: 1px;
-  z-index: 1000;
-}
+    body {
+      font-family: var(--font-primary);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* Botón reiniciar */
-.menu-lateral button {
-  background: #ff9800;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: 'Nunito', sans-serif;
-}
-.menu-lateral button:hover {
-  background: #e68900;
-}
+    /* ============================================
+       MENÚ LATERAL COLAPSABLE
+       ============================================ */
+    .menu-lateral {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, #415a77 0%, #354960 100%);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 1000;
+      transition: width var(--transition), transform var(--transition);
+      overflow: hidden;
+    }
 
-/* Botones menú */
-.btn-menu {
-  background: #4b6cb7;
-  color: white;
-  text-decoration: none;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: bold;
-  text-align: center;
-  transition: background-color 0.3s ease;
-  font-family: 'Nunito', sans-serif;
-}
-.btn-menu:hover {
-  background: #3a57a5;
-  transform: translateX(6px);
-}
+    .menu-lateral.collapsed {
+      width: var(--sidebar-collapsed);
+    }
 
-/* Puntaje - Estilo similar a los botones del menú */
-.puntaje {
-  background: linear-gradient(45deg, #f39c12, #f4d03f);
-  color: #2c3e50;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 12px 16px;
-  border-radius: 10px;
-  text-align: center;
-  margin-top: 15px;
-  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
-  transition: all 0.3s ease;
-  border: none;
-  font-family: 'Quicksand', sans-serif;
-  letter-spacing: 0.5px;
-}
+    /* Botón toggle */
+    .toggle-btn {
+      position: absolute;
+      top: 15px;
+      right: -15px;
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, var(--color-danger), #F43F5E);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+      transition: all var(--transition);
+      z-index: 1001;
+    }
 
-.puntaje:hover {
-  transform: translateX(6px) scale(1.02);
-  box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
-  background: linear-gradient(45deg, #e67e22, #f39c12);
-}
+    .toggle-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+    }
 
-/* Nivel - Estilo similar a los botones del menú */
-.nivel {
-  background: linear-gradient(45deg, #2ecc71, #58d68d);
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 12px 16px;
-  border-radius: 10px;
-  text-align: center;
-  margin-top: 15px;
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
-  transition: all 0.3s ease;
-  border: none;
-  font-family: 'Quicksand', sans-serif;
-  letter-spacing: 0.5px;
-}
+    .menu-lateral.collapsed .toggle-btn {
+      right: -15px;
+    }
 
-.nivel:hover {
-  transform: translateX(6px) scale(1.02);
-  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
-  background: linear-gradient(45deg, #27ae60, #2ecc71);
-}
+    /* Logo/Título del menú */
+    .menu-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      margin-bottom: 10px;
+      white-space: nowrap;
+    }
 
-/* Botón reiniciar - mantener consistencia con el estilo */
-.menu-lateral button {
-  background: linear-gradient(45deg, #ff7675, #fd79a8);
-  color: white;
-  border: none;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 16px;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 15px rgba(255, 118, 117, 0.3);
-}
+    .menu-icon {
+      font-size: 28px;
+      min-width: 30px;
+      text-align: center;
+    }
 
-.menu-lateral button:hover {
-  background: linear-gradient(45deg, #e84393, #fd79a8);
-  transform: translateX(6px) scale(1.02);
-  box-shadow: 0 6px 20px rgba(255, 118, 117, 0.4);
-}
+    .menu-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      opacity: 1;
+      transition: opacity var(--transition);
+    }
 
-/* Efectos adicionales para mejor experiencia */
-.puntaje.actualizado {
-  animation: pulseScore 0.6s ease;
-}
+    .menu-lateral.collapsed .menu-title {
+      opacity: 0;
+      width: 0;
+    }
 
-@keyframes pulseScore {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1) translateX(3px); }
-  100% { transform: scale(1); }
-}
+    /* Botones del menú */
+    .menu-item {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-align: left;
+      transition: all var(--transition);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
 
-.nivel.cambio-nivel {
-  animation: levelUp 0.8s ease;
-}
+    .menu-item-icon {
+      font-size: 20px;
+      min-width: 24px;
+      text-align: center;
+    }
 
-@keyframes levelUp {
-  0% { transform: scale(1) translateX(0); }
-  25% { transform: scale(1.15) translateX(8px) rotate(2deg); }
-  50% { transform: scale(1.1) translateX(6px); }
-  75% { transform: scale(1.05) translateX(4px) rotate(-1deg); }
-  100% { transform: scale(1) translateX(0); }
-}
+    .menu-item-text {
+      opacity: 1;
+      transition: opacity var(--transition);
+    }
 
-/* Responsive para dispositivos móviles */
-@media (max-width: 768px) {
-  .puntaje,
-  .nivel,
-  .menu-lateral button {
-    font-size: 14px;
-    padding: 10px 14px;
-    letter-spacing: 0.3px;
-  }
-  
-  .puntaje:hover,
-  .nivel:hover,
-  .menu-lateral button:hover {
-    transform: translateX(4px) scale(1.01);
-  }
-}
+    .menu-lateral.collapsed .menu-item-text {
+      opacity: 0;
+      width: 0;
+    }
 
-/* Título */
-.titulo-caja {
-  max-width: 720px;
-  margin: 80px auto 20px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-}
-.titulo-caja h1 {
-  color: #4b6cb7;
-  margin-bottom: 10px;
-}
-.descripcion {
-  font-size: 16px;
-  color: #333;
-}
+    .menu-item:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      transform: translateX(8px);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
 
-/* Área del juego */
-.juego {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 20px;
-}
-.imagen {
-  font-size: 64px;
-  margin: 12px;
-}
+    .menu-lateral.collapsed .menu-item:hover {
+      transform: translateX(0) scale(1.05);
+    }
 
-/* Botón siguiente */
-.btn-siguiente {
-  margin-top: 14px;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  background: #10b981;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: 'Nunito', sans-serif;
-}
-.btn-siguiente:hover {
-  background: #0ea371;
-}
+    /* Botón reiniciar especial */
+    .btn-reiniciar {
+      background: linear-gradient(135deg, var(--color-danger), #F43F5E);
+      border: none;
+      box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    }
 
-/* Oculto */
-.oculto {
-  display: none;
-}
+    .btn-reiniciar:hover {
+      background: linear-gradient(135deg, #F43F5E, var(--color-danger));
+      box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5);
+    }
 
-/* =========================
-   ESTILOS POR TIPO DE JUEGO
-   ========================= */
+    /* Botones de juego */
+    .btn-palabras {
+      background: linear-gradient(135deg, var(--color-primary), #4854c7);
+    }
 
-/* -------------------------
-   Juego de Palabras (estilo modernizado)
-   ------------------------- */
+    .btn-imagenes {
+      background: linear-gradient(135deg, var(--color-secondary), #06B6D4);
+    }
 
-body.crearPalabras .slots {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 600px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  position: relative;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
+    /* Stats cards */
+    .stat-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all var(--transition);
+      white-space: nowrap;
+      overflow: hidden;
+    }
 
-body.crearPalabras .slots::before {
-  content: "Completa la Palabra";
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #4b6cb7;
-  color: white;
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-}
+    .stat-card:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+    }
 
-body.crearPalabras .slot {
-  width: 60px;
-  height: 60px;
-  border: 3px dashed #4b6cb7;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  background: rgba(255, 255, 255, 0.8);
-  transition: all 0.3s ease;
-}
+    .puntaje {
+      background: linear-gradient(135deg, #f39c12, #f4d03f);
+      color: #2c3e50;
+      box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+    }
 
-body.crearPalabras .slot:hover {
-  border-color: #10b981;
-  background: rgba(255, 255, 255, 0.95);
-  transform: scale(1.05);
-}
+    .nivel {
+      background: linear-gradient(135deg, #2ecc71, #58d68d);
+      box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    }
 
-body.crearPalabras .letras {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 30px auto;
-  max-width: 600px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  position: relative;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
+    /* Animaciones de stats */
+    .puntaje.actualizado {
+      animation: pulseScore 0.6s ease;
+    }
 
-body.crearPalabras .letras::before {
-  content: "Letras Disponibles";
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ff9800;
-  color: white;
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-}
+    .nivel.cambio-nivel {
+      animation: levelUp 0.8s ease;
+    }
 
-body.crearPalabras .letra {
-  padding: 12px 18px;
-  background: #4b6cb7;
-  color: white;
-  border-radius: 10px;
-  cursor: grab;
-  user-select: none;
-  font-size: 20px;
-  font-weight: bold;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
+    /* Espaciador para separar stats */
+    .menu-spacer {
+      margin-top: auto;
+    }
 
-body.crearPalabras .letra:hover {
-  transform: scale(1.05) rotate(1deg);
-  background: #3a57a5;
-}
+    /* ============================================
+       CONTENIDO PRINCIPAL
+       ============================================ */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 20px;
+      transition: margin-left var(--transition);
+      min-height: 100vh;
+    }
 
-body.crearPalabras .letra:active {
-  cursor: grabbing;
-  transform: scale(0.95);
-}
+    .menu-lateral.collapsed ~ .main-content {
+      margin-left: var(--sidebar-collapsed);
+    }
 
+    /* Título del juego */
+    .titulo-caja {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      animation: fadeInDown 0.6s ease;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* -------------------------
-   Juego de Imágenes
-   ------------------------- */
-body.crearImagenes .slots {
-  display: grid;
-  grid-template-columns: repeat(2, 150px);
-  grid-gap: 15px;
-  margin: 20px auto;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-}
+    .titulo-caja::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+    }
 
-body.crearImagenes .slot {
-  width: 150px;
-  height: 150px;
-  border: 3px dashed #4b6cb7;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.8);
-  transition: all 0.3s ease;
-  position: relative;
-}
+    .titulo-caja h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
 
-body.crearImagenes .slot:hover {
-  border-color: #10b981;
-  background: rgba(255, 255, 255, 0.95);
-  transform: scale(1.02);
-}
+    .descripcion {
+      font-size: 1.2rem;
+      color: var(--color-text);
+      line-height: 1.6;
+    }
 
-body.crearImagenes .slot.filled {
-  border-color: #10b981;
-  border-style: solid;
-  background: white;
-}
+    /* Área del juego */
+    .juego {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-body.crearImagenes .slot img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-  pointer-events: none;
-}
+    .imagen {
+      font-size: 80px;
+      margin: 20px;
+      animation: bounce 2s ease-in-out infinite;
+    }
 
-/* Contenedor de piezas disponibles */
-body.crearImagenes #letras {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin: 30px auto;
-  max-width: 500px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-}
+    /* Slots para palabras */
+    .slots {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px auto;
+      padding: 25px;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      animation: fadeInUp 0.6s ease 0.2s backwards;
+    }
 
-/* Piezas arrastrables */
-body.crearImagenes .pieza-imagen {
-  width: 120px;
-  height: 120px;
-  border-radius: 12px;
-  cursor: grab;
-  transition: all 0.3s ease;
-  border: 3px solid #fff;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  object-fit: cover;
-}
+    .slot {
+      width: 70px;
+      height: 70px;
+      border: 3px dashed var(--color-primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      background: white;
+      transition: all 0.3s ease;
+    }
 
-body.crearImagenes .pieza-imagen:hover {
-  transform: scale(1.05) rotate(2deg);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  border-color: #10b981;
-}
+    .slot:hover {
+      border-color: var(--color-success);
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
 
-body.crearImagenes .pieza-imagen:active {
-  cursor: grabbing;
-  transform: scale(0.95);
-}
+    /* Letras disponibles */
+    .letras {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 30px auto;
+      max-width: 600px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      animation: fadeInUp 0.6s ease 0.3s backwards;
+    }
 
-/* Área de imagen completa */
-body.crearImagenes #imagen {
-  margin: 30px auto;
-  text-align: center;
-}
+    .letra {
+      padding: 14px 20px;
+      background: linear-gradient(135deg, var(--color-primary), #4854c7);
+      color: white;
+      border-radius: 12px;
+      cursor: grab;
+      user-select: none;
+      font-size: 22px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(91, 109, 205, 0.3);
+    }
 
-body.crearImagenes #imagen img {
-  max-width: 300px;
-  max-height: 300px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  border: 4px solid #10b981;
-}
+    .letra:hover {
+      transform: scale(1.1) rotate(3deg);
+      box-shadow: 0 6px 20px rgba(91, 109, 205, 0.5);
+    }
 
-/* Estados de drag and drop */
-body.crearImagenes .slot.drag-over {
-  border-color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
-  transform: scale(1.05);
-}
+    .letra:active {
+      cursor: grabbing;
+      transform: scale(0.95);
+    }
 
-/* Efectos adicionales */
-body.crearImagenes .slots::before {
-  content: "Tablero de Puzzle";
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #4b6cb7;
-  color: white;
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-}
+    /* Botón siguiente */
+    .btn-siguiente {
+      margin-top: 20px;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, var(--color-success), #059669);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+    }
 
-body.crearImagenes #letras::before {
-  content: "Piezas Disponibles";
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ff9800;
-  color: white;
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-}
+    .btn-siguiente:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    /* ============================================
+       ANIMACIONES
+       ============================================ */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    @keyframes pulseScore {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes levelUp {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.2) rotate(5deg); }
+      50% { transform: scale(1.1); }
+      75% { transform: scale(1.15) rotate(-3deg); }
+      100% { transform: scale(1); }
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+
+    /* Tablet (768px - 1024px) */
+    @media (max-width: 1024px) {
+      .titulo-caja h1 {
+        font-size: 2.2rem;
+      }
+
+      .descripcion {
+        font-size: 1.1rem;
+      }
+
+      .slots, .letras {
+        max-width: 500px;
+      }
+
+      .slot {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+
+      .letra {
+        font-size: 20px;
+        padding: 12px 18px;
+      }
+    }
+
+    /* Móvil y tablet pequeña (< 768px) */
+    @media (max-width: 768px) {
+      .menu-lateral {
+        transform: translateX(-100%);
+        width: var(--sidebar-width);
+      }
+
+      .menu-lateral.open {
+        transform: translateX(0);
+      }
+
+      .menu-lateral.collapsed {
+        width: var(--sidebar-width);
+      }
+
+      .toggle-btn {
+        right: auto;
+        left: calc(100% + 10px);
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 15px;
+      }
+
+      .menu-lateral.collapsed ~ .main-content {
+        margin-left: 0;
+      }
+
+      /* Botón hamburguesa visible en móvil */
+      .mobile-menu-btn {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--color-primary), #4854c7);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 999;
+        box-shadow: 0 4px 15px rgba(91, 109, 205, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .titulo-caja {
+        padding: 2rem 1.5rem;
+        margin: 70px 10px 20px;
+      }
+
+      .titulo-caja h1 {
+        font-size: 1.8rem;
+      }
+
+      .descripcion {
+        font-size: 1rem;
+      }
+
+      .imagen {
+        font-size: 60px;
+      }
+
+      .slots, .letras {
+        padding: 20px;
+        max-width: 100%;
+      }
+
+      .slot {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+      }
+
+      .letra {
+        font-size: 18px;
+        padding: 10px 16px;
+      }
+
+      .btn-siguiente {
+        padding: 12px 25px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Móvil pequeño (< 480px) */
+    @media (max-width: 480px) {
+      .titulo-caja {
+        padding: 1.5rem 1rem;
+      }
+
+      .titulo-caja h1 {
+        font-size: 1.5rem;
+      }
+
+      .descripcion {
+        font-size: 0.95rem;
+      }
+
+      .imagen {
+        font-size: 50px;
+      }
+
+      .slots {
+        gap: 8px;
+        padding: 15px;
+      }
+
+      .slot {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+
+      .letras {
+        gap: 8px;
+        padding: 15px;
+      }
+
+      .letra {
+        font-size: 16px;
+        padding: 8px 14px;
+      }
+
+      .btn-siguiente {
+        width: 100%;
+        padding: 12px 20px;
+      }
+    }
+
+    /* Mostrar botón hamburguesa solo en móvil */
+    .mobile-menu-btn {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: flex;
+      }
+
+      .toggle-btn {
+        display: none;
+      }
+    }

@@ -2,75 +2,931 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard de <%= nombreMaestro %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    table { width:100%; border-collapse:collapse }
-    th, td { padding:8px; border:1px solid #ccc; text-align:left }
-    details { font-size:0.9em; }
-    .detail-lists { display:flex; gap:1em; margin-top:0.5em }
-    .detail-lists div { flex:1 }
+    /* ============================================
+       VARIABLES Y CONFIGURACIÓN
+       ============================================ */
+    :root {
+      --font-primary: 'Inter', sans-serif;
+      
+      /* Colores profesionales */
+      --color-primary: #1e40af;
+      --color-secondary: #3b82f6;
+      --color-success: #10b981;
+      --color-danger: #ef4444;
+      --color-warning: #f59e0b;
+      --color-info: #06b6d4;
+      
+      --color-bg: #f8fafc;
+      --color-bg-card: #ffffff;
+      --color-text: #1e293b;
+      --color-text-light: #64748b;
+      --color-border: #e2e8f0;
+      
+      --navbar-width: 260px;
+      --transition: 0.3s ease;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ============================================
+       LAYOUT PRINCIPAL
+       ============================================ */
+    body {
+      font-family: var(--font-primary);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      margin-left: var(--navbar-width);
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    /* ============================================
+       HEADER
+       ============================================ */
+    .header {
+      margin-bottom: 2.5rem;
+      animation: fadeInDown 0.6s ease;
+    }
+
+    .header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--color-text-light);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       TARJETAS DE ESTADÍSTICAS
+       ============================================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.6s ease 0.1s both;
+    }
+
+    .stat-card {
+      background: var(--color-bg-card);
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--color-border);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--stat-color), transparent);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-card.success { --stat-color: var(--color-success); }
+    .stat-card.danger { --stat-color: var(--color-danger); }
+    .stat-card.info { --stat-color: var(--color-info); }
+    .stat-card.warning { --stat-color: var(--color-warning); }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card.success .stat-icon {
+      background: #d1fae5;
+      color: var(--color-success);
+    }
+
+    .stat-card.danger .stat-icon {
+      background: #fee2e2;
+      color: var(--color-danger);
+    }
+
+    .stat-card.info .stat-icon {
+      background: #cffafe;
+      color: var(--color-info);
+    }
+
+    .stat-card.warning .stat-icon {
+      background: #fef3c7;
+      color: var(--color-warning);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-text);
+      line-height: 1;
+    }
+
+    /* ============================================
+       GRÁFICAS
+       ============================================ */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .chart-card {
+      background: var(--color-bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--color-border);
+      animation: fadeInUp 0.6s ease 0.2s both;
+    }
+
+    .chart-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+    }
+
+    .chart-header p {
+      font-size: 0.875rem;
+      color: var(--color-text-light);
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    /* Gráfica de dona especial */
+    .chart-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .chart-card.full-width .chart-container {
+      height: 350px;
+    }
+
+    /* ============================================
+       TABLA DE ESTUDIANTES
+       ============================================ */
+    .table-card {
+      background: var(--color-bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--color-border);
+      animation: fadeInUp 0.6s ease 0.3s both;
+      overflow-x: auto;
+    }
+
+    .table-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .table-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+    }
+
+    .table-header p {
+      font-size: 0.875rem;
+      color: var(--color-text-light);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background: var(--color-bg);
+      border-radius: 8px;
+    }
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 700;
+      color: var(--color-text);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text);
+    }
+
+    tbody tr {
+      transition: background var(--transition);
+    }
+
+    tbody tr:hover {
+      background: var(--color-bg);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Badges de rendimiento */
+    .badge {
+      display: inline-block;
+      padding: 0.375rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge.excellent {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge.good {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge.average {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge.poor {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* Details expandible */
+    details {
+      cursor: pointer;
+    }
+
+    summary {
+      font-weight: 600;
+      color: var(--color-secondary);
+      transition: color var(--transition);
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::before {
+      content: '▶';
+      font-size: 0.75rem;
+      transition: transform var(--transition);
+    }
+
+    details[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    summary:hover {
+      color: var(--color-primary);
+    }
+
+    .detail-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--color-bg);
+      border-radius: 8px;
+    }
+
+    .detail-section h4 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .detail-section.success h4 {
+      color: var(--color-success);
+    }
+
+    .detail-section.danger h4 {
+      color: var(--color-danger);
+    }
+
+    .detail-section ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .detail-section li {
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.5rem;
+      background: white;
+      border-radius: 6px;
+      border-left: 3px solid;
+      font-size: 0.875rem;
+    }
+
+    .detail-section.success li {
+      border-color: var(--color-success);
+    }
+
+    .detail-section.danger li {
+      border-color: var(--color-danger);
+    }
+
+    /* Mensaje vacío */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+
+    .empty-state h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      color: var(--color-text-light);
+      font-size: 1rem;
+    }
+
+    /* ============================================
+       ANIMACIONES
+       ============================================ */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+
+    /* Tablet (< 1024px) */
+    @media (max-width: 1024px) {
+      body {
+        margin-left: 0;
+        padding: 1.5rem;
+        padding-top: 5rem;
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 1.875rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Móvil (< 768px) */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+        padding-top: 4.5rem;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .header p {
+        font-size: 0.95rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .stat-card {
+        padding: 1.25rem;
+      }
+
+      .stat-value {
+        font-size: 1.75rem;
+      }
+
+      .charts-grid {
+        gap: 1.5rem;
+      }
+
+      .chart-card,
+      .table-card {
+        padding: 1.5rem;
+        border-radius: 12px;
+      }
+
+      .chart-container {
+        height: 250px;
+      }
+
+      .detail-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      table {
+        font-size: 0.8rem;
+      }
+
+      th, td {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+
+    /* Móvil pequeño (< 480px) */
+    @media (max-width: 480px) {
+      body {
+        padding: 0.75rem;
+        padding-top: 4rem;
+      }
+
+      .header h1 {
+        font-size: 1.25rem;
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+      }
+
+      .chart-card,
+      .table-card {
+        padding: 1rem;
+      }
+
+      th, td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.75rem;
+      }
+
+      .badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.65rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Bienvenido, <%= nombreMaestro %> 👩‍🏫</h1>
+  <%- include('partials/nav3') %> 
+
+  <div class="header">
+    <h1>
+      <span>👩‍🏫</span>
+      Bienvenido, <%= nombreMaestro %>
+    </h1>
+    <p>Panel de control y seguimiento académico</p>
+  </div>
 
   <% if (!resumen.length) { %>
-    <p>No hay estudiantes asignados o progreso registrado.</p>
+    <div class="empty-state">
+      <div class="empty-state-icon">📚</div>
+      <h2>Sin estudiantes asignados</h2>
+      <p>No hay estudiantes o progreso registrado en este momento.</p>
+    </div>
   <% } else { %>
-    <table>
-      <thead>
-        <tr>
-          <th>Alumno</th>
-          <th>Correctas</th>
-          <th>Erróneas</th>
-          <th>Total</th>
-          <th>Último avance</th>
-          <th>Detalles</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% resumen.forEach(r => { %>
-        <tr>
-          <td><%= r.alumno %></td>
-          <td><%= r.correctas %></td>
-          <td><%= r.errores %></td>
-          <td><%= r.total %></td>
-          <td><%= r.ultAvance %></td>
-          <td>
-            <details>
-              <summary>Ver listas</summary>
-              <div class="detail-lists">
-                <div>
-                  <strong>Aciertos:</strong>
-                  <% if (r.correctasList.length) { %>
-                    <ul>
-                      <% r.correctasList.forEach(s => { %>
-                        <li><%= s %></li>
-                      <% }) %>
-                    </ul>
-                  <% } else { %>
-                    <p>—</p>
-                  <% } %>
+
+    <%
+      // Calcular estadísticas globales
+      let totalCorrectas = 0;
+      let totalErrores = 0;
+      let totalPreguntas = 0;
+      let numEstudiantes = resumen.length;
+      
+      resumen.forEach(r => {
+        totalCorrectas += r.correctas;
+        totalErrores += r.errores;
+        totalPreguntas += r.total;
+      });
+
+      let promedioAciertos = totalPreguntas > 0 
+        ? ((totalCorrectas / totalPreguntas) * 100).toFixed(1) 
+        : 0;
+    %>
+
+    <!-- 📊 Tarjetas de Estadísticas -->
+    <div class="stats-grid">
+      <div class="stat-card info">
+        <div class="stat-icon">👥</div>
+        <div class="stat-label">Estudiantes</div>
+        <div class="stat-value"><%= numEstudiantes %></div>
+      </div>
+
+      <div class="stat-card success">
+        <div class="stat-icon">✓</div>
+        <div class="stat-label">Respuestas Correctas</div>
+        <div class="stat-value"><%= totalCorrectas %></div>
+      </div>
+
+      <div class="stat-card danger">
+        <div class="stat-icon">✗</div>
+        <div class="stat-label">Respuestas Erróneas</div>
+        <div class="stat-value"><%= totalErrores %></div>
+      </div>
+
+      <div class="stat-card warning">
+        <div class="stat-icon">%</div>
+        <div class="stat-label">Promedio de Aciertos</div>
+        <div class="stat-value"><%= promedioAciertos %>%</div>
+      </div>
+    </div>
+
+    <!-- 📈 Gráficas -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2>Rendimiento por Estudiante</h2>
+          <p>Comparativa de respuestas correctas vs erróneas</p>
+        </div>
+        <div class="chart-container">
+          <canvas id="graficaBarras"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2>Distribución de Aciertos</h2>
+          <p>Porcentaje de aciertos por estudiante</p>
+        </div>
+        <div class="chart-container">
+          <canvas id="graficaPastel"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card full-width">
+        <div class="chart-header">
+          <h2>Progreso General del Grupo</h2>
+          <p>Total de preguntas respondidas por cada estudiante</p>
+        </div>
+        <div class="chart-container">
+          <canvas id="graficaLinea"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📋 Tabla Detallada -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Detalle por Estudiante</h2>
+        <p>Información completa del rendimiento académico</p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Estudiante</th>
+            <th>Correctas</th>
+            <th>Erróneas</th>
+            <th>Total</th>
+            <th>Rendimiento</th>
+            <th>Último Avance</th>
+            <th>Detalles</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% resumen.forEach(r => { 
+          let porcentaje = r.total > 0 ? ((r.correctas / r.total) * 100).toFixed(1) : 0;
+          let badgeClass = porcentaje >= 90 ? 'excellent' : 
+                          porcentaje >= 75 ? 'good' : 
+                          porcentaje >= 60 ? 'average' : 'poor';
+          let badgeText = porcentaje >= 90 ? 'Excelente' : 
+                         porcentaje >= 75 ? 'Bueno' : 
+                         porcentaje >= 60 ? 'Regular' : 'Bajo';
+        %>
+          <tr>
+            <td><strong><%= r.alumno %></strong></td>
+            <td style="color: var(--color-success); font-weight: 600;"><%= r.correctas %></td>
+            <td style="color: var(--color-danger); font-weight: 600;"><%= r.errores %></td>
+            <td><strong><%= r.total %></strong></td>
+            <td>
+              <span class="badge <%= badgeClass %>">
+                <%= badgeText %> (<%= porcentaje %>%)
+              </span>
+            </td>
+            <td><%= r.ultAvance %></td>
+            <td>
+              <details>
+                <summary>Ver detalles</summary>
+                <div class="detail-content">
+                  <div class="detail-section success">
+                    <h4>✓ Aciertos (<%= r.correctas %>)</h4>
+                    <% if (r.correctasList.length) { %>
+                      <ul>
+                        <% r.correctasList.forEach(s => { %>
+                          <li><%= s %></li>
+                        <% }) %>
+                      </ul>
+                    <% } else { %>
+                      <p style="color: var(--color-text-light); font-size: 0.875rem;">Sin registros</p>
+                    <% } %>
+                  </div>
+                  <div class="detail-section danger">
+                    <h4>✗ Errores (<%= r.errores %>)</h4>
+                    <% if (r.erroresList.length) { %>
+                      <ul>
+                        <% r.erroresList.forEach(e => { %>
+                          <li><%= e %></li>
+                        <% }) %>
+                      </ul>
+                    <% } else { %>
+                      <p style="color: var(--color-text-light); font-size: 0.875rem;">Sin registros</p>
+                    <% } %>
+                  </div>
                 </div>
-                <div>
-                  <strong>Errores:</strong>
-                  <% if (r.erroresList.length) { %>
-                    <ul>
-                      <% r.erroresList.forEach(e => { %>
-                        <li><%= e %></li>
-                      <% }) %>
-                    </ul>
-                  <% } else { %>
-                    <p>—</p>
-                  <% } %>
-                </div>
-              </div>
-            </details>
-          </td>
-        </tr>
-      <% }) %>
-      </tbody>
-    </table>
+              </details>
+            </td>
+          </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const resumen = <%- JSON.stringify(resumen) %>;
+
+      // Preparar datos
+      const labels = resumen.map(r => r.alumno);
+      const correctas = resumen.map(r => r.correctas);
+      const errores = resumen.map(r => r.errores);
+      const totales = resumen.map(r => r.total);
+      const porcentajes = resumen.map(r => 
+        r.total ? ((r.correctas / r.total) * 100).toFixed(1) : 0
+      );
+
+      // Configuración global de Chart.js
+      Chart.defaults.font.family = "'Inter', sans-serif";
+      Chart.defaults.color = '#64748b';
+
+      // 📊 Gráfica de Barras (Correctas vs Erróneas)
+      new Chart(document.getElementById("graficaBarras"), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Correctas',
+              data: correctas,
+              backgroundColor: '#10b981',
+              borderRadius: 8,
+              borderSkipped: false,
+            },
+            {
+              label: 'Erróneas',
+              data: errores,
+              backgroundColor: '#ef4444',
+              borderRadius: 8,
+              borderSkipped: false,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                padding: 15,
+                font: { size: 13, weight: '600' },
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              padding: 12,
+              cornerRadius: 8,
+              titleFont: { size: 14, weight: '700' },
+              bodyFont: { size: 13 }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 12, weight: '600' } }
+            },
+            y: {
+              beginAtZero: true,
+              grid: { color: '#f1f5f9' },
+              ticks: { font: { size: 12 } }
+            }
+          }
+        }
+      });
+
+      // 🥧 Gráfica de Pastel (Porcentaje de Aciertos)
+      new Chart(document.getElementById("graficaPastel"), {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Porcentaje',
+            data: porcentajes,
+            backgroundColor: [
+              '#3b82f6', '#06b6d4', '#10b981', 
+              '#f59e0b', '#ef4444', '#8b5cf6',
+              '#ec4899', '#14b8a6', '#6366f1'
+            ],
+            borderWidth: 3,
+            borderColor: '#ffffff',
+            hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 15,
+                font: { size: 12, weight: '600' },
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: context => {
+                  const label = context.label || '';
+                  const value = context.parsed || 0;
+                  return `${label}: ${value}%`;
+                }
+              }
+            }
+          },
+          cutout: '65%'
+        }
+      });
+
+      // 📈 Gráfica de Línea (Progreso Total)
+      new Chart(document.getElementById("graficaLinea"), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Total de Preguntas',
+              data: totales,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4,
+              pointRadius: 6,
+              pointHoverRadius: 8,
+              pointBackgroundColor: '#3b82f6',
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                padding: 15,
+                font: { size: 13, weight: '600' },
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              padding: 12,
+              cornerRadius: 8
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 12, weight: '600' } }
+            },
+            y: {
+              beginAtZero: true,
+              grid: { color: '#f1f5f9' },
+              ticks: { 
+                font: { size: 12 },
+                stepSize: 1
+              }
+            }
+          }
+        }
+      });
+    </script>
   <% } %>
 </body>
 </html>

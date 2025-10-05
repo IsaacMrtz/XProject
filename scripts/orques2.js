@@ -1,10 +1,40 @@
 // public/js/orquestador.js
-import { initEmotions } from '/resources/jsFace-Api/emocioness.js';
-import { initAttention } from '/resources/mediapipe/postt.js';
-import { iniciarReconocimiento } from '/resources/sentiment/analysis.js';
+import { initEmotions, pauseEmotionDetection, resumeEmotionDetection } from '/resources/jsFace-Api/emocioness.js';
+import { initAttention, pauseAttentionDetection, resumeAttentionDetection, stopAttentionDetection } from '/resources/mediapipe/postt.js';
+import { iniciarReconocimiento, detenerReconocimiento } from '/resources/sentiment/analysis.js';
 import { updateStat } from '/scripts/statsApi.js';
 import { renderStats } from '/scripts/uiRender.js';
 
+function personalizeMessage(msg) {
+    const userName = window.appParams?.userName || window.appData?.userName || '';
+    return userName ? msg.replace('{name}', userName) : msg.replace(', {name}', '').replace('{name}, ', '').replace('{name}', '');
+}
+
+// Función para que el avatar hable
+function speakAvatarMessage(text) {
+    if (!('speechSynthesis' in window)) return;
+    
+    // Cancelar cualquier mensaje anterior para evitar solapamiento
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'es-ES';
+    utterance.pitch = 1.1;  // Voz ligeramente más aguda (amigable)
+    utterance.rate = 0.95;  // Velocidad natural
+    utterance.volume = 0.8; // No muy alto
+    
+    // Buscar voz femenina o infantil si está disponible
+    const voices = window.speechSynthesis.getVoices();
+    const friendlyVoice = voices.find(v => 
+        v.lang.startsWith('es') && (v.name.includes('female') || v.name.includes('Mónica') || v.name.includes('Paulina'))
+    ) || voices.find(v => v.lang.startsWith('es'));
+    
+    if (friendlyVoice) {
+        utterance.voice = friendlyVoice;
+    }
+    
+    window.speechSynthesis.speak(utterance);
+}
 // --- VARIABLES GLOBALES ---
 
 let letterProgress = {};
@@ -479,65 +509,173 @@ function configurarModal() {
     const avatarContainer = document.getElementById('avatar-container');
     const avatarBubble = document.getElementById('avatar-bubble');
 
-    // 4) Avatar state and messages
-    let avatarState = {
-        hasWelcomed: false,
-        lastMessageTime: 0,
-        distractedStartTime: null
-    };
-    const MESSAGE_COOLDOWN = 10000;
-    const DISTRACTED_THRESHOLD = 5000;
-    const avatarMsgs = {
-        welcome: ['¡Vamos a leer!', '¡Hola!', '¡Comencemos!'],
-        happy: ['¡Lo haces genial!', '¡Sigue así!', '¡Me encanta tu entusiasmo!'],
-        neutral: ['Bien, continúa leyendo.', 'Estás avanzando.', 'Muy bien, sigue concentrado.'],
-        distracted: ['¿Te aburres? Toca aquí para jugar.', 'Un jueguito te anima.', '¿Necesitas un descanso?']
-    };
-    let avatarClickable = false;
+// Event listener para clic en el avatar
+if (avatarContainer) {
+    avatarContainer.addEventListener('click', () => {
+        console.log('🖱️ Clic en avatar, clickeable:', avatarClickable);
+        
+        if (avatarClickable) {
+            // Obtener parámetros actuales
+            const grado = window.appParams?.grado || params.get('grado') || '1';
+            
+            console.log('🎮 Redirigiendo a juegos con grado:', grado);
+            
+            // Redirigir a la página de juegos con los parámetros
+            window.location.href = `/game?grado=${window.appParams.grado}`;
+        } else {
+            console.log('⚠️ Avatar no es clickeable en este momento');
+        }
+    });
+    console.log('✅ Event listener del avatar registrado');
+} else {
+    console.error('❌ avatarContainer no encontrado en el DOM');
+}    
 
-// Función mejorada para mostrar el avatar
-function showAvatar(messageList, isDistracted = false) {
-    if (!avatarContainer) return;
-    const now = Date.now();
-    if (now - avatarState.lastMessageTime < MESSAGE_COOLDOWN) return;
+// 4) Avatar state and messages
+let avatarState = {
+    hasWelcomed: false,
+    lastMessageTime: 0,
+    distractedStartTime: null
+};
+
+const MESSAGE_COOLDOWN = 10000;
+const DISTRACTED_THRESHOLD = 5000;
+
+// Mensajes mejorados con placeholders para el nombre
+const avatarMsgs = {
+    welcome: [
+        '¡Hola{name}! ¡Vamos a leer juntos!', 
+        '¡Bienvenido{name}! ¿Listo para aprender?', 
+        '¡Hola{name}! ¡Comencemos esta aventura!'
+    ],
+    happy: [
+        '¡Lo haces genial{name}!', 
+        '¡Excelente trabajo{name}!', 
+        '¡Sigue así{name}, vas muy bien!',
+        '¡Me encanta tu entusiasmo{name}!'
+    ],
+    neutral: [
+        // Índice 0-3: NO clickeables (solo animan)
+       
+        'Vas muy bien{name}.', 
+        'Sigue concentrado{name}.',
+        
+        
+        // Índice 4-5: SÍ clickeables (ofrecen juegos)
+        '¿Quieres tomar un respiro{name}? Toca aquí.',
+        'Si necesitas un cambio{name}, toca aquí para jugar.'
+    ],
+    distracted: [
+        // Índice 0-3: TODOS clickeables
+        '¿Te aburres{name}? Toca aquí para jugar.', 
+        'Un jueguito te anima{name}.', 
+        '¿Necesitas un descanso{name}?',
+        '¡Hey{name}! ¿Qué tal un juego?'
+    ],
+    encouragement: [
+        '¡Tú puedes{name}!',
+        '¡Ánimo{name}!',
+        '¡Sigue intentando{name}!'
+    ]
+};
+
+const clickeableMessages = {
+    neutral: [2, 3],            // Los últimos 2 mensajes (ahora son índices 2 y 3)
+    distracted: [0, 1, 2, 3]    // TODOS los mensajes de distracted
+};
+
+let avatarClickable = false;
+
+// Sistema de coordinación de recursos
+const resourceManager = {
+    emotionsActive: false,
+    attentionActive: false,
+    speechActive: false,
     
-    const msg = messageList[Math.floor(Math.random() * messageList.length)];
+    pauseVisualDetections() {
+        if (this.emotionsActive) pauseEmotionDetection();
+        if (this.attentionActive) pauseAttentionDetection();
+        console.log('⏸️ Detecciones visuales pausadas');
+    },
+    
+    resumeVisualDetections() {
+        if (this.emotionsActive) resumeEmotionDetection();
+        if (this.attentionActive) resumeAttentionDetection();
+        console.log('▶️ Detecciones visuales reanudadas');
+    }
+};
+
+        
+
+
+// 3) REEMPLAZAR la función showAvatar con esta versión mejorada:
+// Función mejorada para mostrar el avatar
+function showAvatar(messageList, isDistracted = false, options = {}) {
+    if (!avatarContainer) return;
+    
+    const now = Date.now();
+    
+    // Permitir ignorar el cooldown si se especifica
+    if (!options.ignoreCooldown && now - avatarState.lastMessageTime < MESSAGE_COOLDOWN) {
+        return;
+    }
+    
+    // Seleccionar y personalizar mensaje
+    const messageIndex = Math.floor(Math.random() * messageList.length);
+    const rawMsg = messageList[messageIndex];
+    const msg = personalizeMessage(rawMsg);
+    
+    console.log(`Avatar mostrando: "${msg}" (índice: ${messageIndex}, categoría: ${options.category})`);
+    
+    // Mostrar mensaje en el globo
     avatarBubble.innerText = msg;
     avatarContainer.hidden = false;
     
-    // Configurar si es clickeable y agregar clase visual
-    avatarClickable = isDistracted;
-    if (isDistracted) {
-        avatarContainer.classList.add('clickable');
-        avatarContainer.style.cursor = 'pointer';
-    } else {
-        avatarContainer.classList.remove('clickable');
-        avatarContainer.style.cursor = 'default';
+    // Hacer que el avatar hable (solo si no está deshabilitado)
+    if (!options.silent) {
+        speakAvatarMessage(msg);
+        
+        // Añadir animación mientras habla
+        avatarContainer.classList.add('talking');
+        setTimeout(() => {
+            avatarContainer.classList.remove('talking');
+        }, 1500);
     }
     
+    // Determinar si el mensaje específico debe hacer clickeable al avatar
+    const messageCategory = options.category || 'unknown';
+    const shouldBeClickable = isDistracted || 
+                             (clickeableMessages[messageCategory] && 
+                              clickeableMessages[messageCategory].includes(messageIndex));
+    
+    console.log(`¿Clickeable?: ${shouldBeClickable} (isDistracted: ${isDistracted}, category: ${messageCategory}, index: ${messageIndex})`);
+    
+    // Configurar si es clickeable
+    avatarClickable = shouldBeClickable;
+    if (shouldBeClickable) {
+        avatarContainer.classList.add('clickable');
+        avatarContainer.style.cursor = 'pointer';
+        // Añadir efecto de pulso para llamar la atención
+        avatarContainer.classList.add('pulse');
+        console.log('✅ Avatar es CLICKEABLE');
+    } else {
+        avatarContainer.classList.remove('clickable', 'pulse');
+        avatarContainer.style.cursor = 'default';
+        console.log('❌ Avatar NO es clickeable');
+    }
+    
+    // Timer para ocultar el avatar
     clearTimeout(avatarContainer._hideTimer);
     avatarContainer._hideTimer = setTimeout(() => {
         avatarContainer.hidden = true;
         avatarClickable = false;
-        avatarContainer.classList.remove('clickable');
+        avatarContainer.classList.remove('clickable', 'pulse');
     }, 5000);
     
     avatarState.lastMessageTime = now;
 }
-
 // Event listener para clic en el avatar (agregar después de showAvatar)
-if (avatarContainer) {
-    avatarContainer.addEventListener('click', () => {
-        if (avatarClickable) {
-            // Obtener parámetros actuales
-            const params = new URLSearchParams(window.location.search);
-            const grado = params.get('grado') || '1'; // Default grado 1
-            
-            // Redirigir a la página de juegos con los parámetros
-            window.location.href = `/game?grado=${window.appParams.grado}`;
-        }
-    });
-}
+
 
     // 5) Load content
     const dataRaw = await fetch('/data/contenidos.json').then(r => r.json());
@@ -608,48 +746,99 @@ if (avatarContainer) {
         else showLecture(lectureIndex);
     }
 
-    // 9) Emotion and attention logic
-    const history = { emotion: [], attention: [] };
+    
+const history = { emotion: [], attention: [] };
 
-    // MODIFICAR la detección de emociones (línea ~223)
-    window.addEventListener('emotionDetected', e => {
-        if (currentMode !== 'lectura') return;
-        const emotion = e.detail;
-        if (emotion === 'happy' || emotion === 'neutral') {
-            showAvatar(avatarMsgs[emotion], false); // NO clickeable
-        }
-    });
+window.addEventListener('emotionDetected', e => {
+    if (currentMode !== 'lectura') return;
+    const emotion = e.detail;
+    
+    if (emotion === 'happy') {
+        showAvatar(avatarMsgs.happy, false, { category: 'happy' });
+    } else if (emotion === 'neutral') {
+        // CORREGIDO: Ahora pasa la categoría
+        showAvatar(avatarMsgs.neutral, false, { category: 'neutral' });
+    }
+});
 
-    window.addEventListener('attentionDetected', e => {
-        if (currentMode !== 'lectura') return;
-        const attentionState = e.detail;
-        const now = Date.now();
-        
-        if (attentionState === 'distraído') {
-            if (!avatarState.distractedStartTime) {
-                avatarState.distractedStartTime = now;
-            } else if (now - avatarState.distractedStartTime >= DISTRACTED_THRESHOLD) {
-                showAvatar(avatarMsgs.distracted, true); // SÍ clickeable
-            }
-        } else {
-            avatarState.distractedStartTime = null;
+window.addEventListener('attentionDetected', e => {
+    if (currentMode !== 'lectura') return;
+    const attentionState = e.detail;
+    const now = Date.now();
+    
+    if (attentionState === 'distraído') {
+        if (!avatarState.distractedStartTime) {
+            avatarState.distractedStartTime = now;
+        } else if (now - avatarState.distractedStartTime >= DISTRACTED_THRESHOLD) {
+            // CORREGIDO: Ahora pasa la categoría
+            showAvatar(avatarMsgs.distracted, true, { category: 'distracted' });
         }
-    });
+    } else {
+        avatarState.distractedStartTime = null;
+    }
+});
 
     // 10) Initialize sensors
-    await initEmotions(videoEl);
-    initAttention(videoEl);
+    await initEmotions(videoEl, 2000); // 2 segundos entre análisis
+        initAttention(videoEl);
+        resourceManager.emotionsActive = true;
+        resourceManager.attentionActive = true;
+
+    setTimeout(() => {
+    if (!avatarState.hasWelcomed) {
+        showAvatar(avatarMsgs.welcome, false, { ignoreCooldown: true });
+        avatarState.hasWelcomed = true;
+    }
+    }, 2000); // Esperar 2 segundos después de cargar  
+    
+    let encouragementInterval = setInterval(() => {
+    if (currentMode === 'lectura' && !resourceManager.speechActive) {
+        showAvatar(avatarMsgs.encouragement);
+    }
+    }, 120000); // 2 minutos
+
+    // Limpiar interval al salir
+    window.addEventListener('beforeunload', () => {
+        clearInterval(encouragementInterval);
+        detenerReconocimiento();
+        stopAttentionDetection();
+        if (videoEl && videoEl.srcObject) {
+            videoEl.srcObject.getTracks().forEach(track => track.stop());
+        }
+    });
+
+        // 4. AGREGAR event listeners para coordinar recursos (después de initAttention)
+    window.addEventListener('speechStarted', () => {
+    resourceManager.speechActive = true;
+    resourceManager.pauseVisualDetections();
+    });
+
+    window.addEventListener('speechEnded', () => {
+    resourceManager.speechActive = false;
+    // Esperar 1 segundo antes de reanudar para dar respiro al sistema
+    setTimeout(() => {
+        resourceManager.resumeVisualDetections();
+    }, 1000);
+    });    
+
 
     // 11) Event Listeners
-    if (btnSpeak) {
-        btnSpeak.addEventListener('click', () => {
-            if (!avatarState.hasWelcomed) {
-                showAvatar(avatarMsgs.welcome);
-                avatarState.hasWelcomed = true;
-            }
-            window.dispatchEvent(new Event('startSpeech'));
-        });
+if (btnSpeak) {
+  btnSpeak.addEventListener('click', () => {
+    if (!avatarState.hasWelcomed) {
+      showAvatar(avatarMsgs.welcome);
+      avatarState.hasWelcomed = true;
     }
+    
+    // Verificar si ya está activo
+    if (resourceManager.speechActive) {
+      console.warn('⚠️ Reconocimiento de voz ya activo');
+      return;
+    }
+    
+    window.dispatchEvent(new Event('startSpeech'));
+  });
+}
 
     if (btnBack) {
         btnBack.addEventListener('click', () => {
@@ -684,30 +873,63 @@ if (avatarContainer) {
         filtered.forEach(w => matchedWordsSet.add(w));
     });
 
-    // 12) Reading complete -> UI + Stats + metrics
+    // 7. MODIFICAR readingComplete para limpiar recursos
     window.addEventListener('readingComplete', async () => {
-        const matchesCount = matchedWordsSet.size;
-        const totalCount = originalWords.length || 1;
-        const percent = Math.round((matchesCount / totalCount) * 100);
+    const matchesCount = matchedWordsSet.size;
+    const totalCount = originalWords.length || 1;
+    const percent = Math.round((matchesCount / totalCount) * 100);
 
-        completedEl.innerText = `¡Completado! Precisión: ${percent}%`;
-        completedEl.hidden = false;
-        btnNext.hidden = false;
+    completedEl.innerText = `¡Completado! Precisión: ${percent}%`;
+    completedEl.hidden = false;
+    btnNext.hidden = false;
 
-        if (completedEl) completedEl.style.display = 'block';
-        if (btnNext) btnNext.style.display = 'inline-block';
+    if (completedEl) completedEl.style.display = 'block';
+    if (btnNext) btnNext.style.display = 'inline-block';
 
-        const elmWordMatched = document.getElementById('word-matched');
-        if (elmWordMatched) elmWordMatched.innerText = matchesCount;
+    const elmWordMatched = document.getElementById('word-matched');
+    if (elmWordMatched) elmWordMatched.innerText = matchesCount;
 
-        try {
-            const { updatedStats } = await updateStat('lecturas_leidas', 1, lecturaId, grado);
-            stats = updatedStats;
-            renderStats(stats);
-        } catch (err) {
-            console.error('Error actualizando lecturas:', err);
-        }
+    // Detener reconocimiento de voz explícitamente
+    detenerReconocimiento();
+
+    try {
+        const { updatedStats } = await updateStat('lecturas_leidas', 1, lecturaId, grado);
+        stats = updatedStats;
+        renderStats(stats);
+    } catch (err) {
+        console.error('Error actualizando lecturas:', err);
+    }
     });
+
+    // 9. OPTIMIZACIÓN ADICIONAL: Detectar bajo rendimiento
+    let frameDropCount = 0;
+    let lastFrameTime = Date.now();
+
+    function monitorPerformance() {
+    const now = Date.now();
+    const delta = now - lastFrameTime;
+    
+    // Si pasan más de 2 segundos entre frames, es posible que el sistema esté sobrecargado
+    if (delta > 2000) {
+        frameDropCount++;
+        
+        // Si hay más de 3 frames perdidos, aumentar intervalo de detección
+        if (frameDropCount > 3) {
+        console.warn('⚠️ Rendimiento bajo detectado. Reduciendo frecuencia de análisis.');
+        // Aquí podrías aumentar dinámicamente los intervalos
+        }
+    } else {
+        frameDropCount = Math.max(0, frameDropCount - 1);
+    }
+    
+    lastFrameTime = now;
+    requestAnimationFrame(monitorPerformance);
+    }
+
+    // Iniciar monitor solo en móviles
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    monitorPerformance();
+    }
 
     // 13) Game complete -> Stats
     window.addEventListener('gameComplete', async () => {

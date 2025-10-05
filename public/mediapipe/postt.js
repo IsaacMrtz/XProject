@@ -1,48 +1,88 @@
+// postt.js - VERSIÓN OPTIMIZADA
 
-export function iniciarPostura(video) {
-  const pose = new Pose({
-    locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${f}`
-  });
-  pose.setOptions({
-    modelComplexity: 1,
-    minDetectionConfidence: 0.6,
-    minTrackingConfidence: 0.6
-  });
-  pose.onResults(results => {
-    const lm = results.poseLandmarks || [];
-    let estado = 'distraído';
-    if (lm.length) {
-      const nose = lm[0],
-            l = lm[11], r = lm[12],
-            torsoWidth = Math.abs(l.x - r.x) || 0.2,
-            centerX = (l.x + r.x) / 2,
-            offset = Math.abs(nose.x - centerX);
-      estado = offset > torsoWidth * 0.5 ? 'distraído' : 'atento';
-    }
-    window.dispatchEvent(new CustomEvent('attentionDetected', { detail: estado }));
-  });
-
-  const camera = new Camera(video, {
-    onFrame: async () => await pose.send({ image: video }),
-    width: video.videoWidth,
-    height: video.videoHeight
-  });
-  camera.start();
-}
+let poseInstance = null;
+let cameraInstance = null;
+let isPaused = false;
+let isProcessing = false;
+let lastProcessTime = 0;
+const PROCESS_INTERVAL = 500; // Procesar cada 500ms en lugar de cada frame
 
 export function initAttention(video) {
-  const pose = new Pose({ locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${f}` });
-  pose.setOptions({ modelComplexity: 1, minDetectionConfidence: .6, minTrackingConfidence: .6 });
-  pose.onResults(res => {
+  // Evitar inicializar múltiples veces
+  if (poseInstance) {
+    console.warn('Pose ya inicializado');
+    return;
+  }
+
+  poseInstance = new Pose({ 
+    locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${f}` 
+  });
+  
+  // Configuración más ligera
+  poseInstance.setOptions({ 
+    modelComplexity: 0, // 0 = lite, 1 = full, 2 = heavy
+    smoothLandmarks: true,
+    enableSegmentation: false, // Desactivar segmentación innecesaria
+    smoothSegmentation: false,
+    minDetectionConfidence: 0.5, // Bajado de 0.6
+    minTrackingConfidence: 0.5   // Bajado de 0.6
+  });
+  
+  poseInstance.onResults(res => {
     const lm = res.poseLandmarks || [];
     const state = lm.length
       ? (Math.abs(lm[0].x - (lm[11].x + lm[12].x)/2) > Math.abs(lm[11].x - lm[12].x)*0.5
          ? 'distraído' : 'atento')
       : 'distraído';
+    
     window.dispatchEvent(new CustomEvent('attentionDetected', { detail: state }));
   });
-  new Camera(video, { 
-    onFrame: async () => await pose.send({ image: video }),
-    width: video.videoWidth, height: video.videoHeight 
-  }).start();
+  
+  // Camera con FPS limitado
+  cameraInstance = new Camera(video, { 
+    onFrame: async () => {
+      // Control de throttling manual
+      const now = Date.now();
+      if (isPaused || isProcessing || (now - lastProcessTime < PROCESS_INTERVAL)) {
+        return;
+      }
+      
+      isProcessing = true;
+      lastProcessTime = now;
+      
+      try {
+        await poseInstance.send({ image: video });
+      } catch (err) {
+        console.warn('MediaPipe Pose error:', err);
+      } finally {
+        isProcessing = false;
+      }
+    },
+    width: 320,  // Reducido
+    height: 240  // Reducido
+  });
+  
+  cameraInstance.start();
+}
+
+// Funciones de control
+export function pauseAttentionDetection() {
+  isPaused = true;
+}
+
+export function resumeAttentionDetection() {
+  isPaused = false;
+}
+
+export function stopAttentionDetection() {
+  if (cameraInstance) {
+    cameraInstance.stop();
+    cameraInstance = null;
+  }
+  if (poseInstance) {
+    poseInstance.close();
+    poseInstance = null;
+  }
+  isPaused = false;
+  isProcessing = false;
 }

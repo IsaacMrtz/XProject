@@ -1,25 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login</title>
-	<link rel="stylesheet" href="resources/css/login.css">
+	<title>Login - Sistema Educativo</title>
+	<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+	<link href="/resources/css/login.css" rel="stylesheet">
+	
+
 </head>
 <body>
 	<div class="login-form">
-		<h1>Inicia Sesión</h1>
+		<h1>Bienvenido</h1>
+		<p class="login-subtitle">Inicia sesión para continuar</p>
+		
 		<form action="auth" method="POST">
-			<input type="text" autocomplete="off" name="user" placeholder="User" autofocus required>
-			<input type="password" autocomplete="off" name="pass" placeholder="Password" required>
-			<input type="submit" class="btn-login" value="Login">
+			<div class="input-group">
+				<label for="user">Usuario</label>
+				<input type="text" id="user" autocomplete="off" name="user" placeholder="Ingresa tu usuario" autofocus required>
+			</div>
+			
+			<div class="input-group">
+				<label for="pass">Contraseña</label>
+				<input type="password" id="pass" autocomplete="off" name="pass" placeholder="Ingresa tu contraseña" required>
+			</div>
+			
+			<input type="submit" class="btn-login" value="Iniciar Sesión">
 		</form>
-		<a href="register" class="btn-register">Register</a>
-		
-		
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-   
+		<div class="separator">
+			<span>o</span>
+		</div>
+
+		<a href="register" class="btn-register">Crear cuenta nueva</a>
+
+		<div class="form-footer">
+			<p>Sistema Educativo 2025</p>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 </html>

@@ -1,246 +1,583 @@
-/* 1) Variables y tipografía */
-:root {
-  --color-primary:       #406FF3;
-  --color-secondary:     #FFB703;
-  --color-neutral-light: #F9FAFB;
-  --color-neutral-dark:  #2C3E50;
-  --color-accent:        #4CAF50;
+    /* ============================================
+       VARIABLES Y TIPOGRAFÍA
+       ============================================ */
+    :root {
+      --color-primary:       #5B6DCD;
+      --color-secondary:     #FFB703;
+      --color-neutral-light: #F9FAFB;
+      --color-neutral-dark:  #2C3E50;
+      --color-accent:        #10B981;
+      --color-pink:          #FF6B9D;
+      --color-cyan:          #4ECDC4;
+      --color-purple:        #7C3AED;
 
-  --font-main:    'Nunito', sans-serif;
-  --font-alt:     'poppins', sans-serif;
+      --font-main:    'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-alt:     'Poppins', sans-serif;
 
-  --transition:   0.3s ease;
-  --spacer:       1rem;
-  --card-radius:  12px;
-}
+      --transition:   0.3s ease;
+      --spacer:       1rem;
+      --card-radius:  16px;
+      --sidebar-width: 6rem;
+    }
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* 2) Grid principal: contenido + sidebar */
-.nivelC-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  align-items: start;
-  margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
-  padding: var(--spacer) 2rem;
-  background: var(--color-neutral-light);
-  
-}
-.page-wrapper {
-  max-width: 1100px; /* Ancho máximo similar al de Duolingo. ¡Puedes ajustarlo! */
-  margin-left: auto;  /* Estas dos reglas centran el contenedor */
-  margin-right: auto;
-  padding: 0 2rem;    /* Espacio a los lados para que no se pegue al borde en pantallas medianas */
-}
+    body {
+      font-family: var(--font-main);
+      background: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-@media (max-width: 992px) { /* Usamos un punto de quiebre un poco más grande */
-  
-  .page-wrapper {
-    padding: 0 1rem; /* Menos padding en los lados para tabletas y móviles */
-  }
+    main {
+      min-height: 100vh;
+    }
 
-  .nivelC-container {
-    grid-template-columns: 1fr; /* Apila el contenido principal y el sidebar */
-    margin-left: 0; /* Aseguramos que no haya margen izquierdo */
-  }
+    /* ============================================
+       CONTENEDOR PRINCIPAL
+       ============================================ */
+    .page-wrapper {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 2rem;
+    }
 
-  /* Opcional: Centrar el botón de regreso en móvil */
-  .botones-regreso {
-    justify-content: center;
-  }
-}
+    .nivelC-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 3rem;
+      align-items: start;
+      margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
+      padding: 2rem 2rem;
+      min-height: 100vh;
+    }
 
-/* 3) Contenido principal */
+    /* ============================================
+       SECCIÓN PRINCIPAL CON ZIGZAG
+       ============================================ */
+    .zigzag-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 5%;
+      margin-bottom: 2rem;
+      position: relative;
+    }
 
+    /* Línea decorativa de fondo */
+    .zigzag-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, 
+        var(--color-primary) 0%, 
+        var(--color-purple) 50%, 
+        var(--color-pink) 100%);
+      opacity: 0.2;
+      border-radius: 2px;
+      z-index: 0;
+    }
 
-.titulo-principal,
-.descripcion,
-.subtitulo {
-  margin-bottom: var(--spacer);
-}
-.titulo-principal {
-  font-family: var(--font-alt);
-  font-size: 2rem;
-  color: var(--color-primary);
-}
-.descripcion {
-  font-size: 1rem;
-  color: var(--color-neutral-dark);
-  line-height: 1.5;
-}
-.subtitulo {
-  font-family: var(--font-alt);
-  font-size: 1.2rem;
-  color: var(--color-neutral-dark);
-}
+    /* ============================================
+       BOTONES DE LECCIONES - ESTILO DUOLINGO+
+       ============================================ */
+    .lesson-button {
+      position: relative;
+      margin-bottom: 4rem;
+      z-index: 1;
+      animation: fadeInScale 0.6s ease backwards;
+      animation-delay: var(--delay, 0s);
+    }
 
-.zigzag-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem 20%;
-  margin-bottom: var(--spacer)     /* Añade espacio arriba/abajo y a los lados */
-}
+    /* Zigzag: impares a la izquierda, pares a la derecha */
+    .lesson-button:nth-child(odd) {
+      align-self: flex-start;
+      margin-left: 10%;
+    }
 
-/* cada botón absolute en zig-zag */
-.lesson-button {
-  position: relative; /* Cambiado de 'absolute' a 'relative' */
-  margin-bottom: 2rem;  /* Espacio vertical entre botones */
-  
-  /* Ya no necesitamos esto aquí, la animación lo maneja */
-  /* transform: translate(-50%, -50%); */
+    .lesson-button:nth-child(even) {
+      align-self: flex-end;
+      margin-right: 10%;
+    }
 
-  /* Mantenemos las animaciones */
-  
-}
+    /* Botón circular con gradiente vibrante */
+    .btn-lesson {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #58cc02, #4ea502);
+      box-shadow:
+        inset 0 4px 8px rgba(0,0,0,0.2),
+        0 8px 0 #3e8e00,
+        0 12px 20px rgba(88, 204, 2, 0.4);
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-/* NUEVA REGLA: Creamos el zig-zag con CSS */
-.lesson-button:nth-child(odd) {
-  /* Los impares (1, 3, 5...) se alinean a la izquierda */
-  align-self: flex-start;
-}
+    /* Anillo exterior decorativo */
+    .btn-lesson::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      width: calc(100% + 16px);
+      height: calc(100% + 16px);
+      border-radius: 50%;
+      border: 3px solid rgba(88, 204, 2, 0.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
 
-.lesson-button:nth-child(even) {
-  /* Los pares (2, 4, 6...) se alinean a la derecha */
-  align-self: flex-end;
-}
+    /* Brillo interior */
+    .btn-lesson::after {
+      content: '';
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      width: 30%;
+      height: 30%;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      filter: blur(8px);
+    }
 
-/* 5) Botones “Duolingo-Style” */
-.btn-lesson {
-  position: relative;
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #58cc02, #4ea502);
-  box-shadow:
-    inset 0 4px 8px rgba(0,0,0,0.2),
-    0 6px 0 #3e8e00,
-    0 8px 16px rgba(0,0,0,0.3);
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-.btn-lesson::after {
-  content: '';
-  position: absolute;
-  top: -6px; left: -6px;
-  width: calc(100% + 12px);
-  height: calc(100% + 12px);
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.6);
-}
-.btn-lesson:hover {
-  transform: scale(1.1);
-  box-shadow:
-    inset 0 6px 12px rgba(0,0,0,0.25),
-    0 4px 0 #3e8e00,
-    0 12px 24px rgba(0,0,0,0.4);
-}
+    .btn-lesson:hover {
+      transform: scale(1.15) rotate(5deg);
+      box-shadow:
+        inset 0 6px 12px rgba(0,0,0,0.25),
+        0 6px 0 #3e8e00,
+        0 16px 30px rgba(88, 204, 2, 0.6);
+    }
 
-/* 6) Tooltips */
-.tooltip {
-  position: absolute;
-  top: -40px;
-  background: rgba(0,0,0,0.85);
-  color: var(--color-accent);
-  font-family: var(--font-alt);
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  opacity: 1;
-  transform: translateY(0px);
-  animation:
-    zigzag 1.2s ease-in-out infinite var(--delay, 0s),
-    float 2s ease-in-out infinite 0s;
-  
-}
+    .btn-lesson:active {
+      transform: scale(1.05);
+      box-shadow:
+        inset 0 4px 8px rgba(0,0,0,0.3),
+        0 4px 0 #3e8e00,
+        0 8px 16px rgba(88, 204, 2, 0.4);
+    }
 
-.bubble {
-  position: absolute;
-  bottom: 100%;             /* se ancla justo arriba del contenedor */
-  left: 50%;                /* centrado horizontal */
-  transform: translateX(-50%);
-  margin-bottom: 8px;       /* espacio entre burbuja e icono */
-  padding: 12px 20px;
-  background-color: lightblue;
-  font-family: var(--font-main);
-  border-radius: 20px;
-  z-index: 10;
-   white-space: nowrap;   /* 👈 fuerza el texto en una sola línea */
-  display: inline-block; /* 👈 asegura que la burbuja se ajuste al contenido 
-  /* tus animaciones existentes */
-  animation:
-    zigzag 1.2s ease-in-out infinite var(--delay, 0s),
-    float   2s   ease-in-out infinite 0s;
-}
+    .icon {
+      position: relative;
+      z-index: 2;
+      animation: iconBounce 3s ease-in-out infinite;
+    }
 
+    /* ============================================
+       BURBUJA DE TOOLTIP
+       ============================================ */
+    .bubble {
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-family: var(--font-main);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      z-index: 10;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      animation: bubbleFloat 2s ease-in-out infinite;
+    }
 
+    /* Flecha de la burbuja */
+    .bubble::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 10px;
+      border-style: solid;
+      border-color: #764ba2 transparent transparent transparent;
+    }
 
-.bubble::after {
-  content: "";
-  position: absolute;
-  top: 100%;                 /* justo debajo de la burbuja */
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 8px;
-  border-style: solid;
-  border-color: lightblue transparent transparent transparent;
-}
-.lesson-button:hover .tooltip {
-  opacity: 1;
-  transform: translateY(0);
-}
+    .lesson-button:hover .bubble {
+      opacity: 1;
+      bottom: 120%;
+    }
 
-/* 7) Zigzag keyframes */
-@keyframes zigzag {
-  0%,100%  { transform: translateX(0)    translateY(0); }
-  25%       { transform: translateX(15px) translateY(5px); }
-  50%       { transform: translateX(0)    translateY(0); }
-  75%       { transform: translateX(-15px) translateY(5px); }
-}
+    /* Estados de lección */
+    .lesson-button.completado .btn-lesson {
+      background: linear-gradient(145deg, #FFD700, #FFA500);
+      box-shadow:
+        inset 0 4px 8px rgba(0,0,0,0.2),
+        0 8px 0 #CC8400,
+        0 12px 20px rgba(255, 215, 0, 0.4);
+    }
 
-/* 8) Float keyframes */
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50%     { transform: translateY(-6px); }
-}
+    .lesson-button.completado .btn-lesson::before {
+      border-color: rgba(255, 215, 0, 0.4);
+    }
 
+    .lesson-button.bloqueado .btn-lesson {
+      background: linear-gradient(145deg, #9CA3AF, #6B7280);
+      box-shadow:
+        inset 0 4px 8px rgba(0,0,0,0.2),
+        0 8px 0 #4B5563,
+        0 12px 20px rgba(156, 163, 175, 0.3);
+      cursor: not-allowed;
+    }
 
-/* 9) Sidebar de estadísticas */
-.nivelC-sidebar {
-  position: sticky;
-  top: var(--spacer);
-  height: calc(100vh - var(--spacer)*2);
-  overflow-y: auto;      /* si se desbordan las stats */
-}
-.stat-card {
-  background: #fff;
-  padding: 1rem;
-  border-radius: var(--card-radius);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  font-family: var(--font-main);
-  color: var(--color-neutral-dark);
-  text-align: center;
-}
+    /* ============================================
+       SIDEBAR DE ESTADÍSTICAS
+       ============================================ */
+    .nivelC-sidebar {
+      position: sticky;
+      top: 2rem;
+      height: fit-content;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
 
-/* 10) Botón regresar */
-.botones-regreso {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--spacer);
-}
-.btn-back {
-  background: var(--color-secondary);
-  color: #fff;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-family: var(--font-alt);
-  font-weight: 600;
-  text-decoration: none;
-  transition: background var(--transition), transform var(--transition);
-}
-.btn-back:hover {
-  background: #e6a500;
-  transform: translateY(-2px);
-}
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--card-radius);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      font-family: var(--font-main);
+      color: var(--color-neutral-dark);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--card-gradient-1), var(--card-gradient-2));
+    }
+
+    .stat-card:nth-child(1) {
+      --card-gradient-1: #FF6B9D;
+      --card-gradient-2: #F43F5E;
+    }
+
+    .stat-card:nth-child(3) {
+      --card-gradient-1: #4ECDC4;
+      --card-gradient-2: #06B6D4;
+    }
+
+    .stat-card:nth-child(5) {
+      --card-gradient-1: #7C3AED;
+      --card-gradient-2: #5B21B6;
+    }
+
+    .stat-card:nth-child(7) {
+      --card-gradient-1: #10B981;
+      --card-gradient-2: #059669;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      border-color: var(--card-gradient-1);
+    }
+
+    .stat-card span {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--color-primary);
+    }
+
+    /* Barra de progreso */
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #E5E7EB;
+      border-radius: 10px;
+      margin-top: 1rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar > div {
+      height: 100%;
+      background: linear-gradient(90deg, #FF6B9D, #F43F5E);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      position: relative;
+    }
+
+    .progress-bar > div::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    /* Botones de acción */
+    .botones-regreso {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn-back {
+      background: linear-gradient(135deg, var(--color-secondary), #e6a500);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      font-family: var(--font-alt);
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      transition: all var(--transition);
+      box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3);
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(135deg, #e6a500, var(--color-secondary));
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 183, 3, 0.4);
+    }
+
+    /* ============================================
+       ANIMACIONES
+       ============================================ */
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.3;
+      }
+      50% {
+        transform: scale(1.05);
+        opacity: 0.6;
+      }
+    }
+
+    @keyframes bubbleFloat {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-8px);
+      }
+    }
+
+    @keyframes iconBounce {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-5px) rotate(5deg);
+      }
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+
+    /* Tablet grande y escritorio pequeño (768px - 1199px) */
+    @media (max-width: 1199px) {
+      .nivelC-container {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 2rem;
+      }
+
+      .btn-lesson {
+        width: 80px;
+        height: 80px;
+        font-size: 1.8rem;
+      }
+
+      .bubble {
+        font-size: 0.9rem;
+        padding: 10px 16px;
+      }
+    }
+
+    /* Tablet y móvil (< 992px) */
+    @media (max-width: 992px) {
+      .page-wrapper {
+        padding: 0 1rem;
+      }
+
+      .nivelC-container {
+        grid-template-columns: 1fr;
+        margin-left: 0;
+        margin-top: 5rem;
+        gap: 2rem;
+      }
+
+      .zigzag-wrapper {
+        padding: 2rem 2%;
+      }
+
+      .lesson-button:nth-child(odd),
+      .lesson-button:nth-child(even) {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .lesson-button:nth-child(odd) {
+        align-self: flex-start;
+        margin-left: 5%;
+      }
+
+      .lesson-button:nth-child(even) {
+        align-self: flex-end;
+        margin-right: 5%;
+      }
+
+      .nivelC-sidebar {
+        position: static;
+        max-height: none;
+      }
+
+      .botones-regreso {
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Móvil (< 768px) */
+    @media (max-width: 768px) {
+      .nivelC-container {
+        padding: 1.5rem 1rem;
+        margin-top: 4.5rem;
+      }
+
+      .zigzag-wrapper {
+        padding: 2rem 0;
+      }
+
+      .lesson-button {
+        margin-bottom: 3rem;
+      }
+
+      .btn-lesson {
+        width: 70px;
+        height: 70px;
+        font-size: 1.6rem;
+      }
+
+      .btn-lesson::before {
+        top: -6px;
+        left: -6px;
+        width: calc(100% + 12px);
+        height: calc(100% + 12px);
+        border-width: 2px;
+      }
+
+      .bubble {
+        font-size: 0.85rem;
+        padding: 8px 14px;
+      }
+
+      .stat-card {
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+      }
+
+      .stat-card span {
+        font-size: 1.2rem;
+      }
+
+      .btn-back {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Móvil pequeño (< 480px) */
+    @media (max-width: 480px) {
+      .nivelC-container {
+        padding: 1rem 0.75rem;
+      }
+
+      .zigzag-wrapper::before {
+        width: 2px;
+      }
+
+      .lesson-button:nth-child(odd) {
+        margin-left: 2%;
+      }
+
+      .lesson-button:nth-child(even) {
+        margin-right: 2%;
+      }
+
+      .btn-lesson {
+        width: 65px;
+        height: 65px;
+        font-size: 1.5rem;
+        box-shadow:
+          inset 0 3px 6px rgba(0,0,0,0.2),
+          0 6px 0 #3e8e00,
+          0 10px 16px rgba(88, 204, 2, 0.3);
+      }
+
+      .bubble {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+
+      .stat-card {
+        padding: 1rem;
+      }
+
+      .btn-back {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .botones-regreso {
+        flex-direction: column;
+      }
+    }

@@ -1,4 +1,7 @@
-// public/resources/sentiment/analysis.js
+// analysis.js - VERSIÓN OPTIMIZADA
+
+let recognitionInstance = null;
+let isRecognizing = false;
 
 export function iniciarReconocimiento() {
   const Reconocimiento = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -7,38 +10,57 @@ export function iniciarReconocimiento() {
     return;
   }
 
-  const recognition = new Reconocimiento();
-  recognition.lang = 'es-ES';
-  recognition.continuous = true;
-  recognition.interimResults = true;
+  // Evitar múltiples instancias
+  if (isRecognizing && recognitionInstance) {
+    console.warn('Reconocimiento ya activo');
+    return;
+  }
+
+  recognitionInstance = new Reconocimiento();
+  recognitionInstance.lang = 'es-ES';
+  recognitionInstance.continuous = true;
+  recognitionInstance.interimResults = true;
+  recognitionInstance.maxAlternatives = 1; // Solo mejor resultado
 
   let transcriptFinal = '';
+  let debounceTimer = null;
 
-  recognition.onresult = event => {
-    // Acumula resultados
+  // IMPORTANTE: Pausar detecciones visuales cuando empiece a hablar
+  recognitionInstance.onstart = () => {
+    console.log('🎤 Reconocimiento iniciado - Pausando detecciones visuales');
+    isRecognizing = true;
+    window.dispatchEvent(new Event('speechStarted'));
+  };
+
+  recognitionInstance.onresult = event => {
+    clearTimeout(debounceTimer);
+
     let interimTranscript = '';
 
     for (let i = event.resultIndex; i < event.results.length; i++) {
       const resultado = event.results[i];
-      const texto    = resultado[0].transcript;
+      const texto = resultado[0].transcript;
 
       if (resultado.isFinal) {
-        // 1) Resultado final: lo agregamos y notificamos completion
         transcriptFinal += texto + ' ';
-        const completo = transcriptFinal.trim();
-
-        // Emitir transcripción final
-        window.dispatchEvent(new CustomEvent('speechResult', { detail: completo }));
-
-        // Emitir evento de lectura completa
-        window.dispatchEvent(new Event('readingComplete'));
-
-        // Analizar sentimiento sobre el texto completo
-        analizarSentimiento(completo);
+        
+        // Debounce para evitar múltiples eventos
+        debounceTimer = setTimeout(() => {
+          const completo = transcriptFinal.trim();
+          
+          // Emitir transcripción final
+          window.dispatchEvent(new CustomEvent('speechResult', { detail: completo }));
+          
+          // Emitir evento de lectura completa
+          window.dispatchEvent(new Event('readingComplete'));
+          
+          // Analizar sentimiento solo una vez al final
+          analizarSentimiento(completo);
+        }, 500);
 
       } else {
-        // 2) Resultado intermedio: mostramos parcial
         interimTranscript += texto;
+        // Actualizar UI con resultados intermedios (throttled)
         window.dispatchEvent(new CustomEvent('speechResult', {
           detail: (transcriptFinal + interimTranscript).trim()
         }));
@@ -46,22 +68,44 @@ export function iniciarReconocimiento() {
     }
   };
 
-  recognition.onerror = e => {
+  recognitionInstance.onerror = e => {
     console.error('🎤 Error reconocimiento:', e.error);
+    
+    // Si hay error, reintentar solo si no fue por permisos
+    if (e.error !== 'no-speech' && e.error !== 'aborted') {
+      isRecognizing = false;
+      window.dispatchEvent(new Event('speechEnded'));
+    }
   };
 
-  recognition.onend = () => {
-    console.log('🎤 SpeechRecognition ended');
+  recognitionInstance.onend = () => {
+    console.log('🎤 Reconocimiento finalizado - Reanudando detecciones visuales');
+    isRecognizing = false;
+    recognitionInstance = null;
+    window.dispatchEvent(new Event('speechEnded'));
   };
 
   // Inicia reconocimiento
-  recognition.start();
-  console.log('🎤 Reconocimiento de voz iniciado');
+  try {
+    recognitionInstance.start();
+    console.log('🎤 Reconocimiento de voz iniciado');
+  } catch (err) {
+    console.error('Error al iniciar reconocimiento:', err);
+    isRecognizing = false;
+  }
+}
+
+export function detenerReconocimiento() {
+  if (recognitionInstance) {
+    recognitionInstance.stop();
+    recognitionInstance = null;
+    isRecognizing = false;
+  }
 }
 
 async function analizarSentimiento(texto) {
   try {
-    const res  = await fetch('/api/analyze', {
+    const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: texto })
