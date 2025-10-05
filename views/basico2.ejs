@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lectura Nivel 2 - <%= nivel2.titulo %></title>
+  <link rel="stylesheet" href="/resources/css/basico.css">
+</head>
+<body>
+  <%- include('partials/nav2') %>
+
+  <main>
+    <div class="page-wrapper">
+      <div class="nivelC-container">
+        <section class="main-content">
+          <div class="reading-container">
+            <h1 class="titulo-principal"><%= nivel2.titulo %></h1>
+            <p class="descripcion"><%= nivel2.instrucciones %></p>
+
+            <!-- Exploración de sílabas -->
+            <div id="actividad-nivel2" class="" role="application" aria-label="Exploración de sílabas">
+              <!-- Aquí se renderizan los bloques desde orques2.js -->
+            </div>
+
+            <!-- Ejercicios auditivos (fase 2) -->
+            
+          </div>
+        </section>
+
+        <aside class="nivelC-sidebar" aria-label="Progreso y controles">
+          <h3>Avance de Sílabas 🎯</h3>
+          <div id="progreso-silabas"></div>
+          <div class="botones-regreso" style="margin-top: 2rem;">
+            <a href="/basico" class="btn-back">← Regresar a exploración</a>
+          </div>
+        </aside>
+        <a href="/actividad2?grado=primer&basico=nivel2" class="btn-primary">
+                    <i class="fas fa-dumbbell"></i>
+                    <p>Prueba tu oído</p>
+                </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal para detalles de sílabas -->
+  <div id="detalle-silaba-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <div id="modal-content-container">
+        <div class="letra-visual">
+          <img id="modal-imagen" src="" alt="Imagen asociada a la sílaba">
+          <div id="modal-silaba-display"></div>
+        </div>
+        <div class="letra-detalles">
+          <h2 id="modal-silaba"></h2>
+          <p id="modal-palabra"></p>
+          <button id="btn-reproducir" class="btn-secundario">🔊 Escuchar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/orques2.js" type="module"></script>
+  <script>
+    window.appData = <%- JSON.stringify({ nivel2 }) %>;
+  </script>
+</body>
+</html>

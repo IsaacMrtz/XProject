@@ -1,0 +1,51 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Actividad - <%= titulo %></title>
+      <link rel="stylesheet" href="/resources/css/basico.css">
+      </head>
+    <body>
+      <%- include('partials/nav2') %>
+
+      <main>
+  <div class="page-wrapper">
+    <div class="nivelC-container">
+      <section class="main-content">
+        <div class="reading-container"> 
+          <h1 class="titulo-principal"><%= titulo %></h1>
+          <p class="descripcion"><%= instrucciones %></p>
+          <div id="ejercicio-interactivo" class="ejercicio-interactivo">
+          </div>
+        </div>
+      </section>
+
+      <aside id="stats-aside-actividad" class="nivelC-sidebar">
+        <h3>Avance de Letras 🎯</h3>
+        <p>Acierta **10 veces** la pronunciación para dominar el sonido.</p>
+        <div class="progress-cards"></div>
+        
+        <div class="botones-regreso" style="margin-top: 2rem;">
+          <a href="/basico?grado=<%= grado %>&basico=nivel1" class="btn-back">
+            ← Regresar a la exploración
+          </a>
+        </div>
+      </aside> 
+    </div>
+  </div> 
+</main>
+
+      <script src="/scripts/orques2.js" type="module"></script>
+      <script>
+        // Pasa los datos necesarios al frontend, incluyendo grado y basico
+        window.appData = <%- JSON.stringify({ 
+            titulo, 
+            instrucciones, 
+            ejercicios, 
+            grado: grado, // Necesitas pasar estas variables desde el controlador
+            basico: 'nivel1' // Asumo que siempre es 'nivel1' por ahora, ajústalo según tu controlador
+        }) %>;
+      </script>
+    </body>
+    </html>

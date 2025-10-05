@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="resources/css/layouts.css">
+  
+ 
+</head>
+<body>
+  <header>
+    <button id="btnBack">← Volver</button>
+    
+  </header>
+<!-- Oculto al inicio pero presente en el DOM -->
+<div id="videoFrame" style="display:none;">
+  <video id="video" autoplay muted playsinline></video>
+</div>
+  <main>
+    <div id="content">
+      <div id="completed">¡Completado!</div>
+      <!-- Aquí inyecta tu título y texto dinámico -->
+      <!-- Por ejemplo: -->
+      <h2 id="itemTitle"></h2>
+      <p id="itemText"></p>
+
+
+      <div id="controls">
+        <button id="btnSpeak" class="control-btn">Hablar</button>
+        <button id="btnNext" class="control-btn" style="display:none;">
+          Siguiente →
+        </button>
+      </div>
+      <div id="transcription" class="transcription-box">
+      <em>Tu transcripción aparecerá aquí…</em>
+    </div>
+    </div>
+  </main>
+  <aside class="nivelC-sidebar">
+  <div class="stat-card">
+    📚 Lecturas: 
+    <span id="lecturas-leidas"><%= stats.lecturasLeidas %></span> /
+    <span id="total-lecturas"><%= stats.totalLecturas %></span>
+    <div class="progress-bar">
+      <div id="lecturas-bar"
+           style="width: <%= (stats.lecturasLeidas / stats.totalLecturas) * 100 %>%">
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="stat-card">
+    🎮 Juegos:
+    <span id="juegos-jugados"><%= stats.juegosJugados %></span>
+  </div>
+  <br>
+  <div class="stat-card">
+    🏅 Nivel:
+    <span id="nivel-actual"><%= stats.nivelActual %></span>
+  </div>
+  <br>
+  <div class="stat-card">
+    🚀 Desafíos activos:
+    <span id="desafios-activos"><%= stats.desafiosActivos %></span>
+  </div>
+  <div class="botones-regreso">
+                <a href="javascript:history.back()" class="btn-back">← Regresar</a>
+              </div>
+</aside>
+
+  <!-- Librerías y módulos -->
+  <script src="/resources/jsFace-Api/face-api.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+   <script>
+    window.appParams = {
+      grado: "<%= grado %>",
+      id:    "<%= id %>"
+    };
+    window.appStats = {
+      lecturasLeidas:  <%= stats.lecturasLeidas %>,
+      totalLecturas:   <%= stats.totalLecturas %>,
+      juegosJugados:   <%= stats.juegosJugados %>,
+      nivelActual:     <%= stats.nivelActual %>,
+      desafiosActivos: <%= stats.desafiosActivos %>
+    };
+  </script>
+     
+  <script type="module" src="/scripts/orquestador.js"></script>
+  <script type="module" src="../scripts/uiRenderer.js"></script>
+
+
+    <!-- Paso de parámetros al cliente -->
+ 
+
+  <script>
+    // Volver a la ruta anterior
+    document.getElementById('btnBack').addEventListener('click', () => {
+      window.history.back();
+    });
+
+    // Escucha evento de “completado” desde orquestador.js
+    window.addEventListener('readingComplete', () => {
+      document.getElementById('completed').style.display = 'block';
+      document.getElementById('btnNext').style.display = 'inline-block';
+    });
+
+    // Botón Hablar → activa Web Speech
+    document.getElementById('btnSpeak').addEventListener('click', () => {
+      window.dispatchEvent(new Event('startSpeech')); 
+      // Orquestador debe escuchar startSpeech y arrancar reconocimiento
+    });
+
+    // Botón Siguiente → recarga contenido según orquestador
+    document.getElementById('btnNext').addEventListener('click', () => {
+      window.dispatchEvent(new Event('nextItem'));
+      // Orquestador escucha nextItem y carga siguiente ítem
+      document.getElementById('completed').style.display = 'none';
+      document.getElementById('btnNext').style.display = 'none';
+    });
+  </script>
+</body>
+</html>

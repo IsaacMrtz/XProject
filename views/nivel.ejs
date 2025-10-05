@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      
+      
+      <link rel="stylesheet" href="resources/css/styles.css">
+</head>
+<body >
+ <%- include('partials/nav2') %>
+
+<div class="section-container inicio-container levels-main">
+
+
+  <h1 class="titulo-principal"><%= data.titulo %> <%= nombre %>  </h1>
+  <br>
+  <p class="descripcion"><%= data.descripcion %></p>
+
+  <ul class="temas-lista">
+    <% data.temas.forEach(t => { %>
+      <li><%= t %></li>
+    <% }) %>  
+  </ul>
+
+
+<div class="page-content levels-main">
+  <div class="levels-grid">
+    <!-- aquí van tus form.section-link / .section-box -->
+     <a href="/nivelC?grado=<%= grado %>" class="section-link">
+
+    <section class="section-box">
+      <h3>Vamos alla!</h3>
+      <p>Descubre el mundo natural a través de imágenes y experimentos simples.</p>
+      
+    </section>
+  </a>
+  </div>
+
+  <div class="levels-grid">
+    <!-- aquí van tus form.section-link / .section-box -->
+     <a href="/basico?grado=<%= grado %>&basico=nivel1"class="section-link">
+
+    <section class="section-box">
+      <h3>Nivel 1</h3>
+      <p>Aprende los sonidos de las letras o palabras.</p>
+      
+    </section>
+  </a>
+  </div>
+
+  <div class="levels-grid">
+    <!-- aquí van tus form.section-link / .section-box -->
+     <a href="/basico2?grado=<%= grado %>&basico=nivel2"class="section-link">
+
+    <section class="section-box">
+      <h3>Nivel 2</h3>
+      <p>Aprende los sonidos de silabas y arma palabras.</p>
+      
+    </section>
+  </a>
+  </div>
+
+
+
+
+
+     <center><a href="javascript:history.back()" class="btn-back">← Regresar</a></center>
+</div>
+
+</div>
+  
+
+  
+
+
+
+</body>
+</html>
+

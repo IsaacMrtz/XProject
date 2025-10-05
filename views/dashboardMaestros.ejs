@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard de <%= nombreMaestro %></title>
+  <style>
+    table { width:100%; border-collapse:collapse }
+    th, td { padding:8px; border:1px solid #ccc; text-align:left }
+    details { font-size:0.9em; }
+    .detail-lists { display:flex; gap:1em; margin-top:0.5em }
+    .detail-lists div { flex:1 }
+  </style>
+</head>
+<body>
+  <h1>Bienvenido, <%= nombreMaestro %> 👩‍🏫</h1>
+
+  <% if (!resumen.length) { %>
+    <p>No hay estudiantes asignados o progreso registrado.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Alumno</th>
+          <th>Correctas</th>
+          <th>Erróneas</th>
+          <th>Total</th>
+          <th>Último avance</th>
+          <th>Detalles</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% resumen.forEach(r => { %>
+        <tr>
+          <td><%= r.alumno %></td>
+          <td><%= r.correctas %></td>
+          <td><%= r.errores %></td>
+          <td><%= r.total %></td>
+          <td><%= r.ultAvance %></td>
+          <td>
+            <details>
+              <summary>Ver listas</summary>
+              <div class="detail-lists">
+                <div>
+                  <strong>Aciertos:</strong>
+                  <% if (r.correctasList.length) { %>
+                    <ul>
+                      <% r.correctasList.forEach(s => { %>
+                        <li><%= s %></li>
+                      <% }) %>
+                    </ul>
+                  <% } else { %>
+                    <p>—</p>
+                  <% } %>
+                </div>
+                <div>
+                  <strong>Errores:</strong>
+                  <% if (r.erroresList.length) { %>
+                    <ul>
+                      <% r.erroresList.forEach(e => { %>
+                        <li><%= e %></li>
+                      <% }) %>
+                    </ul>
+                  <% } else { %>
+                    <p>—</p>
+                  <% } %>
+                </div>
+              </div>
+            </details>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</body>
+</html>

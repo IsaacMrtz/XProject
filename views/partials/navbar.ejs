@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Mestro</title>
+    
+    <link rel="stylesheet" href="resources/css/login.css">
+</head>
+<body class="body centered">
+    
+   <nav class="navbar">
+  <div class="navbar-logo">XProject</div>
+
+  <button class="hamburger" id="btnToggleMenu" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="navbar-links" id="navbarLinks">
+    <a href="/index2" class="nav-link">Inicio</a>
+    <a href="/logout" class="nav-link logout-btn">Cerrar sesión</a>
+  </div>
+</nav>
+
+<script>
+  const btnMenu = document.getElementById('btnToggleMenu');
+  const navLinks = document.getElementById('navbarLinks');
+
+  btnMenu.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+</script>
+
+    
+</body>
+</html>

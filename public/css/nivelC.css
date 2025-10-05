@@ -1,0 +1,246 @@
+/* 1) Variables y tipografía */
+:root {
+  --color-primary:       #406FF3;
+  --color-secondary:     #FFB703;
+  --color-neutral-light: #F9FAFB;
+  --color-neutral-dark:  #2C3E50;
+  --color-accent:        #4CAF50;
+
+  --font-main:    'Nunito', sans-serif;
+  --font-alt:     'poppins', sans-serif;
+
+  --transition:   0.3s ease;
+  --spacer:       1rem;
+  --card-radius:  12px;
+}
+
+
+/* 2) Grid principal: contenido + sidebar */
+.nivelC-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-left: calc(var(--sidebar-width) + var(--spacer) * 2);
+  padding: var(--spacer) 2rem;
+  background: var(--color-neutral-light);
+  
+}
+.page-wrapper {
+  max-width: 1100px; /* Ancho máximo similar al de Duolingo. ¡Puedes ajustarlo! */
+  margin-left: auto;  /* Estas dos reglas centran el contenedor */
+  margin-right: auto;
+  padding: 0 2rem;    /* Espacio a los lados para que no se pegue al borde en pantallas medianas */
+}
+
+@media (max-width: 992px) { /* Usamos un punto de quiebre un poco más grande */
+  
+  .page-wrapper {
+    padding: 0 1rem; /* Menos padding en los lados para tabletas y móviles */
+  }
+
+  .nivelC-container {
+    grid-template-columns: 1fr; /* Apila el contenido principal y el sidebar */
+    margin-left: 0; /* Aseguramos que no haya margen izquierdo */
+  }
+
+  /* Opcional: Centrar el botón de regreso en móvil */
+  .botones-regreso {
+    justify-content: center;
+  }
+}
+
+/* 3) Contenido principal */
+
+
+.titulo-principal,
+.descripcion,
+.subtitulo {
+  margin-bottom: var(--spacer);
+}
+.titulo-principal {
+  font-family: var(--font-alt);
+  font-size: 2rem;
+  color: var(--color-primary);
+}
+.descripcion {
+  font-size: 1rem;
+  color: var(--color-neutral-dark);
+  line-height: 1.5;
+}
+.subtitulo {
+  font-family: var(--font-alt);
+  font-size: 1.2rem;
+  color: var(--color-neutral-dark);
+}
+
+.zigzag-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 20%;
+  margin-bottom: var(--spacer)     /* Añade espacio arriba/abajo y a los lados */
+}
+
+/* cada botón absolute en zig-zag */
+.lesson-button {
+  position: relative; /* Cambiado de 'absolute' a 'relative' */
+  margin-bottom: 2rem;  /* Espacio vertical entre botones */
+  
+  /* Ya no necesitamos esto aquí, la animación lo maneja */
+  /* transform: translate(-50%, -50%); */
+
+  /* Mantenemos las animaciones */
+  
+}
+
+/* NUEVA REGLA: Creamos el zig-zag con CSS */
+.lesson-button:nth-child(odd) {
+  /* Los impares (1, 3, 5...) se alinean a la izquierda */
+  align-self: flex-start;
+}
+
+.lesson-button:nth-child(even) {
+  /* Los pares (2, 4, 6...) se alinean a la derecha */
+  align-self: flex-end;
+}
+
+/* 5) Botones “Duolingo-Style” */
+.btn-lesson {
+  position: relative;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #58cc02, #4ea502);
+  box-shadow:
+    inset 0 4px 8px rgba(0,0,0,0.2),
+    0 6px 0 #3e8e00,
+    0 8px 16px rgba(0,0,0,0.3);
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.btn-lesson::after {
+  content: '';
+  position: absolute;
+  top: -6px; left: -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+.btn-lesson:hover {
+  transform: scale(1.1);
+  box-shadow:
+    inset 0 6px 12px rgba(0,0,0,0.25),
+    0 4px 0 #3e8e00,
+    0 12px 24px rgba(0,0,0,0.4);
+}
+
+/* 6) Tooltips */
+.tooltip {
+  position: absolute;
+  top: -40px;
+  background: rgba(0,0,0,0.85);
+  color: var(--color-accent);
+  font-family: var(--font-alt);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  opacity: 1;
+  transform: translateY(0px);
+  animation:
+    zigzag 1.2s ease-in-out infinite var(--delay, 0s),
+    float 2s ease-in-out infinite 0s;
+  
+}
+
+.bubble {
+  position: absolute;
+  bottom: 100%;             /* se ancla justo arriba del contenedor */
+  left: 50%;                /* centrado horizontal */
+  transform: translateX(-50%);
+  margin-bottom: 8px;       /* espacio entre burbuja e icono */
+  padding: 12px 20px;
+  background-color: lightblue;
+  font-family: var(--font-main);
+  border-radius: 20px;
+  z-index: 10;
+   white-space: nowrap;   /* 👈 fuerza el texto en una sola línea */
+  display: inline-block; /* 👈 asegura que la burbuja se ajuste al contenido 
+  /* tus animaciones existentes */
+  animation:
+    zigzag 1.2s ease-in-out infinite var(--delay, 0s),
+    float   2s   ease-in-out infinite 0s;
+}
+
+
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;                 /* justo debajo de la burbuja */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: lightblue transparent transparent transparent;
+}
+.lesson-button:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 7) Zigzag keyframes */
+@keyframes zigzag {
+  0%,100%  { transform: translateX(0)    translateY(0); }
+  25%       { transform: translateX(15px) translateY(5px); }
+  50%       { transform: translateX(0)    translateY(0); }
+  75%       { transform: translateX(-15px) translateY(5px); }
+}
+
+/* 8) Float keyframes */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-6px); }
+}
+
+
+/* 9) Sidebar de estadísticas */
+.nivelC-sidebar {
+  position: sticky;
+  top: var(--spacer);
+  height: calc(100vh - var(--spacer)*2);
+  overflow-y: auto;      /* si se desbordan las stats */
+}
+.stat-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: var(--card-radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-family: var(--font-main);
+  color: var(--color-neutral-dark);
+  text-align: center;
+}
+
+/* 10) Botón regresar */
+.botones-regreso {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacer);
+}
+.btn-back {
+  background: var(--color-secondary);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-family: var(--font-alt);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--transition), transform var(--transition);
+}
+.btn-back:hover {
+  background: #e6a500;
+  transform: translateY(-2px);
+}

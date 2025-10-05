@@ -1,0 +1,166 @@
+{
+  "primer": {
+    "crearPalabras": {
+      "titulo": "Juego de Palabras",
+      "descripcion": "Arrastra las letras para formar la palabra.",
+      "script": "juego.js",
+      "niveles": [
+        {
+          "nivel_id": 1,
+          "palabras": [
+            { "img": "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif", "palabra": "GATO" },
+            { "img": "https://media.giphy.com/media/Fu3OjBQiCs3s0ZuLY3/giphy.gif", "palabra": "PERRO" },
+            { "img": "https://media.giphy.com/media/CxdjpXgMIjoYokwJhj/giphy.gif", "palabra": "ARBOL" },
+            { "img": "https://media.giphy.com/media/BS4pv5OYGjujrrjVJ9/giphy.gif", "palabra": "CASA" }
+          ]
+        },
+        {
+          "nivel_id": 2,
+          "palabras": [
+            { "img": "https://media.giphy.com/media/nQaMsylXcTIRNorQLJ/giphy.gif", "palabra": "CARRO" },
+            { "img": "https://media.giphy.com/media/BmfHlDpPWJy899dy62/giphy.gif", "palabra": "SOL" },
+            { "img": "https://media.giphy.com/media/SvppVoFalA4ZUKN9X5/giphy.gif", "palabra": "NOCHE" },
+            { "img": "https://media.giphy.com/media/WJ5Av8cSY5ODf5GBEg/giphy.gif", "palabra": "MANZANA" }
+          ]
+        },
+        {
+          "nivel_id": 3,
+          "palabras": [
+            { "img": "https://media.giphy.com/media/zg7vGXdEAmiUYIl95j/giphy.gif", "palabra": "CUMPLEAÑOS" }
+          ]
+        }
+      ]
+    },
+    "crearImagenes": {
+      "script": "crearImagenes.js",
+      "niveles": [
+        {
+          "nivel_id": 1,
+          "titulo": "Arma el Gato",
+          "descripcion": "Coloca las piezas en el orden correcto para armar el gato 🐱",
+          "script": "crearImagenes.js",
+          "imagenCompleta": "/resources/img/gato.jpg",
+          "piezas": [
+            "/resources/img/gato_1.jpg",
+            "/resources/img/gato_2.jpg",
+            "/resources/img/gato_3.jpg",
+            "/resources/img/gato_4.jpg"
+          ]
+        },
+        {
+          "nivel_id": 2,
+          "titulo": "Arma la Casa",
+          "descripcion": "Coloca las piezas en su lugar para armar la casa 🏠",
+          "script": "crearImagenes.js",
+          "imagenCompleta": "/resources/img/casa.jpg",
+          "piezas": [
+            "/resources/img/casa_1.jpg",
+            "/resources/img/casa_2.jpg",
+            "/resources/img/casa_3.jpg",
+            "/resources/img/casa_4.jpg"
+          ]
+        }
+      ]
+    }
+  },
+  "segundo": {
+    "ordenarSilabas": {
+      "titulo": "Ordenar Sílabas",
+      "descripcion": "Ordena las sílabas para formar palabras.",
+      "script": "ordenarSilabas.js",
+      "niveles": [
+        {
+          "nivel_id": 1,
+          "palabras": [
+            { "correcta": "camisa", "silabas": ["ca", "mi", "sa"] },
+            { "correcta": "zapato", "silabas": ["za", "pa", "to"] },
+            { "correcta": "pelota", "silabas": ["pe", "lo", "ta"] }
+          ]
+        },
+        {
+          "nivel_id": 2,
+          "palabras": [
+            { "correcta": "mariposa", "silabas": ["ma", "ri", "po", "sa"] },
+            { "correcta": "elefante", "silabas": ["e", "le", "fan", "te"] }
+          ]
+        }
+      ]
+    },
+    "completarFrases": {
+      "titulo": "Completar Frases",
+      "descripcion": "Selecciona la palabra correcta para completar la frase.",
+      "script": "completarFrases.js",
+      "niveles": [
+        {
+          "nivel_id": 1,
+          "frases": [
+            { "texto": "El ___ ladra.", "opciones": ["perro", "gato"], "respuesta": "perro" },
+            { "texto": "El ___ vuela.", "opciones": ["casa", "ave"], "respuesta": "ave" }
+          ]
+        },
+        {
+          "nivel_id": 2,
+          "frases": [
+            { "texto": "El sol es muy ___.", "opciones": ["grande", "pequeño"], "respuesta": "grande" },
+            { "texto": "La ___ da leche.", "opciones": ["vaca", "mesa"], "respuesta": "vaca" }
+          ]
+        }
+      ]
+    }
+  },
+  "tercero": {
+    "ordenarOraciones": {
+      "titulo": "Ordenar Oraciones",
+      "descripcion": "Arrastra las palabras para formar oraciones correctas.",
+      "script": "ordenarOraciones.js",
+      "niveles": [
+        {
+          "nivel_id": 1,
+          "oraciones": [
+            { "palabras": ["El", "niño", "juega", "fútbol"], "respuesta": "El niño juega fútbol" },
+            { "palabras": ["En", "el", "jardín", "hay", "flores"], "respuesta": "En el jardín hay flores" }
+          ]
+        },
+        {
+          "nivel_id": 2,
+          "oraciones": [
+            { "palabras": ["María", "lee", "un", "libro"], "respuesta": "María lee un libro" },
+            { "palabras": ["El", "gato", "duerme", "en", "la", "cama"], "respuesta": "El gato duerme en la cama" }
+          ]
+        }
+      ]
+    },
+    "completarParrafos": {
+      "titulo": "Completar Párrafos",
+      "descripcion": "Escoge las palabras correctas para completar el párrafo.",
+      "script": "completarParrafos.js",
+      "niveles": [
+        {
+          "nivel_id": 1,
+          "parrafos": [
+            {
+              "texto": "El ___ brilla en el cielo y da ___ a la Tierra.",
+              "opciones": [["sol", "luna"], ["luz", "frío"]],
+              "respuestas": ["sol", "luz"]
+            },
+            {
+              "texto": "La ___ es un animal que da ___ y carne.",
+              "opciones": [["vaca", "mesa"], ["leche", "agua"]],
+              "respuestas": ["vaca", "leche"]
+            }
+          ]
+        },
+        {
+          "nivel_id": 2,
+          "parrafos": [
+            {
+              "texto": "En el ___ viven muchos animales. El ___ es el rey.",
+              "opciones": [["bosque", "desierto"], ["león", "ratón"]],
+              "respuestas": ["bosque", "león"]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es"> el mio
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= data.titulo %></title>
+  <link rel="stylesheet" href="/resources/css/Game2.css">
+</head>
+
+<body class="<%= tipo %>">
+
+  <%- include('partials/navbar') %>
+
+  <!-- Menú lateral -->
+  <div id="menu-lateral" class="menu-lateral">
+    <button onclick="reiniciarJuego()">🔄 Reiniciar</button>
+    <a href="/game?grado=segundo&tipo=ordenarSilabas" class="btn-menu">📝 Ordenar Sílabas</a>
+    <a href="/game?grado=segundo&tipo=completarFrases" class="btn-menu">✍️ Completar Frases</a>
+    <div class="puntaje" id="puntaje">Puntaje: 0</div><br>
+    <div class="nivel" id="nivel">Nivel 1</div>
+  </div>
+
+  <!-- Título -->
+  <div class="titulo-caja">
+    <h1><%= data.titulo %></h1>
+    <p class="descripcion"><%= data.descripcion %></p>
+  </div>
+
+  <!-- Área de juego -->
+  <div class="juego">
+    <div id="contenedor-juego"></div>
+    <div id="estado" class="estado"></div>
+    <button id="btnSiguiente" class="btn-siguiente oculto" onclick="siguiente()">Siguiente ➡️</button>
+  </div>
+
+  <script src="/scripts/<%= script %>"></script>
+
+</body>
+</html>

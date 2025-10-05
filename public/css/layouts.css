@@ -1,0 +1,237 @@
+/* Reset rápido */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f4f7fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      background: #1e88e5;
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Botón Volver */
+    #btnBack {
+      position: absolute;
+      left: 2rem;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    /* Contenedor de texto o canvas */
+    #content {
+      background: white;
+      max-width: 600px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    #content h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: #1e88e5;
+    }
+
+    #content p {
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Controles inferiores */
+    #controls {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button.control-btn {
+      background: #1e88e5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button.control-btn:hover {
+      background: #1565c0;
+    }
+
+    /* Estado “completado” */
+    #completed {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #4caf50;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      display: none;
+      font-weight: 600;
+    }
+
+    .transcription-box {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #f0f4f8;
+  border-left: 4px solid #1e88e5;
+  border-radius: 4px;
+  min-height: 3em;
+  font-style: italic;
+  color: #555;
+}
+
+.btn-lectura {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px;
+  background: #4caf50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+/* Navbar principal */
+.navbar {
+  position: sticky;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+/* Logo */
+.navbar-logo {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Enlaces de escritorio */
+.navbar-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  transition: max-height 0.3s ease-out;
+}
+
+/* Link genérico */
+.nav-link {
+  color: rgb(15, 14, 14);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.nav-link:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Botón Cerrar Sesión */
+.logout-btn {
+  background: var(--color-secondary);
+  color: var(--text-main);
+}
+
+.logout-btn:hover {
+  background: var(--color-accent);
+  color: white;
+}
+
+/* Hamburgesa (solo móvil) */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* Responsive: móvil hasta 768px */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar-links {
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--color-primary);
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 0;
+  }
+
+  .navbar-links.open {
+    max-height: 200px; /* ajusta según ítems */
+  }
+
+  .nav-link {
+    padding: 1rem;
+  }
+}
+/* estilos para el select dentro de la navbar */
+.nav-form {
+  margin: 0 1rem;
+}
+
+.nav-select {
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background: white;
+  color: var(--text-main);
+  transition: box-shadow 0.2s;
+}
+
+.nav-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-secondary);
+}
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/css/login.css">
+    <title>Register</title>
+</head>
+<body>
+    <div class="register-form">
+		<h1>Form Registration</h1>
+		<form action="/register" method="POST">
+            <label for="user">User</label>
+                <input type="text" name="user" required tabindex="1" autofocus>            
+            <label for="user">Name</label>
+                <input type="text" name="name" required tabindex="2">
+             <label for="user">Last Name</label>
+                <input type="text" name="lastname" required tabindex="3">
+            <label for="user">E-mail</label>
+                <input type="text" name="email" required tabindex="3">
+
+            <label for="rol">Rol</label>                          
+            <select id="rol" name="id_rol" class="select-css" tabindex="4">
+                <option value="1">Student</option>
+                <option value="2">Professor</option>                    
+            </select>
+
+             <br> 
+            <label for="pass">Password</label>
+			    <input type="password" name="contrasena" required tabindex="5">
+            <div style="display: inline;">             
+            <a href="/" class="btn-cancel">Cancel</a><input type="submit" class="btn-save" value="Save">           
+            </div>
+		</form>		
+	</div>
+
+    		
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+ </div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+.inicio-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.titulo-principal {
+  font-size: 2.5em;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.descripcion {
+  font-size: 1.2em;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.temas-lista {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.temas-lista li {
+  font-size: 1.1em;
+  margin: 10px 0;
+}
+
+.botones {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.boton-entrar,
+.boton-regresar {
+  padding: 10px 20px;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.boton-regresar {
+  background-color: #95a5a6;
+}
+
+.boton-entrar:hover {
+  background-color: #2980b9;
+}
+
+.boton-regresar:hover {
+  background-color: #7f8c8d;
+}
+
+
+
+/* stilos de select grade study*/
+.grado-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fefefe;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.titulo-grado {
+  font-size: 2em;
+  color: #34495e;
+  margin-bottom: 20px;
+}
+
+.select-grado {
+  width: 80%;
+  padding: 10px;
+  font-size: 1.1em;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  transition: border-color 0.3s ease;
+}
+
+.select-grado:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+.boton-entrar {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.boton-entrar:hover {
+  background-color: #2980b9;
+}
+
+/* stilos WELCOME TO LEVEL X*/
+.section-link {
+  text-decoration: none;  /* quita el subrayado */
+  color: inherit;         /* mantiene el color del texto */
+}
+
+.section-box {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.section-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+.btn-lectura {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px;
+  background: #4caf50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.btn-back {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.6rem 1.2rem;
+  background: var(--color-secondary);
+  color: var(--text-main);
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+
+.btn-back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 50px;
+  background-color: #5d5f61;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  border-radius: 10px;
+  box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s, background-color 0.3s;
+  
+
+
+
+}
+
+.btn-back:hover {
+  background: var(--color-accent);
+}

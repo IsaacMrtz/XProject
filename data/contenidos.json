@@ -1,0 +1,776 @@
+{
+  "primer": {
+    "lecturas": [
+      {
+        "id": "lectura1",
+        "titulo": "Elmer, el elefante de colores",
+        "texto": "Había una vez un elefante distinto que pintaba el mundo de alegría.",
+        "imagen": "pp.jpg",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura2",
+        "titulo": "¿A qué sabe la luna?",
+        "texto": "Había una vez unos animales curiosos que soñaban con probar un pedacito de luna.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura3",
+        "titulo": "Sapo y Sepo, inseparables",
+        "texto": "Había una vez dos amigos que compartían todo, incluso los momentos más simples.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura4",
+        "titulo": "Niña bonita",
+        "texto": "Había una vez una niña con piel brillante como la noche que descubrió su belleza única.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura5",
+        "titulo": "La vaca que decía oink",
+        "texto": "Había una vez una vaca que quería aprender a hablar como los cerditos.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura6",
+        "titulo": "La ovejita que vino a cenar",
+        "texto": "Había una vez un lobo hambriento que recibió una visita inesperada en su casa.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      }
+    ],
+    "basico": {
+      "nivel1": {
+        "titulo": "Reconocimiento de letras",
+        "instrucciones": "Haz clic en la letra correcta tras escuchar el sonido",
+        "exploracion": {
+          "titulo": "Exploración de letras",
+          "instrucciones": "Haz clic en la letra para escuchar su sonido y ver un ejemplo.",
+          "bloques": [
+          {
+            "nombre": "Vocales",
+            "letras": [
+              { "letra": "A", "imagen": "arbol.jpg", "palabras": ["árbol", "avión", "ala"], "trazo": "animaciones/a.svg" },
+              { "letra": "E", "imagen": "estrella.jpg", "palabras": ["estrella", "elefante", "espejo"], "trazo": "animaciones/e.svg" },
+              { "letra": "I", "imagen": "isla.jpg", "palabras": ["isla", "iglesia", "imán"], "trazo": "animaciones/i.svg" },
+              { "letra": "O", "imagen": "oso.jpg", "palabras": ["oso", "olla", "ojo"], "trazo": "animaciones/o.svg" },
+              { "letra": "U", "imagen": "uva.png", "palabras": ["uva", "uno", "uña"], "trazo": "animaciones/u.svg" }
+            ]
+          },
+          {
+            "nombre": "Consonantes iniciales",
+            "letras": [
+              { "letra": "M", "imagen": "mano.jpg", "palabras": ["mamá", "mesa", "mono"], "trazo": "animaciones/m.svg" },
+              { "letra": "P", "imagen": "pato.jpg", "palabras": ["pato", "pelota", "pan"], "trazo": "animaciones/p.svg" },
+              { "letra": "L", "imagen": "lapiz.png", "palabras": ["lápiz", "luna", "leche"], "trazo": "animaciones/l.svg" },
+              { "letra": "S", "imagen": "sol.png", "palabras": ["sol", "silla", "sopa"], "trazo": "animaciones/s.svg" },
+              { "letra": "T", "imagen": "taza.jpg", "palabras": ["taza", "teléfono", "tigre"], "trazo": "animaciones/t.svg" }
+            ]
+          },
+          {
+            "nombre": "Consonantes siguientes",
+            "letras": [
+              { "letra": "D", "imagen": "dado.jpg", "palabras": ["dado", "dedo", "día"], "trazo": "animaciones/d.svg" },
+              { "letra": "N", "imagen": "nube.jpg", "palabras": ["nube", "niño", "nido"], "trazo": "animaciones/n.svg" },
+              { "letra": "F", "imagen": "flor.jpg", "palabras": ["flor", "foca", "fresa"], "trazo": "animaciones/f.svg" },
+              { "letra": "R", "imagen": "raton.jpg", "palabras": ["ratón", "rosa", "ropa"], "trazo": "animaciones/r.svg" }
+            ]
+          },
+          {
+            "nombre": "Grupo medio",
+            "letras": [
+              { "letra": "V", "imagen": "vela.jpg", "palabras": ["vela", "vaca", "viento"], "trazo": "animaciones/v.svg" },
+              { "letra": "B", "imagen": "bola.jpg", "palabras": ["bola", "barco", "boca"], "trazo": "animaciones/b.svg" },
+              { "letra": "C", "imagen": "casa.jpg", "palabras": ["casa", "coche", "cielo"], "trazo": "animaciones/c.svg" },
+              { "letra": "G", "imagen": "gato.png", "palabras": ["gato", "goma", "gallo"], "trazo": "animaciones/g.svg" }
+            ]
+          },
+          {
+            "nombre": "Consonantes finales",
+            "letras": [
+              { "letra": "J", "imagen": "jugo.png", "palabras": ["jugo", "juguete", "jirafa"], "trazo": "animaciones/j.svg" },
+              { "letra": "H", "imagen": "hoja.png", "palabras": ["hoja", "huevo", "hora"], "trazo": "animaciones/h.svg" },
+              { "letra": "CH", "imagen": "chico.png", "palabras": ["chico", "chocolate", "chico"], "trazo": "animaciones/ch.svg" },
+              { "letra": "Ñ", "imagen": "niña.jpg", "palabras": ["niña", "señor", "baño"], "trazo": "animaciones/ñ.svg" },
+              { "letra": "Y", "imagen": "yoyo.jpg", "palabras": ["yoyo", "yema", "yate"], "trazo": "animaciones/y.svg" },
+              { "letra": "Z", "imagen": "zapato.png", "palabras": ["zapato", "zorro", "zanahoria"], "trazo": "animaciones/z.svg" },
+              { "letra": "Q", "imagen": "queso.jpg", "palabras": ["queso", "quinto", "quinto"], "trazo": "animaciones/q.svg" },
+              { "letra": "K", "imagen": "kiwi.png", "palabras": ["kiwi", "kilo", "karaoke"], "trazo": "animaciones/k.svg" },
+              { "letra": "W", "imagen": "wifi.jpg", "palabras": ["wifi", "waffle", "windsurf"], "trazo": "animaciones/w.svg" },
+              { "letra": "X", "imagen": "xilofono.jpg", "palabras": ["xilófono", "extra", "taxi"], "trazo": "animaciones/x.svg" }
+            ]
+          },{
+  "nombre": "Abecedario",
+  "letras": [
+    { "letra": "A", "imagen": "arbol.jpg", "palabras": ["árbol", "avión", "ala"], "trazo": "animaciones/a.svg" },
+    { "letra": "B", "imagen": "bola.jpg", "palabras": ["bola", "barco", "boca"], "trazo": "animaciones/b.svg" },
+    { "letra": "C", "imagen": "casa.jpg", "palabras": ["casa", "coche", "cielo"], "trazo": "animaciones/c.svg" },
+    { "letra": "D", "imagen": "dado.jpg", "palabras": ["dado", "dedo", "día"], "trazo": "animaciones/d.svg" },
+    { "letra": "E", "imagen": "estrella.jpg", "palabras": ["estrella", "elefante", "espejo"], "trazo": "animaciones/e.svg" },
+    { "letra": "F", "imagen": "flor.jpg", "palabras": ["flor", "foca", "fresa"], "trazo": "animaciones/f.svg" },
+    { "letra": "G", "imagen": "gato.png", "palabras": ["gato", "goma", "gallo"], "trazo": "animaciones/g.svg" },
+    { "letra": "H", "imagen": "hoja.png", "palabras": ["hoja", "huevo", "hora"], "trazo": "animaciones/h.svg" },
+    { "letra": "I", "imagen": "isla.jpg", "palabras": ["isla", "iglesia", "imán"], "trazo": "animaciones/i.svg" },
+    { "letra": "J", "imagen": "jugo.png", "palabras": ["jugo", "juguete", "jirafa"], "trazo": "animaciones/j.svg" },
+    { "letra": "K", "imagen": "kiwi.jpg", "palabras": ["kiwi", "kilo", "karaoke"], "trazo": "animaciones/k.svg" },
+    { "letra": "L", "imagen": "lapiz.png", "palabras": ["lápiz", "luna", "leche"], "trazo": "animaciones/l.svg" },
+    { "letra": "M", "imagen": "mano.jpg", "palabras": ["mamá", "mesa", "mono"], "trazo": "animaciones/m.svg" },
+    { "letra": "N", "imagen": "nube.jpg", "palabras": ["nube", "niño", "nido"], "trazo": "animaciones/n.svg" },
+    { "letra": "Ñ", "imagen": "niña.jpg", "palabras": ["niña", "señor", "baño"], "trazo": "animaciones/ñ.svg" },
+    { "letra": "O", "imagen": "oso.jpg", "palabras": ["oso", "olla", "ojo"], "trazo": "animaciones/o.svg" },
+    { "letra": "P", "imagen": "pato.jpg", "palabras": ["pato", "pelota", "pan"], "trazo": "animaciones/p.svg" },
+    { "letra": "Q", "imagen": "queso.jpg", "palabras": ["queso", "quinto", "quinto"], "trazo": "animaciones/q.svg" },
+    { "letra": "R", "imagen": "raton.jpg", "palabras": ["ratón", "rosa", "ropa"], "trazo": "animaciones/r.svg" },
+    { "letra": "S", "imagen": "sol.png", "palabras": ["sol", "silla", "sopa"], "trazo": "animaciones/s.svg" },
+    { "letra": "T", "imagen": "taza.jpg", "palabras": ["taza", "teléfono", "tigre"], "trazo": "animaciones/t.svg" },
+    { "letra": "U", "imagen": "uva.png", "palabras": ["uva", "uno", "uña"], "trazo": "animaciones/u.svg" },
+    { "letra": "V", "imagen": "vela.jpg", "palabras": ["vela", "vaca", "viento"], "trazo": "animaciones/v.svg" },
+    { "letra": "W", "imagen": "wifi.jpg", "palabras": ["wifi", "waffle", "windsurf"], "trazo": "animaciones/w.svg" },
+    { "letra": "X", "imagen": "xilofono.jpg", "palabras": ["xilófono", "extra", "taxi"], "trazo": "animaciones/x.svg" },
+    { "letra": "Y", "imagen": "yoyo.jpg", "palabras": ["yoyo", "yema", "yate"], "trazo": "animaciones/y.svg" },
+    { "letra": "Z", "imagen": "zapato.png", "palabras": ["zapato", "zorro", "zanahoria"], "trazo": "animaciones/z.svg" },
+    { "letra": "CH", "imagen": "chico.png", "palabras": ["chico", "chocolate", "chico"], "trazo": "animaciones/ch.svg" }
+  ]
+}
+
+        ]
+
+  
+},
+        "actividad": {
+          "titulo": "Reconocimiento de letras",
+          "instrucciones": "Haz clic en la letra correcta tras escuchar el sonido",
+          "ejercicios": [
+            {
+              "letra": "A",
+              "imagen": "arbol.jpg",
+              "hints": ["Empieza con el sonido /a/"],
+              "feedback": {
+                "success": "¡Muy bien!",
+                "error": "Intenta de nuevo"
+              }
+            },
+            {
+              "letra": "B",
+              "imagen": "bola.png",
+              "hints": ["Escucha el sonido /b/"],
+              "feedback": {
+                "success": "Correcto",
+                "error": "No es B"
+              }
+            },
+            {
+              "letra": "C",
+              "imagen": "bola.png",
+              "hints": ["Escucha el sonido /c/"],
+              "feedback": {
+                "success": "Correcto",
+                "error": "No es C"
+              }
+            },
+            {
+              "letra": "D",
+              "imagen": "bola.png",
+              "hints": ["Escucha el sonido /c/"],
+              "feedback": {
+                "success": "Correcto",
+                "error": "No es C"
+              }
+            },
+            {
+              "letra": "E",
+              "imagen": "bola.png",
+              "hints": ["Escucha el sonido /E/"],
+              "feedback": {
+                "success": "Correcto",
+                "error": "No es E"
+              }
+            }
+          ]
+        }
+      },
+     "nivel2": {
+    "titulo": "Sílabas y palabras simples",
+    "instrucciones": "Explora las sílabas tocando cada una. Luego forma palabras.",
+    "bloques": [
+      {
+        "consonante": "M",
+        "silabas": [
+          { "texto": "ma", "imagen": "mamá.jpg", "palabra": "mamá" },
+          { "texto": "me", "imagen": "mesa.png", "palabra": "mesa" },
+          { "texto": "mi", "imagen": "mico.png", "palabra": "mico" },
+          { "texto": "mo", "imagen": "moto.jpeg", "palabra": "moto" },
+          { "texto": "mu", "imagen": "muro.jpeg", "palabra": "muro" }
+        ]
+      },
+      {
+        "consonante": "P",
+        "silabas": [
+          { "texto": "pa", "imagen": "pato.png", "palabra": "pato" },
+          { "texto": "pe", "imagen": "pera.jpg", "palabra": "pera" },
+          { "texto": "pi", "imagen": "pino.jpeg", "palabra": "pino" },
+          { "texto": "po", "imagen": "pollo.jpeg", "palabra": "pollo" },
+          { "texto": "pu", "imagen": "pulpo.png", "palabra": "pulpo" }
+        ]
+      },
+      {
+        "consonante": "L",
+        "silabas": [
+          { "texto": "la", "imagen": "lago.jpg", "palabra": "lago" },
+          { "texto": "le", "imagen": "leon.jpeg", "palabra": "león" },
+          { "texto": "li", "imagen": "libro.jpg", "palabra": "libro" },
+          { "texto": "lo", "imagen": "loro.png", "palabra": "loro" },
+          { "texto": "lu", "imagen": "luna.jpg", "palabra": "luna" }
+        ]
+      },
+      {
+        "consonante": "S",
+        "silabas": [
+          { "texto": "sa", "imagen": "sapo.jpg", "palabra": "sapo" },
+          { "texto": "se", "imagen": "seta.jpg", "palabra": "seta" },
+          { "texto": "si", "imagen": "silla.jpg", "palabra": "silla" },
+          { "texto": "so", "imagen": "sol.jpg", "palabra": "sol" },
+          { "texto": "su", "imagen": "suma.jpg", "palabra": "suma" }
+        ]
+      },
+      {
+        "consonante": "T",
+        "silabas": [
+          { "texto": "ta", "imagen": "taza.png", "palabra": "taza" },
+          { "texto": "te", "imagen": "tela.jpg", "palabra": "tela" },
+          { "texto": "ti", "imagen": "tigre.jpg", "palabra": "tigre" },
+          { "texto": "to", "imagen": "tomate.jpg", "palabra": "tomate" },
+          { "texto": "tu", "imagen": "tubo.jpg", "palabra": "tubo" }
+        ]
+      },
+      {
+        "consonante": "N",
+        "silabas": [
+          { "texto": "na", "imagen": "nariz.jpg", "palabra": "nariz" },
+          { "texto": "ne", "imagen": "nene.jpg", "palabra": "nene" },
+          { "texto": "ni", "imagen": "nido.jpg", "palabra": "nido" },
+          { "texto": "no", "imagen": "noche.jpg", "palabra": "noche" },
+          { "texto": "nu", "imagen": "nube.jpg", "palabra": "nube" }
+        ]
+      },
+      {
+        "consonante": "D",
+        "silabas": [
+          { "texto": "da", "imagen": "dado.jpg", "palabra": "dado" },
+          { "texto": "de", "imagen": "dedo.jpg", "palabra": "dedo" },
+          { "texto": "di", "imagen": "diente.jpg", "palabra": "diente" },
+          { "texto": "do", "imagen": "dona.jpg", "palabra": "dona" },
+          { "texto": "du", "imagen": "ducha.jpeg", "palabra": "ducha" }
+        ]
+      },
+      {
+        "consonante": "R",
+        "silabas": [
+          { "texto": "ra", "imagen": "rana.png", "palabra": "rana" },
+          { "texto": "re", "imagen": "red.png", "palabra": "red" },
+          { "texto": "ri", "imagen": "rio.jpeg", "palabra": "río" },
+          { "texto": "ro", "imagen": "rosa.jpeg", "palabra": "rosa" },
+          { "texto": "ru", "imagen": "rueda.jpg", "palabra": "rueda" }
+        ]
+      },
+      {
+        "consonante": "B",
+        "silabas": [
+          { "texto": "ba", "imagen": "balon.jpg", "palabra": "balón" },
+          { "texto": "be", "imagen": "bebe.jpg", "palabra": "bebé" },
+          { "texto": "bi", "imagen": "bici.jpg", "palabra": "bici" },
+          { "texto": "bo", "imagen": "boca.jpg", "palabra": "boca" },
+          { "texto": "bu", "imagen": "buho.png", "palabra": "búho" }
+        ]
+      },
+      {
+        "consonante": "F",
+        "silabas": [
+          { "texto": "fa", "imagen": "faro.jpg", "palabra": "faro" },
+          { "texto": "fe", "imagen": "feria.jpg", "palabra": "feria" },
+          { "texto": "fi", "imagen": "fila.jpg", "palabra": "fila" },
+          { "texto": "fo", "imagen": "foca.jpg", "palabra": "foca" },
+          { "texto": "fu", "imagen": "fuego.jpg", "palabra": "fuego" }
+        ]
+      },
+      {
+        "consonante": "C",
+        "silabas": [
+          { "texto": "ca", "imagen": "casa.jpg", "palabra": "casa" },
+          { "texto": "co", "imagen": "cola.jpg", "palabra": "cola" },
+          { "texto": "cu", "imagen": "cubo.jpg", "palabra": "cubo" }
+        ]
+      },
+      {
+        "consonante": "G",
+        "silabas": [
+          { "texto": "ga", "imagen": "gato.jpeg", "palabra": "gato" },
+          { "texto": "go", "imagen": "goma.png", "palabra": "goma" },
+          { "texto": "gu", "imagen": "gusano.jpg", "palabra": "gusano" }
+        ]
+      },
+      {
+        "consonante": "V",
+        "silabas": [
+          { "texto": "va", "imagen": "vaca.jpg", "palabra": "vaca" },
+          { "texto": "ve", "imagen": "vela.jpg", "palabra": "vela" },
+          { "texto": "vi", "imagen": "vino.jpg", "palabra": "vino" },
+          { "texto": "vo", "imagen": "voz.jpeg", "palabra": "voz" },
+          { "texto": "vu", "imagen": "vuelo.jpg", "palabra": "vuelo" }
+        ]
+      },
+      {
+        "consonante": "H",
+        "silabas": [
+          { "texto": "ha", "imagen": "hacha.jpg", "palabra": "hacha" },
+          { "texto": "he", "imagen": "helado.jpg", "palabra": "helado" },
+          { "texto": "hi", "imagen": "hilo.jpg", "palabra": "hilo" },
+          { "texto": "ho", "imagen": "hoja.jpg", "palabra": "hoja" },
+          { "texto": "hu", "imagen": "huevo.jpg", "palabra": "huevo" }
+        ]
+      },
+      {
+        "consonante": "J",
+        "silabas": [
+          { "texto": "ja", "imagen": "jarro.jpeg", "palabra": "jarro" },
+          { "texto": "je", "imagen": "jeque.jpeg", "palabra": "jeque" },
+          { "texto": "ji", "imagen": "jirafa.jpg", "palabra": "jirafa" },
+          { "texto": "jo", "imagen": "joya.jpg", "palabra": "joya" },
+          { "texto": "ju", "imagen": "jugo.jpeg", "palabra": "jugo" }
+        ]
+      },
+      {
+        "consonante": "Z",
+        "silabas": [
+          { "texto": "za", "imagen": "zapato.png", "palabra": "zapato" },
+          { "texto": "zo", "imagen": "zoo.jpg", "palabra": "zoo" },
+          { "texto": "zu", "imagen": "zumo.jpg", "palabra": "zumo" }
+        ]
+      }
+    ]
+  
+  ,
+  "ejercicios": [
+    {
+    "id": 1,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["ca", "co", "cu"],
+    "respuesta_correcta": "ca",
+    "feedback_correcto": "¡Excelente! La sílaba es 'ca'.",
+    "feedback_incorrecto": "Fíjate bien, escucha de nuevo y haz la mejor elección.",
+    "feedback_final": "Tranquilo, la siguiente es tu oportunidad."
+  },
+  {
+    "id": 2,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["ma", "no"],
+    "respuesta_correcta": "mano",
+    "feedback_correcto": "¡Muy bien! ¡Formaste la palabra 'mano'!",
+    "feedback_incorrecto": "Esa no es la palabra, intenta reorganizar las sílabas.",
+    "feedback_final": "No te rindas, repasa las sílabas y sigue adelante."
+  },
+  {
+    "id": 3,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["pa", "pe", "pi"],
+    "respuesta_correcta": "pi",
+    "feedback_correcto": "¡Correcto! Es la sílaba 'pi'.",
+    "feedback_incorrecto": "Estuviste cerca. Vuelve a escuchar el sonido con atención.",
+    "feedback_final": "Será la próxima vez, ¡tú puedes!"
+  },
+  {
+    "id": 4,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["so", "pa"],
+    "respuesta_correcta": "sopa",
+    "feedback_correcto": "¡Genial! 'Sopa' está bien formada.",
+    "feedback_incorrecto": "Revisa el orden de las sílabas, ¡te falta poco!",
+    "feedback_final": "No pasa nada. Tómate un descanso y vuelve a intentarlo."
+  },
+  {
+    "id": 5,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["la", "le", "li"],
+    "respuesta_correcta": "le",
+    "feedback_correcto": "¡Perfecto! Has identificado la sílaba 'le'.",
+    "feedback_incorrecto": "No es esa. Concéntrate en el sonido de la vocal que acompaña.",
+    "feedback_final": "Ánimo, la repetición ayuda a dominarlo."
+  },
+  {
+    "id": 6,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["ca", "sa"],
+    "respuesta_correcta": "casa",
+    "feedback_correcto": "¡Increíble! Formaste 'casa'.",
+    "feedback_incorrecto": "Hay un error en la formación. Vuelve a intentar unir las sílabas.",
+    "feedback_final": "No te rindas, sigue practicando para formar la palabra correctamente."
+  },
+  {
+    "id": 7,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["mo", "me", "ma"],
+    "respuesta_correcta": "mo",
+    "feedback_correcto": "¡Bravo! La sílaba correcta es 'mo'.",
+    "feedback_incorrecto": "Esa no es la sílaba que se escucha. Escucha el sonido con más detenimiento.",
+    "feedback_final": "Recuerda que cada error es un paso hacia el aprendizaje."
+  },
+  {
+    "id": 8,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["pe", "ro"],
+    "respuesta_correcta": "pero",
+    "feedback_correcto": "¡Asombroso! Lograste formar 'perro'.",
+    "feedback_incorrecto": "La palabra que intentaste no es la esperada. Inténtalo de nuevo.",
+    "feedback_final": "Hoy no fue el día, pero mañana lo harás mejor."
+  },
+  {
+    "id": 9,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["tu", "to", "ti"],
+    "respuesta_correcta": "to",
+    "feedback_correcto": "¡Lo tienes! Es la sílaba 'to'.",
+    "feedback_incorrecto": "Casi. Vuelve a reproducir el sonido para asegurar la vocal.",
+    "feedback_final": "¡Aún queda mucho por aprender, no te desanimes!"
+  },
+  {
+    "id": 10,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["lu", "na"],
+    "respuesta_correcta": "luna",
+    "feedback_correcto": "¡Perfecto! 'Luna' es la palabra correcta.",
+    "feedback_incorrecto": "Las sílabas no están en el orden correcto para formar la palabra.",
+    "feedback_final": "Sigue intentándolo, la práctica lleva a la perfección."
+  },
+  {
+    "id": 11,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["pe", "lo", "ta"],
+    "respuesta_correcta": "pelota",
+    "feedback_correcto": "¡Muy bien! Formaste 'pelota'.",
+    "feedback_incorrecto": "Recuerda, la palabra tiene tres sílabas. Revisa el orden.",
+    "feedback_final": "Tranquilo, será la próxima, vuelve a la lección si es necesario."
+  },
+  {
+    "id": 12,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["za", "pa", "to"],
+    "respuesta_correcta": "za",
+    "feedback_correcto": "¡Correcto! Has elegido 'za'.",
+    "feedback_incorrecto": "No es la sílaba esperada. Escucha el inicio del sonido.",
+    "feedback_final": "No te preocupes, el oído se afina con la práctica."
+  },
+  {
+    "id": 13,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["ca", "mi", "sa"],
+    "respuesta_correcta": "camisa",
+    "feedback_correcto": "¡Felicidades! 'Camisa' está bien escrita.",
+    "feedback_incorrecto": "Revisa el orden de las tres sílabas.",
+    "feedback_final": "Ánimo. Mañana volverás con más energía."
+  },
+  {
+    "id": 14,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["te", "le", "vi"],
+    "respuesta_correcta": "te",
+    "feedback_correcto": "¡Sí! Es 'te'. ¡Lo estás haciendo muy bien!",
+    "feedback_incorrecto": "Vuelve a escuchar el sonido. La opción correcta es una de ellas.",
+    "feedback_final": "No te desanimes, es parte del proceso."
+  },
+  {
+    "id": 15,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["za", "pa", "to"],
+    "respuesta_correcta": "zapato",
+    "feedback_correcto": "¡Fantástico! 'Zapato' está completo.",
+    "feedback_incorrecto": "Las sílabas están desordenadas. Intenta armar la palabra en tu mente primero.",
+    "feedback_final": "Relájate y vuelve a intentar el ejercicio más tarde."
+  },
+  {
+    "id": 16,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["ma", "ri", "po"],
+    "respuesta_correcta": "po",
+    "feedback_correcto": "¡Excelente elección! La sílaba es 'po'.",
+    "feedback_incorrecto": "Incorrecto. Escucha el sonido una vez más, concéntrate en la consonante.",
+    "feedback_final": "El esfuerzo vale la pena, ¡a seguir intentándolo!"
+  },
+  {
+    "id": 17,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["ca", "ra", "col"],
+    "respuesta_correcta": "caracol",
+    "feedback_correcto": "¡Increíble! Formaste 'caracol'.",
+    "feedback_incorrecto": "Revisa el orden de las sílabas. ¡Ya casi lo logras!",
+    "feedback_final": "Tranquilo. Repasa las sílabas que componen la palabra."
+  },
+  {
+    "id": 18,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["ca", "me", "ra"],
+    "respuesta_correcta": "me",
+    "feedback_correcto": "¡Bien hecho! Es la sílaba 'me'.",
+    "feedback_incorrecto": "No. Escucha el sonido con atención. La respuesta está en las opciones.",
+    "feedback_final": "Ánimo, todos cometemos errores, es la forma de mejorar."
+  },
+  {
+    "id": 19,
+    "tipo": "formar_palabra",
+    "descripcion": "Arrastra las sílabas para formar la palabra",
+    "opciones": ["pa", "ja", "ro"],
+    "respuesta_correcta": "pajaro",
+    "feedback_correcto": "¡Fenomenal! Formaste la palabra 'pajaro'.",
+    "feedback_incorrecto": "Las sílabas deben ir en otro orden. ¡Piensa en la palabra completa!",
+    "feedback_final": "Hoy no se dio, pero mañana será un nuevo comienzo."
+  },
+  {
+    "id": 20,
+    "tipo": "seleccion_sonido",
+    "descripcion": "Escucha el sonido y selecciona la sílaba correcta",
+    "opciones": ["so", "pa", "ti"],
+    "respuesta_correcta": "so",
+    "feedback_correcto": "¡Perfecto! La sílaba es 'so'.",
+    "feedback_incorrecto": "No es la respuesta correcta. Escucha con más concentración.",
+    "feedback_final": "Un pequeño descanso te ayudará a recargar energías."
+  }
+  ]
+
+}
+,
+      "nivel3": {
+        "titulo": "Frases cortas",
+        "instrucciones": "Lee la frase y presiona cada palabra",
+        "ejercicios": [
+          {
+            "frase": "La vaca come",
+            "palabras": ["La", "vaca", "come"]
+          }
+        ]
+      },
+      "nivel4": {
+        "titulo": "Cuentos cortos / comprensión",
+        "texto": "El gato negro jugó bajo la luna.",
+        "preguntas": [
+          {
+            "pregunta": "¿De qué color era el gato?",
+            "respuestas": ["Negro", "Blanco"]
+          }
+        ]
+      },
+      "nivel5": {
+        "titulo": "Ortografía y fluidez",
+        "texto": "La casa y la caza son distintas.",
+        "ejerciciosOrtografia": [
+          {
+            "palabra": "casa",
+            "correcta": "casa"
+          },
+          {
+            "palabra": "caza",
+            "correcta": "caza"
+          }
+        ],
+        "minWordsPerMin": 60
+      }
+    },
+    "juegos": [
+      {
+        "id": "juego1",
+        "titulo": "Atrapa la palabra",
+        "tipo": "minijuego"
+      },
+      {
+        "id": "juego2",
+        "titulo": "Completa la frase",
+        "tipo": "minijuego"
+      }
+    ]
+  },
+  "segundo": {
+    "lecturas": [
+      {
+        "id": "lectura1",
+        "titulo": "La nube azul",
+        "texto": "Había una vez una nube pequeñita que viajaba por el cielo buscando su lugar.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura2",
+        "titulo": "La peor señora del mundo",
+        "texto": "Había una vez una mujer tan terrible que nadie se atrevía a contradecirla.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura3",
+        "titulo": "Un amigo para Dragón",
+        "texto": "Había una vez un dragón azul que buscaba un buen amigo para compartir su vida.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura4",
+        "titulo": "Don Caballito de Mar",
+        "texto": "Había una vez un caballito de mar que cuidaba a sus pequeños con mucho amor.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura5",
+        "titulo": "Cuentos de cipotes",
+        "texto": "Había una vez unos niños salvadoreños que jugaban y soñaban en el campo.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura6",
+        "titulo": "La pequeña bruja y otros cuentos",
+        "texto": "Había una vez una pequeña bruja que descubría la magia en cosas muy sencillas.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      }
+    ],
+    "basico": {
+      "nivel1": {
+        "titulo": "Reconocimiento de letras",
+        "instrucciones": "Haz clic en la letra correcta tras escuchar el sonido",
+        "ejercicios": [
+          {
+            "letra": "A",
+            "imagen": "arbol.png",
+            "hints": ["Empieza con el sonido /a/"],
+            "feedback": {
+              "success": "¡Muy bien!",
+              "error": "Intenta de nuevo"
+            }
+          },
+          {
+            "letra": "B",
+            "imagen": "bola.png",
+            "hints": ["Escucha el sonido /b/"],
+            "feedback": {
+              "success": "Correcto",
+              "error": "No es B"
+            }
+          }
+        ]
+      },
+      "nivel2": {
+        "titulo": "Sílabas y palabras simples",
+        "instrucciones": "Forma sílabas y luego palabras",
+        "ejercicios": [
+          {
+            "silaba": "ma",
+            "imagen": "mama.png"
+          },
+          {
+            "palabra": "sol",
+            "imagen": "sol.png"
+          }
+        ]
+      },
+      "nivel3": {
+        "titulo": "Frases cortas",
+        "instrucciones": "Lee la frase y presiona cada palabra",
+        "ejercicios": [
+          {
+            "frase": "La vaca come",
+            "palabras": ["La", "vaca", "come"]
+          }
+        ]
+      },
+      "nivel4": {
+        "titulo": "Cuentos cortos / comprensión",
+        "texto": "El gato negro jugó bajo la luna.",
+        "preguntas": [
+          {
+            "pregunta": "¿De qué color era el gato?",
+            "respuestas": ["Negro", "Blanco"]
+          }
+        ]
+      }
+    }
+  },
+  "tercero": {
+    "lecturas": [
+      {
+        "id": "lectura1",
+        "titulo": "Juul",
+        "texto": "Había una vez un niño con una bufanda muy larga que escondía una gran tristeza.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura2",
+        "titulo": "El increíble niño comelibros",
+        "texto": "Había una vez un niño que descubrió que los libros también podían comerse.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura3",
+        "titulo": "El pirata Garrapata",
+        "texto": "Había una vez un pirata torpe y simpático que vivía grandes aventuras.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura4",
+        "titulo": "La bicicleta de Selva",
+        "texto": "Había una vez una niña que descubrió la libertad pedaleando por su barrio.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura5",
+        "titulo": "Uga la tortuga",
+        "texto": "Había una vez una tortuga muy lenta que quería aprender a disfrutar su camino.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      },
+      {
+        "id": "lectura6",
+        "titulo": "La peor princesa del mundo",
+        "texto": "Había una vez una princesa que no quería esperar a un príncipe para ser feliz.",
+        "imagen": "default.png",
+        "tipo": "lectura"
+      }
+    ],
+    "juegos": [
+      {
+        "id": "juego1",
+        "titulo": "Atrapa la palabra",
+        "tipo": "minijuego"
+      },
+      {
+        "id": "juego2",
+        "titulo": "Completa la frase",
+        "tipo": "minijuego"
+      }
+    ]
+  }
+}

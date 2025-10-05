@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detección de emociones</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    #container {
+      position: relative;
+      display: inline-block;
+    }
+    canvas { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      border: 2px solid red; /* Para ver si el canvas se crea */
+    }
+    #info { 
+      position: absolute; 
+      top: 10px; 
+      left: 10px; 
+      background: rgba(0,0,0,0.8); 
+      color: white; 
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 10;
+      max-width: 300px;
+      word-wrap: break-word;
+    }
+    #debug {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+    video {
+      border: 2px solid #333;
+    }
+  </style>
+  <!-- CDN de MediaPipe Pose y utilidades -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" defer></script>
+
+<!-- Tu script de postura -->
+<script src="/scripts/postura.js" defer></script>
+
+</head>
+<body>
+  <h1>Detección de Emociones - Debug</h1>
+  <BR>
+    
+  <div id="container">
+    <video id="video" width="720" height="560" autoplay muted></video>
+    <div id="info">Iniciando...</div>
+  </div>
+  
+  <div id="debug">Logs aparecerán aquí...</div>
+  
+  <!-- Cargar face-api primero -->
+  <script src="/resources/jsFace-Api/face-api.min.js"></script>
+  
+  <!-- Verificar que se cargó correctamente -->
+  <script>
+    const debugDiv = document.getElementById('debug');
+    
+    function debugLog(message) {
+      console.log(message);
+      debugDiv.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+      debugDiv.scrollTop = debugDiv.scrollHeight;
+    }
+    
+    debugLog('Página cargada');
+    debugLog('Face-API disponible: ' + (typeof faceapi !== 'undefined'));
+    
+    if (typeof faceapi === 'undefined') {
+      debugLog('ERROR: Face-API no se cargó. Verificar ruta /jsFace-Api/face-api.min.js');
+      document.getElementById('info').innerText = 'Error: Face-API no se cargó';
+    } else {
+      debugLog('Face-API cargado correctamente');
+      
+      // Verificar que los elementos existen
+      const video = document.getElementById('video');
+      const info = document.getElementById('info');
+      
+      debugLog('Video element: ' + (video ? 'OK' : 'NO ENCONTRADO'));
+      debugLog('Info element: ' + (info ? 'OK' : 'NO ENCONTRADO'));
+      
+      if (video && info) {
+        debugLog('Elementos encontrados, cargando script principal...');
+      }
+    }
+    
+    // Verificar acceso a modelos
+    fetch('/resources/jsFace-Api/models/tiny_face_detector/tiny_face_detector_model-weights_manifest.json')
+      .then(response => {
+        debugLog('Test acceso a modelos: ' + (response.ok ? 'OK' : 'FALLÓ - ' + response.status));
+        if (!response.ok) {
+          debugLog('Verificar que la carpeta /jsFace-Api/models/ existe y contiene los archivos');
+        }
+      })
+      .catch(error => {
+        debugLog('Error accediendo a modelos: ' + error.message);
+      });
+  </script>
+
+  <script>
+  function enviarTexto(texto) {
+    fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: texto })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Resultado del análisis:', data);
+      document.getElementById('sentimiento').innerText =
+        `Sentimiento: ${data.score > 0 ? 'Positivo' : data.score < 0 ? 'Negativo' : 'Neutral'} (${data.score})`;
+    });
+  }
+</script>
+
+  
+  <!-- Cargar script principal después -->
+  <script src="/resources/jsFace-Api/emociones.js"></script>
+
+  <button id="btnVoz">🎙️ Iniciar reconocimiento</button>
+<script src="/resources/sentiment/speechAnalysis.js" defer></script>
+<div id="transcripcion">Transcripción aparecerá aquí...</div>
+<div id="sentimiento">Sentimiento aparecerá aquí...</div>
+
+<!-- Antes de </body> -->
+<div>
+<script src="/resources/mediapipe/postura.js" defer></script>
+
+<button id="btnPostura">🕺 Iniciar detección de postura</button>
+<div id="postura">Postura: …</div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <link rel="stylesheet" href="/resources/css/basico.css">
+</head>
+<body>
+
+    <%- include('partials/nav2') %>
+
+    <main>
+        <div class="page-wrapper">
+            <div class="nivelC-container">
+                <section class="">
+                    <h1 class="titulo-principal"><%= titulo %></h1>
+                    <p class="descripcion"><%= instrucciones %></p>
+
+                    <% bloques.forEach(bloque => { %>
+                        <h2 class="bloque-titulo"><%= bloque.nombre %></h2>
+                        <div class="cuadricula-de-letras">
+                            <% bloque.letras.forEach((letraData, idx) => { %>
+                                <div class="letter-card card-<%= idx % 4 %>" 
+                                    data-letra="<%= letraData.letra %>"
+                                    data-imagen="<%= letraData.imagen %>"
+                                    data-trazo="<%= letraData.trazo %>"
+                                    data-palabras='<%= JSON.stringify(letraData.palabras) %>'>
+                                    <span class="letra"><%= letraData.letra %></span>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% }) %>
+                </section>
+                
+                <a href="/actividad?grado=<%= grado %>&basico=nivel1" class="btn-primary">
+                    <i class="fas fa-dumbbell"></i>
+                    <p>Prueba tu oído</p>
+                </a>
+            </div>
+        </div>
+    </main>
+    
+    <div id="detalle-letra-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modal-content-container">
+                <div class="letra-visual">
+                    <img id="modal-imagen" src="" alt="Imagen asociada a la letra">
+                    <div id="modal-trazo"></div> </div>
+                <div class="letra-detalles">
+                    <h2 id="modal-letra"></h2>
+                    <p id="modal-palabras"></p>
+                    <button id="btn-reproducir" class="btn-secundario">🔊 Escuchar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/scripts/orques2.js" type="module"></script>
+    <script>
+        // Pasamos los datos a JS para que el script pueda usarlos
+        window.appData = {
+            titulo: "<%= titulo %>",
+            instrucciones: "<%= instrucciones %>",
+            bloques: <%- JSON.stringify(bloques) %>,
+            grado: "<%= grado %>",
+            nivel: "<%= nivel %>"
+        };
+    </script>
+
+</body>
+</html>

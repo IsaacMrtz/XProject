@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      <link rel="stylesheet" href="resources/css/lay.css">
+    <style>
+        /* Contenedor vertical */
+.levels-path {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+/* Botón circular base */
+.lesson-button button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Icono central */
+.lesson-button .icon {
+  color: white;
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  top: -35px;
+  background: #1a1d23;
+  color: #58cc02;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.lesson-button:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estilos según estado */
+.lesson-button.active button {
+  background: #58cc02;
+  box-shadow: 0 4px 0 #3e8e00, 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.lesson-button.active button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 0 #3e8e00, 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.lesson-button.locked button {
+  background: #3a3a3a;
+  box-shadow: 0 4px 0 #1f1f1f, 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.lesson-button.locked .icon {
+  color: #aaa;
+}
+
+    </style>
+</head>
+<body>
+    <div class="levels-path">
+  <!-- Nivel activo -->
+  <div class="lesson">
+    <div class="lesson-button active">
+      <button>
+        <span class="icon">★</span>
+      </button>
+      <div class="tooltip">EMPEZAR</div>
+    </div>
+  </div>
+
+  <!-- Nivel bloqueado -->
+  <div class="lesson">
+    <div class="lesson-button locked">
+      <button>
+        <span class="icon">📖</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Nivel bloqueado -->
+  <div class="lesson">
+    <div class="lesson-button locked">
+      <button>
+        <span class="icon">🔒</span>
+      </button>
+    </div>
+  </div>
+</div>
+<button class="btn-back"> Hola</button>
+    
+</body>
+</html>

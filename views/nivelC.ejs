@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><%= data.titulo %></title>
+  <link rel="stylesheet" href="/resources/css/nivelC.css">
+</head>
+<body>
+  <%- include('partials/nav2') %>
+  <main>
+    <div class="page-wrapper">
+          <div class="nivelC-container"> 
+
+        
+          <section class="">
+            <br>
+            <br>
+
+            <div class="path-wrapper zigzag-wrapper">
+              <% lecturas.forEach((lec, idx) => { %>
+                <a href="/layout?grado=<%= grado %>&id=<%= lec.id %>"
+                  class="lesson-button <%= lec.estado %>"
+                  style="--delay: <%= (idx * 0.15).toFixed(2) %>s">
+                  <button class="btn-lesson">
+                    <span class="icon"><%= lec.icono || '📖' %></span>
+                  </button>
+                  
+                    <div class="bubble"><%= lec.titulo %></div>
+
+                  
+                  
+                </a>
+                
+              <% }) %>
+            </div>
+            
+
+            
+          </section>
+          
+
+           <aside class="nivelC-sidebar">
+  <div class="stat-card">
+    📚 Lecturas: 
+    <span id="lecturas-leidas"><%= stats.lecturasLeidas %></span> /
+    <span id="total-lecturas"><%= stats.totalLecturas %></span>
+    <div class="progress-bar">
+      <div id="lecturas-bar"
+           style="width: <%= (stats.lecturasLeidas / stats.totalLecturas) * 100 %>%">
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="stat-card">
+    🎮 Juegos:
+    <span id="juegos-jugados"><%= stats.juegosJugados %></span>
+  </div>
+  <br>
+  <div class="stat-card">
+    🏅 Nivel:
+    <span id="nivel-actual"><%= stats.nivelActual %></span>
+  </div>
+  <br>
+  <div class="stat-card">
+    🚀 Desafíos activos:
+    <span id="desafios-activos"><%= stats.desafiosActivos %></span>
+  </div>
+  <div class="botones-regreso">
+                <a href="javascript:history.back()" class="btn-back">← Regresar</a>
+                <br>
+                <a href="/layout?grado=<%= grado %>" class="btn-back"> ingresa</a>
+              </div>
+            
+
+            
+              
+              
+</aside>
+            
+        </div>
+    </div>
+    <script>
+    window.appParams = {
+      grado: "<%= grado %>",
+      id:    "<%= id %>"
+    };
+    window.appStats = {
+      lecturasLeidas:  <%= stats.lecturasLeidas %>,
+      totalLecturas:   <%= stats.totalLecturas %>,
+      juegosJugados:   <%= stats.juegosJugados %>,
+      nivelActual:     <%= stats.nivelActual %>,
+      desafiosActivos: <%= stats.desafiosActivos %>
+    };
+  </script>
+  </main>
+ 
+  
+  
+  </body>
+</html>
